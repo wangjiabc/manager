@@ -10,6 +10,7 @@ import com.voucher.manage.daoSQL.*;
 import com.voucher.manage.daoSQL.annotations.DBTable;
 import com.voucher.manage.tools.Md5;
 import com.voucher.manage.tools.MyTestUtil;
+import com.voucher.manage2.aop.annotation.TimeConsume;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,6 +100,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
+    @TimeConsume
     public Map selectTable(Object object) throws ClassNotFoundException {
         // TODO Auto-generated method stub
 

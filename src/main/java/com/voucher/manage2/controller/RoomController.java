@@ -48,10 +48,10 @@ public class RoomController {
             searchList.add("neaten_flow =");
             searchList.add(neaten_flow);
         }
-        if (!searchList.isEmpty()) {
-            String[] where = new String[searchList.size()];
-            room.setWhere(searchList.toArray(where));
-        }
+        searchList.add("del=");
+        searchList.add("false");
+        String[] where = new String[searchList.size()];
+        room.setWhere(searchList.toArray(where));
         //room.setWhereTerm();
         Map map = null;
         try {
@@ -62,9 +62,9 @@ public class RoomController {
         return map;
     }
 
-    @RequestMapping("updateFiledName")
-    public Integer updateTable(String tableName, String line_uuid, String value) {
-        return currentDao.updateTable(tableName, line_uuid, value);
+    @RequestMapping("updateFieldName")
+    public Integer updateTable(String line_uuid, String value) {
+        return currentDao.updateTable("item_room", line_uuid, value);
     }
 
     @RequestMapping("updateRoom")
