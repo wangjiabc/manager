@@ -36,5 +36,6 @@ xmlns:task="http://www.springframework.org/schema/task"
         <task:scheduled ref="taskJob" method="job1" cron="0 0 12 * * ?"/>
 	</task:scheduled-tasks>
 
-    <import resource="aop.xml"/>
+    <import resource="sping-aop.xml"/>
+    <import resource="spring-tkmybatis.xml"/>
 </beans>

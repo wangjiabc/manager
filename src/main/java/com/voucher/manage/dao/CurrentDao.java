@@ -6,25 +6,27 @@ import java.util.Map;
 
 public interface CurrentDao {
 
-	public void createTable(String tableName);
-	
-	public int alterTable(Boolean addOrDel, String tableName , String lineName, String lineUuid);
-	
-	public Integer existTable(String tableName);
-	
-	public Map selectTable(Object object)throws ClassNotFoundException;
-	
-	public Integer insertTable(Object object,String val)throws ClassNotFoundException;
+    void createTable(String tableName);
 
-	Integer updateTable(String tableName, String line_uuid, String value);
+    int alterTable(Boolean addOrDel, String tableName, String lineName, String lineUuid);
+
+    Integer existTable(String tableName);
+
+    Map selectTable(Object object) throws ClassNotFoundException;
+
+    Integer insertTable(Object object, String val) throws ClassNotFoundException;
+
+    Integer updateTable(String tableName, String line_uuid, String value);
 
     Integer updateItmeTable(Map<String, Object> roomMap) throws InvocationTargetException, IllegalAccessException;
 
-	Integer delItmeTable(String guid);
+    Integer delItmeTable(String guid);
 
-	Integer recycleRoom(List<String> guidList);
+    Integer recycleRoom(List<String> guidList);
 
-	Integer insertResource(Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException;
+    Integer insertResource(Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException;
 
     Integer recycleField(String line_uuid);
+
+    Integer addField(String fieldName, int type, String[] selectValue);
 }

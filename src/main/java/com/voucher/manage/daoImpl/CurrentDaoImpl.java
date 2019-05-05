@@ -15,6 +15,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import tk.mybatis.mapper.common.SqlServerMapper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -36,10 +37,8 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         // TODO Auto-generated method stub
         String sql;
 
-        String uuid = "item_" + Md5.GetMD5Code(UUID.randomUUID().toString());
-
         if (addOrDel) {
-
+            String uuid = "item_" + Md5.GetMD5Code(UUID.randomUUID().toString());
             if (existTable(tableName) < 1) {
                 createTable(tableName);
             }
@@ -223,7 +222,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
                 i++;
             }
         } else {
-            return -1;
+            return 0;
         }
 
         fields = fields.substring(1, fields.length());
@@ -265,7 +264,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         room.setId(null);
         Integer upNum = UpdateExe.get(this.getJdbcTemplate(), room);
         if (upNum != 1) {
-            return -1;
+            return 0;
         }
         StringBuffer sqlBuf = new StringBuffer(100);
         sqlBuf.append("update item_room set ");
@@ -293,7 +292,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         room.setWhere(where);
         Integer upNum = UpdateExe.get(this.getJdbcTemplate(), room);
         if (upNum != 1) {
-            return -1;
+            return 0;
         }
         String sql = "update item_room set del = 'true' where guid = '" + guid + "'";
 
@@ -330,7 +329,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             result = insertTable(room, jsonArray.toJSONString());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            return -1;
+            return 0;
         }
         return result == -1 ? 0 : 1;
     }
@@ -351,5 +350,12 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         //return UpdateExe.get(this.getJdbcTemplate(), table_alias) == -1 ? 0 : 1;
         String sql = "update table_alias set del = 'true' where line_uuid = '" + line_uuid + "'";
         return this.getJdbcTemplate().update(sql) == -1 ? 0 : 1;
+    }
+
+    @Override
+    public Integer addField(String fieldName, int type, String[] selectValue) {
+        //1文本,2数字,3时间,4下拉
+
+        return null;
     }
 }

@@ -307,11 +307,11 @@ public class AutoSqlServer {
     }
 
     private String packageName = "package com.voucher.manage.daoModel;\n\n";
-    static String tabNameOne = "table_alias2";
+    static String tabNameOne = "Users";
 
     public static void main(String[] args) {
-        //doOneTab(tabNameOne);
-        doAllTab();
+        doOneTab(tabNameOne);
+        //doAllTab();
     }
 
     private static void doOneTab(String tabNameOne) {

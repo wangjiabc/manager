@@ -26,8 +26,7 @@ public class TimeConsumeInterceptor {
 
         long endTime = System.currentTimeMillis();//结束时间
         long excTime = endTime - startTime;
-        Object target = pjd.getTarget();
-        System.out.println(target);
+        System.out.println("当前调用方法为" + pjd.getSignature());
         System.out.println("执行时间:" + excTime);
         System.out.println("#######################分隔符##########################");
         return result;

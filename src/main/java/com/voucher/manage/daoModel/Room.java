@@ -1,10 +1,12 @@
 package com.voucher.manage.daoModel;
 
 import com.voucher.manage.daoSQL.annotations.*;
+import lombok.ToString;
 
 import java.io.Serializable;
 
 @DBTable(name="[room]")
+@ToString
 public class Room implements Serializable{
 
     private static final long serialVersionUID = 1L;
