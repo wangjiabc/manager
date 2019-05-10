@@ -1,5 +1,7 @@
 package com.voucher.manage.dao;
 
+import com.voucher.manage2.tkmapper.entity.Select;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
@@ -28,5 +30,7 @@ public interface CurrentDao {
 
     Integer recycleField(String line_uuid);
 
-    Integer addField(String fieldName, int type, String[] selectValue);
+    Integer addField(String tableName, String fieldName, Integer type, Map<Integer,String> selectValue);
+
+    Integer updateSelect(List<Select> selects);
 }

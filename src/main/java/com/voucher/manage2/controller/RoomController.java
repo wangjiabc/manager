@@ -1,34 +1,39 @@
 package com.voucher.manage2.controller;
 
+import cn.hutool.core.date.DateUtil;
+import com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage.tools.ObjectUtils;
+import com.voucher.manage2.tkmapper.entity.Select;
+import com.voucher.manage2.utils.MapUtils;
 import com.voucher.sqlserver.context.Connect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/room")
 public class RoomController {
 
-    private ApplicationContext applicationContext = new Connect().get();
+    //private ApplicationContext applicationContext = new Connect().get();
+    //
+    //private CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
 
-    private CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
+    @Autowired
+    private CurrentDao currentDao;
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) {
         Room room = new Room();
-        Integer limit = Integer.valueOf(jsonMap.get("limit").toString());
+        Integer limit = MapUtils.getInteger("limit", jsonMap);
         room.setLimit(limit);
-        room.setOffset((Integer.valueOf(jsonMap.get("page").toString()) - 1) * limit);
+        room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
         Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
         String searchContent = query.get("searchContent").toString();
@@ -83,26 +88,57 @@ public class RoomController {
         return currentDao.recycleRoom(guidList);
     }
 
+    //@RequestMapping("addField")
+    //public int addField(@RequestParam("title") String fieldName) {
+    //    //fieldName = "ccc";
+    //    return currentDao.alterTable(true, "item_room", fieldName, null);
+    //}
     @RequestMapping("addField")
-    public int addField(@RequestParam("title") String fieldName) {
+    public Integer addField(@RequestBody Map<String, Object> jsonMap) {
+        Map<Integer, String> selects = null;
+        String fieldName = MapUtils.getString("title", jsonMap);
+        Integer type = MapUtils.getInteger("type", jsonMap);
+        //Map<String, String> selects = (Map<String, String>) jsonMap.get("domains");
+        List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
+        if (domains != null) {
+            selects = new HashMap<>();
+            int i = 1;
+            for (LinkedHashMap<String, Object> domain : domains) {
+                selects.put(i++, MapUtils.getString("value", domain));
+            }
+        }
         //fieldName = "ccc";
-        return currentDao.alterTable(true, "item_room", fieldName, null);
+        return currentDao.addField("item_room", fieldName, type, selects);
     }
 
     @RequestMapping("delField")
-    public int delField(String line_uuid) {
+    public Integer delField(String line_uuid) {
         //lineUUID = "item_a91c9d5ef10061a004fc1d7a08f27a80";
         //失败返回0
         return currentDao.alterTable(false, "item_room", null, line_uuid);
     }
 
     @RequestMapping("recycleField")
-    public int recycleField(String line_uuid) {
+    public Integer recycleField(String line_uuid) {
         return currentDao.recycleField(line_uuid);
     }
 
     @RequestMapping("insertResource")
-    public int insertResource(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
+    public Integer insertResource(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         return currentDao.insertResource(jsonMap);
+    }
+
+    @RequestMapping("updateSelect")
+    public Integer updateSelect(@RequestBody Map<String, Object> jsonMap) {
+        //return currentDao.updateSelect();
+        System.out.println(jsonMap);
+        List<Select> selects = new ArrayList<>();
+        currentDao.updateSelect(selects);
+        return null;
+    }
+
+    @RequestMapping("test")
+    public void test() {
+        //currentDao.addField("item_room", "aa" + DateUtil.now(), 1, null);
     }
 }

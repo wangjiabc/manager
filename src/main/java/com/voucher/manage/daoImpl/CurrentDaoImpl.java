@@ -11,22 +11,33 @@ import com.voucher.manage.daoSQL.annotations.DBTable;
 import com.voucher.manage.tools.Md5;
 import com.voucher.manage.tools.MyTestUtil;
 import com.voucher.manage2.aop.annotation.TimeConsume;
+import com.voucher.manage2.constant.RoomConstant;
+import com.voucher.manage2.tkmapper.entity.Select;
+import com.voucher.manage2.tkmapper.mapper.SelectMapper;
+import com.voucher.manage2.tkmapper.mapper.TableAliasMapper;
+import com.voucher.manage2.utils.SpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import tk.mybatis.mapper.common.SqlServerMapper;
+import tk.mybatis.mapper.entity.Example;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
+    @Autowired
+    private TableAliasMapper tableAliasMapper;
+    @Autowired
+    private SelectMapper selectMapper;
+
     @Override
     public void createTable(String tableName) {
         // TODO Auto-generated method stub
 
-        String sql = "create table " + tableName + " (id int IDENTITY(1,1) NOT NULL,guid varchar(255) null) ";
+        String sql = "create table " + tableName + " (id int IDENTITY(1,1) NOT NULL,guid varchar(50) null) ";
 
         this.getJdbcTemplate().update(sql);
 
@@ -72,7 +83,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
             List<Table_alias> list = SelectExe.get(this.getJdbcTemplate(), table_alias);
             if (list.isEmpty())
-                return -1;
+                return 0;
             Table_alias table_alias2 = list.get(0);
 
             sql = "alter table " + tableName + " drop column " + table_alias2.getLine_uuid();
@@ -85,7 +96,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
         }
 
-        return this.getJdbcTemplate().update(sql) == -1 ? 0 : 1;
+        return this.getJdbcTemplate().update(sql) == 1 ? 1 : 0;
     }
 
     @Override
@@ -129,7 +140,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             createTable(tableName2);
 
         }
-
+        //表格数据
         List<Map> list = this.getJdbcTemplate().query(sql, params.toArray(), new RowMappersTableJoin(getJdbcTemplate(), className, tableName));
 
         int total = (int) this.getJdbcTemplate().queryForMap(sql2, params2.toArray()).get("");
@@ -148,32 +159,41 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         System.out.println(tableName);
 
         //table_alias.setWhere(where);
-
+        //表头信息
         List<Table_alias> aliasList = SelectExe.get(this.getJdbcTemplate(), table_alias);
 
         List<Map<String, Object>> fixedTitle = new ArrayList<>();
         List<Map<String, Object>> dynTitle = new ArrayList<>();
+
+        //下拉信息
+        List<Select> selects = selectMapper.selectAll();
+        Map<String, Map<Integer, String>> domains = new HashMap<>();
+        for (Select select : selects) {
+            Map<Integer, String> map = domains.get(select.getLineUuid());
+            if (map == null)
+                domains.put(select.getLineUuid(), map = new HashMap<>());
+            map.put(select.getValue(), select.getName());
+        }
         for (Table_alias table_alias1 : aliasList) {
             Map<String, Object> hashMap = new HashMap<>();
             hashMap.put("field", table_alias1.getLine_uuid());
             hashMap.put("title", table_alias1.getLine_alias());
+            hashMap.put("type", table_alias1.getType());
             String table_name = table_alias1.getTable_name();
             if ("room".equals(table_name)) {
                 fixedTitle.add(hashMap);
             } else if ("item_room".equals(table_name)) {
+                Map<Integer, String> map = domains.get(table_alias1.getLine_uuid());
+                if (map != null)
+                    hashMap.put("domains", map);
                 dynTitle.add(hashMap);
             }
+
         }
         MyTestUtil.print(aliasList);
         MyTestUtil.print(list);
 
         Map map = new HashMap<>();
-        //list.stream().forEach(e -> {
-        //    e.put("room_property", RoomConstant.propertyMap.get(e.get("room_property")));
-        //    e.put("state", RoomConstant.stateMap.get(e.get("state")));
-        //    e.put("neaten_flow", RoomConstant.neatenMap.get(e.get("neaten_flow")));
-        //    e.put("hidden", RoomConstant.hiddenMap.get(e.get("hidden")));
-        //});
         map.put("rows", list);
         map.put("total", total);
         map.put("fixedTitle", fixedTitle);
@@ -280,7 +300,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
         //int i = this.getJdbcTemplate().update(sql);
         //return i;
-        return this.getJdbcTemplate().update(sqlBuf.toString()) == -1 ? 0 : 1;
+        return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? 1 : 0;
     }
 
     @Override
@@ -296,7 +316,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         }
         String sql = "update item_room set del = 'true' where guid = '" + guid + "'";
 
-        return this.getJdbcTemplate().update(sql) == -1 ? 0 : 1;
+        return this.getJdbcTemplate().update(sql) == 1 ? 1 : 0;
     }
 
     @Override
@@ -331,7 +351,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             e.printStackTrace();
             return 0;
         }
-        return result == -1 ? 0 : 1;
+        return result == 1 ? 1 : 0;
     }
 
     @Override
@@ -349,13 +369,68 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         //table_alias.setWhere(where);
         //return UpdateExe.get(this.getJdbcTemplate(), table_alias) == -1 ? 0 : 1;
         String sql = "update table_alias set del = 'true' where line_uuid = '" + line_uuid + "'";
-        return this.getJdbcTemplate().update(sql) == -1 ? 0 : 1;
+        return this.getJdbcTemplate().update(sql) == 1 ? 1 : 0;
     }
 
     @Override
-    public Integer addField(String fieldName, int type, String[] selectValue) {
+    @Transactional
+    public Integer addField(String tableName, String fieldName, Integer type, Map<Integer, String> selectValue) {
         //1文本,2数字,3时间,4下拉
+        String line_uuid = "item_" + Md5.GetMD5Code(UUID.randomUUID().toString()) + "";
+        Table_alias tableAlias = new Table_alias();
+        tableAlias.setTable_name(tableName);
+        tableAlias.setLine_alias(fieldName);
+        tableAlias.setType(type);
+        tableAlias.setLine_uuid(line_uuid);
+        tableAlias.setDate(System.currentTimeMillis());
+        //tableAliasMapper.insertSelective(tableAlias);
+        int update = 0;
+        update = InsertExe.get(this.getJdbcTemplate(), tableAlias);
 
-        return null;
+        String sqlType = RoomConstant.rowTypeMap.get(type);
+        //回滚事务
+        SpringUtils.setRollbackOnly(update < 1 || sqlType == null);
+
+        String sql = "alter table " + tableName + " add " + line_uuid + sqlType;
+        if (selectValue != null) {
+            List<Select> selects = new ArrayList<>();
+            for (Map.Entry<Integer, String> entry : selectValue.entrySet()) {
+                Select select = new Select();
+                select.setLineUuid(line_uuid);
+                select.setName(entry.getValue());
+                select.setValue(entry.getKey());
+                selects.add(select);
+            }
+
+            update = selectMapper.insertList(selects);
+            SpringUtils.setRollbackOnly(update < 1);
+        }
+        //int i = 1 / 0;
+        //update = this.getJdbcTemplate().update(sql);
+        //System.out.println(update);
+        return this.getJdbcTemplate().update(sql) == 0 ? 1 : 0;
     }
+
+    @Override
+    @Transactional
+    public Integer updateSelect(List<Select> selects) {
+        if (selects == null)
+            return 0;
+        int update = 0;
+        for (Select select : selects) {
+            Example example = new Example(Select.class);
+            example.createCriteria().andEqualTo("line_uuid", select.getLineUuid())
+                    .andEqualTo("value", select.getValue());
+            selectMapper.updateByExampleSelective(select, example);
+            update++;
+        }
+        return update == selects.size() ? 1 : 0;
+    }
+
+    //@PostConstruct
+    //public void test() {
+    //    addField("item_room", "aa" + DateUtil.now(), (byte) 1, null);
+    //}
+
+
 }

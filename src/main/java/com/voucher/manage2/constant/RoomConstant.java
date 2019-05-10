@@ -1,4 +1,4 @@
-package com.voucher.manage.constant;
+package com.voucher.manage2.constant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +34,15 @@ public class RoomConstant {
         {
             put("0", "无");
             put("1", "有");
+        }
+    };
+    //0:无,1:有
+    public static final Map<Integer, String> rowTypeMap = new HashMap<Integer, String>() {
+        {
+            put(1, " varchar(max) null ");
+            put(2, " int ");
+            put(3, " bigint ");
+            put(4, " int ");
         }
     };
 }

@@ -20,7 +20,7 @@ public class DoGenerator {
     private static Configuration config;
     private static List<String> warnings;
     private static Context context;
-    private static String[] tableNames = {""};
+    private static String[] tableNames = {"table_alias","select"};
 
     static {
         warnings = new ArrayList<>();

@@ -37,5 +37,6 @@ xmlns:task="http://www.springframework.org/schema/task"
 	</task:scheduled-tasks>
 
     <import resource="sping-aop.xml"/>
-    <import resource="spring-tkmybatis.xml"/>
+	<import resource="spring-tkmybatis.xml"/>
+	<import resource="spring-sqlservers.xml"/>
 </beans>
