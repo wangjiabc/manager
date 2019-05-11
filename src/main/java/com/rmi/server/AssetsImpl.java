@@ -21,7 +21,7 @@ public class AssetsImpl implements Assets{
 	/*
 	 * 连接池
 	 */
-	ApplicationContext applicationContext=new Connect().get();
+	//ApplicationContext applicationContext=new Connect().get();
 		
 	private UserService userService;
 	

@@ -16,13 +16,14 @@ public class SpringTest {
     //@Autowired
     //TestListFieldController testListFieldController;
     @Autowired
-    BeanFactory beanFactory;
-    ApplicationContext applicationContext = new Connect().get();
+    private BeanFactory beanFactory;
+    @Autowired
+    private CurrentDao currentDao;
 
     @Test
     public void test1() {
+
         //testListFieldController.delField(null);
-        CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
         int i = currentDao.alterTable(false, "test", null, "item_a91c9d5ef10061a004fc1d7a08f27a80");
         System.out.println(i);
     }

@@ -25,11 +25,15 @@ import java.util.Map;
 @RequestMapping("/test")
 public class testController {
 
-    ApplicationContext applicationContext = new Connect().get();
-
-    AssetsDAO assetsDAO = (AssetsDAO) applicationContext.getBean("assetsdao");
-
-    CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
+    //ApplicationContext applicationContext = new Connect().get();
+    //
+    //AssetsDAO assetsDAO = (AssetsDAO) applicationContext.getBean("assetsdao");
+    //
+    //CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
+    @Autowired
+    AssetsDAO assetsDAO;
+    @Autowired
+    CurrentDao currentDao;
 
 
     Server server = new ConnectRMI().get();
@@ -53,10 +57,10 @@ public class testController {
         room.setOffset(1);
         room.setNotIn("id");
         long start = System.currentTimeMillis();
-        List list=assetsDAO.getRoom(room);
+        List list = assetsDAO.getRoom(room);
         long end = System.currentTimeMillis();
         System.out.println("耗时++++++++++++++++" + (end - start));
-        return  list;
+        return list;
 
     }
 
