@@ -29,19 +29,19 @@ public class RoomController {
     private CurrentDao currentDao;
 
     @RequestMapping("getList")
-    public Object getList(@RequestBody Map<String, Object> jsonMap) {
+    public Object getList() {
         Room room = new Room();
-        Integer limit = MapUtils.getInteger("limit", jsonMap);
+        Integer limit = 10;
         room.setLimit(limit);
-        room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
+        room.setOffset(0);
         room.setNotIn("id");
-        Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
+       /* Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
         String searchContent = query.get("searchContent").toString();
         String state = query.get("state").toString();
         String neaten_flow = query.get("neaten_flow").toString();
         //String[] where = {"state = ", state, "neaten_flow = ", neaten_flow, "address like ", "%" + searchContent + "%"};
-        List<String> searchList = new ArrayList<>();
-        if (!ObjectUtils.isEmpty(searchContent)) {
+        */List<String> searchList = new ArrayList<>();
+        /*if (!ObjectUtils.isEmpty(searchContent)) {
             searchList.add("address like");
             searchList.add("%" + searchContent + "%");
         }
@@ -52,12 +52,18 @@ public class RoomController {
         if (!ObjectUtils.isEmpty(neaten_flow)) {
             searchList.add("neaten_flow =");
             searchList.add(neaten_flow);
-        }
+        }*/
+        searchList.add("address like");
+        searchList.add("%a%");
+        searchList.add("num like");
+        searchList.add("%c%");
+        searchList.add("item_e2c9d7ec9f3af999925c0ce56831801c like");
+        searchList.add("%2%");
         searchList.add("del=");
         searchList.add("false");
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
-        //room.setWhereTerm();
+        room.setWhereTerm("or");
         Map map = null;
         try {
             map = currentDao.selectTable(room);

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.voucher.manage.daoSQL.annotations.DBTable;
 import com.voucher.manage.daoSQL.annotations.QualifiLimit;
@@ -218,6 +220,7 @@ public class NewSelectSqlJoin {
          
         	  columnWhere=iterator.next();
         	  int k1=1;
+        	  /*
         	  for(String whereterm:columnWhere){
             	  if(k1%2==0){
             		//  System.out.println("偶数");
@@ -232,14 +235,105 @@ public class NewSelectSqlJoin {
                System.out.println("r="+r);
                r++;
               }
-		  
-          
+		  */
+           
+  			int ii=0;
+  			boolean aTerm=false; 
+  			boolean bTerm=false;
+  			boolean cTerm=false;
+  			String awhere=null;
+  			String bwhere=null;
+  			String cwhere=null;
+  			
+  			for(String str : columnWhere){
+  				
+  				System.out.println("str="+str);
+
+  				String REGEX = "del=";
+  				Pattern pattern=Pattern.compile(REGEX);
+  				Matcher matcher=pattern.matcher(str);
+  				if(matcher.find()){
+  					awhere=" "+str+" ";
+  					aTerm=true;
+  					continue;
+  				}
+  				
+  				if(aTerm){
+  					awhere=awhere+" ? ";
+  			    	aTerm=false;
+  			    	continue;
+  				}
+  				
+  				
+  				String REGEX1 = "region=";
+  				Pattern pattern1=Pattern.compile(REGEX1);
+  				Matcher matcher1=pattern1.matcher(str);				
+  				if(matcher1.find()){
+  					bwhere=" "+str+" ";
+  					bTerm=true;
+  					continue;
+  				}
+  				System.out.println("bwhere="+bwhere);
+  				if(bTerm){
+  					bwhere=bwhere+" ? ";
+  			    	bTerm=false;
+  			    	continue;
+  				}
+  				
+  				String REGEX2 = "weight=";
+  				Pattern pattern2=Pattern.compile(REGEX2);
+  				Matcher matcher2=pattern2.matcher(str);				
+  				if(matcher2.find()){
+  					cwhere=" "+str+" ";
+  					cTerm=true;
+  					continue;
+  				}
+  				System.out.println("cwhere="+cwhere);
+  				if(cTerm){
+  					cwhere=cwhere+" ? ";
+  			    	cTerm=false;
+  			    	continue;
+  				}
+  				
+  			    if(ii%2==0){
+  			    	whereCommand.append(str);
+  			    }else{
+  			    	whereCommand.append(" ? ");
+  			    	whereCommand.append(" "+Term+" ");
+  			    }
+  			    ii++;
+  			}
+  			String ss = whereCommand.toString();
+  			
+  			String serach = null;
+  			
+  			if(ss!=null&&!ss.equals("")){
+  				serach="("+ss.substring(0,ss.length()-4)+")";
+  			}
+  			
+  			if(serach!=null){
+  				if((awhere!=null&&bwhere!=null)){
+  					serach=serach+" and ("+awhere+" and "+bwhere+")";
+  				}else if(awhere!=null&&bwhere==null){
+  					serach=serach+" and ("+awhere+")";
+  				}else if(awhere==null&&bwhere!=null){
+  					serach=serach+" and ("+bwhere+")";
+  				}
+  			}else{
+  				if((awhere!=null&&bwhere!=null)){
+  					serach=" ("+awhere+" and "+bwhere+")";
+  				}else if(awhere!=null&&bwhere==null){
+  					serach="("+awhere+")";
+  				}else if(awhere==null&&bwhere!=null){
+  					serach="("+bwhere+")";
+  				}
+  			}
           
           select=select+   //sqlserver分页需要在top也加上where条件
          		 "\n  where "+firstTableName+"."+notIn+
                   " not in("+
                   " select top "+offset+" "+firstTableName+"."+notIn+" FROM "+firstTableName+leftJionTableName+" where "+
-                   whereCommand.substring(0,whereCommand.length()-7);
+                   serach;
 
  
           
@@ -279,7 +373,7 @@ public class NewSelectSqlJoin {
             }
          
           
-          select=select+"\n  AND ("+whereCommand.substring(0,whereCommand.length()-7)+")";
+          select=select+"\n  AND ("+serach+")";
        //   System.out.println("select="+select);
           i=1;
           iterator=wheres.iterator();
@@ -436,6 +530,8 @@ public class NewSelectSqlJoin {
 	          System.out.println("wheres="+wheres);
 	          
 	        	  columnWhere=iterator.next();
+	        	  
+	        	  /*
 	        	  int k1=1;
 	        	  for(String whereterm:columnWhere){
 	            	  if(k1%2==0){
@@ -449,10 +545,102 @@ public class NewSelectSqlJoin {
 	               k1++;
 	               System.out.println("whereCommand="+whereCommand);
 	              }
+	              */
+	        	  
+	        	  int ii=0;
+	    			boolean aTerm=false; 
+	    			boolean bTerm=false;
+	    			boolean cTerm=false;
+	    			String awhere=null;
+	    			String bwhere=null;
+	    			String cwhere=null;
+	    			
+	    			for(String str : columnWhere){
+	    				
+	    				System.out.println("str="+str);
+
+	    				String REGEX = "del=";
+	    				Pattern pattern=Pattern.compile(REGEX);
+	    				Matcher matcher=pattern.matcher(str);
+	    				if(matcher.find()){
+	    					awhere=" "+str+" ";
+	    					aTerm=true;
+	    					continue;
+	    				}
+	    				
+	    				if(aTerm){
+	    					awhere=awhere+" ? ";
+	    			    	aTerm=false;
+	    			    	continue;
+	    				}
+	    				
+	    				
+	    				String REGEX1 = "region=";
+	    				Pattern pattern1=Pattern.compile(REGEX1);
+	    				Matcher matcher1=pattern1.matcher(str);				
+	    				if(matcher1.find()){
+	    					bwhere=" "+str+" ";
+	    					bTerm=true;
+	    					continue;
+	    				}
+	    				System.out.println("bwhere="+bwhere);
+	    				if(bTerm){
+	    					bwhere=bwhere+" ? ";
+	    			    	bTerm=false;
+	    			    	continue;
+	    				}
+	    				
+	    				String REGEX2 = "weight=";
+	    				Pattern pattern2=Pattern.compile(REGEX2);
+	    				Matcher matcher2=pattern2.matcher(str);				
+	    				if(matcher2.find()){
+	    					cwhere=" "+str+" ";
+	    					cTerm=true;
+	    					continue;
+	    				}
+	    				System.out.println("cwhere="+cwhere);
+	    				if(cTerm){
+	    					cwhere=cwhere+" ? ";
+	    			    	cTerm=false;
+	    			    	continue;
+	    				}
+	    				
+	    			    if(ii%2==0){
+	    			    	whereCommand.append(str);
+	    			    }else{
+	    			    	whereCommand.append(" ? ");
+	    			    	whereCommand.append(" "+Term+" ");
+	    			    }
+	    			    ii++;
+	    			}
+	    			String ss = whereCommand.toString();
+	    			
+	    			String serach = null;
+	    			
+	    			if(ss!=null&&!ss.equals("")){
+	    				serach="("+ss.substring(0,ss.length()-4)+")";
+	    			}
+	    			
+	    			if(serach!=null){
+	    				if((awhere!=null&&bwhere!=null)){
+	    					serach=serach+" and ("+awhere+" and "+bwhere+")";
+	    				}else if(awhere!=null&&bwhere==null){
+	    					serach=serach+" and ("+awhere+")";
+	    				}else if(awhere==null&&bwhere!=null){
+	    					serach=serach+" and ("+bwhere+")";
+	    				}
+	    			}else{
+	    				if((awhere!=null&&bwhere!=null)){
+	    					serach=" ("+awhere+" and "+bwhere+")";
+	    				}else if(awhere!=null&&bwhere==null){
+	    					serach="("+awhere+")";
+	    				}else if(awhere==null&&bwhere!=null){
+	    					serach="("+bwhere+")";
+	    				}
+	    			}
 			 
 	          select=select+   //sqlserver分页需要在top也加上where条件
-	          		 "\n  where "+
-	                    whereCommand.substring(0,whereCommand.length()-7);
+	          		 "\n  where "+serach;
 	          
 	       iterator=wheres.iterator();
 	       
