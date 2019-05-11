@@ -117,9 +117,9 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 			</list>
 		</property>
 	</bean>
-	<aop:config>
-		<aop:advisor advice-ref="druid-stat-interceptor"
-			pointcut-ref="druid-stat-pointcut" />
-	</aop:config>
+	<!--<aop:config>-->
+		<!--<aop:advisor advice-ref="druid-stat-interceptor"-->
+			<!--pointcut-ref="druid-stat-pointcut" />-->
+	<!--</aop:config>-->
 
 </beans>
