@@ -1,10 +1,7 @@
 package com.voucher.manage2.tkmapper;
 
 import org.mybatis.generator.api.MyBatisGenerator;
-import org.mybatis.generator.config.Configuration;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.TableConfiguration;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.XMLParserException;
@@ -20,7 +17,7 @@ public class DoGenerator {
     private static Configuration config;
     private static List<String> warnings;
     private static Context context;
-    private static String[] tableNames = {"table_alias","select"};
+    private static String[] tableNames = {"table_alias", "select"};
 
     static {
         warnings = new ArrayList<>();
@@ -64,6 +61,7 @@ public class DoGenerator {
         tableConfiguration.setDeleteByPrimaryKeyStatementEnabled(false);
         GeneratedKey generatedKey = new GeneratedKey("id", "JDBC", true, null);
         tableConfiguration.setGeneratedKey(generatedKey);
+        tableConfiguration.addIgnoredColumn(new IgnoredColumn("id"));
         context.addTableConfiguration(tableConfiguration);
         //config.addContext(context);
     }

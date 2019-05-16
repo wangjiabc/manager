@@ -4,10 +4,6 @@ import javax.persistence.*;
 
 @Table(name = "[table_alias]")
 public class TableAlias {
-    @Column(name = "[id]")
-    @GeneratedValue(generator = "JDBC")
-    private Integer id;
-
     @Column(name = "[table_name]")
     private String tableName;
 
@@ -23,22 +19,11 @@ public class TableAlias {
     @Column(name = "[del]")
     private Boolean del;
 
-    @Column(name = "[type]")
-    private Byte type;
+    @Column(name = "[row_type]")
+    private Integer rowType;
 
-    /**
-     * @return id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(name = "[room_type]")
+    private Integer roomType;
 
     /**
      * @return table_name
@@ -111,16 +96,30 @@ public class TableAlias {
     }
 
     /**
-     * @return type
+     * @return row_type
      */
-    public Byte getType() {
-        return type;
+    public Integer getRowType() {
+        return rowType;
     }
 
     /**
-     * @param type
+     * @param rowType
      */
-    public void setType(Byte type) {
-        this.type = type;
+    public void setRowType(Integer rowType) {
+        this.rowType = rowType;
+    }
+
+    /**
+     * @return room_type
+     */
+    public Integer getRoomType() {
+        return roomType;
+    }
+
+    /**
+     * @param roomType
+     */
+    public void setRoomType(Integer roomType) {
+        this.roomType = roomType;
     }
 }

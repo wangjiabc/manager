@@ -5,12 +5,12 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="id" jdbcType="INTEGER" property="id" />
     <result column="table_name" jdbcType="VARCHAR" property="tableName" />
     <result column="line_alias" jdbcType="VARCHAR" property="lineAlias" />
     <result column="line_uuid" jdbcType="VARCHAR" property="lineUuid" />
     <result column="date" jdbcType="BIGINT" property="date" />
     <result column="del" jdbcType="BIT" property="del" />
-    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="row_type" jdbcType="INTEGER" property="rowType" />
+    <result column="room_type" jdbcType="INTEGER" property="roomType" />
   </resultMap>
 </mapper>

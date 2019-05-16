@@ -39,7 +39,7 @@ public class RoomConstant {
     //0:无,1:有
     public static final Map<Integer, String> rowTypeMap = new HashMap<Integer, String>() {
         {
-            put(1, " varchar(max) null ");
+            put(1, " varchar(50) null ");
             put(2, " int ");
             put(3, " bigint ");
             put(4, " int ");

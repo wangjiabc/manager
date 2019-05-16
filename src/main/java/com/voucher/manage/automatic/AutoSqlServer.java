@@ -23,8 +23,8 @@ class DBUtils {
         InputStream in = loader.getResourceAsStream("jdbc.properties");
         try {
             prop.load(in);
-            Class.forName(prop.getProperty("driverClassName"));
-            url = prop.getProperty("url");
+            Class.forName(prop.getProperty("sql_driverClassName"));
+            url = prop.getProperty("sql_url");
             dataBase = url.substring(url.lastIndexOf("/") + 1);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -33,7 +33,7 @@ class DBUtils {
     }
 
     public static Connection getConnection(String url) throws Exception {
-        return DriverManager.getConnection(url, prop.getProperty("username"), prop.getProperty("password"));
+        return DriverManager.getConnection(url, prop.getProperty("sql_username"), prop.getProperty("sql_password"));
     }
 
     public static void close(Connection conn) {
@@ -307,7 +307,7 @@ public class AutoSqlServer {
     }
 
     private String packageName = "package com.voucher.manage.daoModel;\n\n";
-    static String tabNameOne = "Users";
+    static String tabNameOne = "table_alias";
 
     public static void main(String[] args) {
         doOneTab(tabNameOne);

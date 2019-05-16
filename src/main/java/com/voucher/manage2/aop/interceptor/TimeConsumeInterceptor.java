@@ -1,6 +1,6 @@
-package com.voucher.manage2.aop;
+package com.voucher.manage2.aop.interceptor;
 
-import com.voucher.manage2.aop.annotation.TimeConsume;
+import com.voucher.manage2.aop.interceptor.annotation.TimeConsume;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class TimeConsumeInterceptor {
-    @Around("within(com..*) && @annotation(timeConsume)")
+    //@Around("within(com..*) && @annotation(timeConsume)")
+    @Around("@annotation(timeConsume)")
     public Object doAroundMethod(ProceedingJoinPoint pjd, TimeConsume timeConsume) throws Throwable {
         long startTime = System.currentTimeMillis();//开始时间
 

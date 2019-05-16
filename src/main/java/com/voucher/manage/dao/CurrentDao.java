@@ -33,4 +33,6 @@ public interface CurrentDao {
     Integer addField(String tableName, String fieldName, Integer type, Map<Integer,String> selectValue);
 
     Integer updateSelect(List<Select> selects);
+
+    Integer updateTextLength(String item_room, String line_uuid, Integer text_length);
 }
