@@ -5,7 +5,6 @@ import com.voucher.manage.daoModel.Room;
 import com.voucher.manage.tools.ObjectUtils;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
-import com.voucher.manage2.msg.Message;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +56,7 @@ public class RoomController {
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
-        Map map = null;
-        map = currentDao.selectTable(room);
-        return map;
+        return currentDao.selectTable(room);
     }
 
     @RequestMapping("updateFieldName")

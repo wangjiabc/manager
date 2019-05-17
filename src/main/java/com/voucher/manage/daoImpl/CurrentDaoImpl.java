@@ -140,7 +140,6 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             String tableName2 = "[item_" + tableName.substring(1);
 
             createTable(tableName2);
-
         }
         //表格数据
         List<Map> list = this.getJdbcTemplate().query(sql, params.toArray(), new RowMappersTableJoin(getJdbcTemplate(), className, tableName));
