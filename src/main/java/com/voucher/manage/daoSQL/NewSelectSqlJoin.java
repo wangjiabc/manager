@@ -236,17 +236,29 @@ public class NewSelectSqlJoin {
                r++;
               }
 		  */
+<<<<<<< HEAD
            
   			int ii=0;
   			boolean aTerm=false; 
+=======
+
+  			int ii=0;
+  			boolean aTerm=false;
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
   			boolean bTerm=false;
   			boolean cTerm=false;
   			String awhere=null;
   			String bwhere=null;
   			String cwhere=null;
+<<<<<<< HEAD
   			
   			for(String str : columnWhere){
   				
+=======
+
+  			for(String str : columnWhere){
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
   				System.out.println("str="+str);
 
   				String REGEX = "del=";
@@ -257,17 +269,29 @@ public class NewSelectSqlJoin {
   					aTerm=true;
   					continue;
   				}
+<<<<<<< HEAD
   				
+=======
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
   				if(aTerm){
   					awhere=awhere+" ? ";
   			    	aTerm=false;
   			    	continue;
   				}
+<<<<<<< HEAD
   				
   				
   				String REGEX1 = "region=";
   				Pattern pattern1=Pattern.compile(REGEX1);
   				Matcher matcher1=pattern1.matcher(str);				
+=======
+
+
+  				String REGEX1 = "region=";
+  				Pattern pattern1=Pattern.compile(REGEX1);
+  				Matcher matcher1=pattern1.matcher(str);
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
   				if(matcher1.find()){
   					bwhere=" "+str+" ";
   					bTerm=true;
@@ -279,10 +303,17 @@ public class NewSelectSqlJoin {
   			    	bTerm=false;
   			    	continue;
   				}
+<<<<<<< HEAD
   				
   				String REGEX2 = "weight=";
   				Pattern pattern2=Pattern.compile(REGEX2);
   				Matcher matcher2=pattern2.matcher(str);				
+=======
+
+  				String REGEX2 = "weight=";
+  				Pattern pattern2=Pattern.compile(REGEX2);
+  				Matcher matcher2=pattern2.matcher(str);
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
   				if(matcher2.find()){
   					cwhere=" "+str+" ";
   					cTerm=true;
@@ -294,7 +325,11 @@ public class NewSelectSqlJoin {
   			    	cTerm=false;
   			    	continue;
   				}
+<<<<<<< HEAD
   				
+=======
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
   			    if(ii%2==0){
   			    	whereCommand.append(str);
   			    }else{
@@ -304,6 +339,7 @@ public class NewSelectSqlJoin {
   			    ii++;
   			}
   			String ss = whereCommand.toString();
+<<<<<<< HEAD
   			
   			String serach = null;
   			
@@ -311,6 +347,15 @@ public class NewSelectSqlJoin {
   				serach="("+ss.substring(0,ss.length()-4)+")";
   			}
   			
+=======
+
+  			String serach = null;
+
+  			if(ss!=null&&!ss.equals("")){
+  				serach="("+ss.substring(0,ss.length()-4)+")";
+  			}
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
   			if(serach!=null){
   				if((awhere!=null&&bwhere!=null)){
   					serach=serach+" and ("+awhere+" and "+bwhere+")";
@@ -530,7 +575,11 @@ public class NewSelectSqlJoin {
 	          System.out.println("wheres="+wheres);
 	          
 	        	  columnWhere=iterator.next();
+<<<<<<< HEAD
 	        	  
+=======
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	        	  /*
 	        	  int k1=1;
 	        	  for(String whereterm:columnWhere){
@@ -546,17 +595,29 @@ public class NewSelectSqlJoin {
 	               System.out.println("whereCommand="+whereCommand);
 	              }
 	              */
+<<<<<<< HEAD
 	        	  
 	        	  int ii=0;
 	    			boolean aTerm=false; 
+=======
+
+	        	  int ii=0;
+	    			boolean aTerm=false;
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	    			boolean bTerm=false;
 	    			boolean cTerm=false;
 	    			String awhere=null;
 	    			String bwhere=null;
 	    			String cwhere=null;
+<<<<<<< HEAD
 	    			
 	    			for(String str : columnWhere){
 	    				
+=======
+
+	    			for(String str : columnWhere){
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	    				System.out.println("str="+str);
 
 	    				String REGEX = "del=";
@@ -567,17 +628,29 @@ public class NewSelectSqlJoin {
 	    					aTerm=true;
 	    					continue;
 	    				}
+<<<<<<< HEAD
 	    				
+=======
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	    				if(aTerm){
 	    					awhere=awhere+" ? ";
 	    			    	aTerm=false;
 	    			    	continue;
 	    				}
+<<<<<<< HEAD
 	    				
 	    				
 	    				String REGEX1 = "region=";
 	    				Pattern pattern1=Pattern.compile(REGEX1);
 	    				Matcher matcher1=pattern1.matcher(str);				
+=======
+
+
+	    				String REGEX1 = "region=";
+	    				Pattern pattern1=Pattern.compile(REGEX1);
+	    				Matcher matcher1=pattern1.matcher(str);
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	    				if(matcher1.find()){
 	    					bwhere=" "+str+" ";
 	    					bTerm=true;
@@ -589,10 +662,17 @@ public class NewSelectSqlJoin {
 	    			    	bTerm=false;
 	    			    	continue;
 	    				}
+<<<<<<< HEAD
 	    				
 	    				String REGEX2 = "weight=";
 	    				Pattern pattern2=Pattern.compile(REGEX2);
 	    				Matcher matcher2=pattern2.matcher(str);				
+=======
+
+	    				String REGEX2 = "weight=";
+	    				Pattern pattern2=Pattern.compile(REGEX2);
+	    				Matcher matcher2=pattern2.matcher(str);
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	    				if(matcher2.find()){
 	    					cwhere=" "+str+" ";
 	    					cTerm=true;
@@ -604,7 +684,11 @@ public class NewSelectSqlJoin {
 	    			    	cTerm=false;
 	    			    	continue;
 	    				}
+<<<<<<< HEAD
 	    				
+=======
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	    			    if(ii%2==0){
 	    			    	whereCommand.append(str);
 	    			    }else{
@@ -614,6 +698,7 @@ public class NewSelectSqlJoin {
 	    			    ii++;
 	    			}
 	    			String ss = whereCommand.toString();
+<<<<<<< HEAD
 	    			
 	    			String serach = null;
 	    			
@@ -621,6 +706,15 @@ public class NewSelectSqlJoin {
 	    				serach="("+ss.substring(0,ss.length()-4)+")";
 	    			}
 	    			
+=======
+
+	    			String serach = null;
+
+	    			if(ss!=null&&!ss.equals("")){
+	    				serach="("+ss.substring(0,ss.length()-4)+")";
+	    			}
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	    			if(serach!=null){
 	    				if((awhere!=null&&bwhere!=null)){
 	    					serach=serach+" and ("+awhere+" and "+bwhere+")";
@@ -638,7 +732,11 @@ public class NewSelectSqlJoin {
 	    					serach="("+bwhere+")";
 	    				}
 	    			}
+<<<<<<< HEAD
 			 
+=======
+
+>>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
 	          select=select+   //sqlserver分页需要在top也加上where条件
 	          		 "\n  where "+serach;
 	          

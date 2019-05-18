@@ -4,11 +4,6 @@ import javax.persistence.*;
 
 @Table(name = "[select]")
 public class Select {
-    @Id
-    @Column(name = "[id]")
-    @GeneratedValue(generator = "JDBC")
-    private Integer id;
-
     @Column(name = "[line_uuid]")
     private String lineUuid;
 
@@ -17,20 +12,6 @@ public class Select {
 
     @Column(name = "[value]")
     private Integer value;
-
-    /**
-     * @return id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     /**
      * @return line_uuid

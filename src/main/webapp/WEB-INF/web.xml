@@ -9,6 +9,22 @@
         <param-value>classpath:spring.xml,classpath:spring-mybatis.xml</param-value>
     </context-param>
 
+    <!-- 启多个项目时需要不同的 webAppRootKey-->
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>webapp.root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>log4jRefreshInterval</param-name>
+        <param-value>3000</param-value>
+    </context-param>
+    <listener>
+        <listener-class>
+            org.springframework.web.util.Log4jConfigListener
+        </listener-class>
+    </listener>
+
+
     <filter>
         <description>字符集过滤器</description>
         <filter-name>encodingFilter</filter-name>
@@ -84,27 +100,27 @@
 
     <!-- 对管理员后台页面的文件栏截 -->
     <!--<filter>-->
-        <!--<filter-name>SessionFilter</filter-name>-->
-        <!--<filter-class>com.voucher.manage.filter.IsLoginFilter</filter-class>-->
-        <!--<init-param>-->
-            <!--<param-name>loginStrings</param-name>&lt;!&ndash; 对登录页面不进行过滤 &ndash;&gt;-->
-            <!--<param-value>-->
-                <!--/login.html;/seller;/newmsg;/register;version.html;/mobile;/oauth;/wechat;/room;/safety;/guidance;/baiduMap;/baidumap-->
-            <!--</param-value>-->
-        <!--</init-param>-->
-        <!--<init-param>-->
-            <!--<param-name>includeStrings</param-name>&lt;!&ndash; 只对指定过滤参数后缀进行过滤 &ndash;&gt;-->
-            <!--<param-value>.html;.jsp;.do</param-value>-->
-        <!--</init-param>-->
-        <!--<init-param>-->
-            <!--<param-name>redirectPath</param-name>&lt;!&ndash; 未通过跳转到登录界面 &ndash;&gt;-->
-            <!--<param-value>/login.html</param-value>-->
-        <!--</init-param>-->
+    <!--<filter-name>SessionFilter</filter-name>-->
+    <!--<filter-class>com.voucher.manage.filter.IsLoginFilter</filter-class>-->
+    <!--<init-param>-->
+    <!--<param-name>loginStrings</param-name>&lt;!&ndash; 对登录页面不进行过滤 &ndash;&gt;-->
+    <!--<param-value>-->
+    <!--/login.html;/seller;/newmsg;/register;version.html;/mobile;/oauth;/wechat;/room;/safety;/guidance;/baiduMap;/baidumap-->
+    <!--</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+    <!--<param-name>includeStrings</param-name>&lt;!&ndash; 只对指定过滤参数后缀进行过滤 &ndash;&gt;-->
+    <!--<param-value>.html;.jsp;.do</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+    <!--<param-name>redirectPath</param-name>&lt;!&ndash; 未通过跳转到登录界面 &ndash;&gt;-->
+    <!--<param-value>/login.html</param-value>-->
+    <!--</init-param>-->
     <!--</filter>-->
 
     <!--<filter-mapping>-->
-        <!--<filter-name>SessionFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
+    <!--<filter-name>SessionFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
     <!--</filter-mapping>-->
 
     <!-- 对普通员工栏截 -->
