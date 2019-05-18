@@ -11,5 +11,5 @@ public interface AssetsDAO {
 			String order,Map search);
 
 	public List getRoom(Room room);
-	
+
 }

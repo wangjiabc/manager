@@ -5,21 +5,38 @@ import java.util.*;
 
 public class ObjectUtils extends org.springframework.util.ObjectUtils {
 
-    public static boolean isEmpty(Object obj) {
-        if (obj == null) {
-            return true;
-        } else if (obj.getClass().isArray()) {
-            return Array.getLength(obj) == 0;
-        } else if (obj instanceof CharSequence) {
-            return ((CharSequence) obj).length() == 0;
-        } else if (obj instanceof Collection) {
-            return ((Collection) obj).isEmpty();
-        } else if (obj instanceof Map) {
-            return ((Map) obj).isEmpty();
-        } else {
-            String s = obj.toString();
-            return "null".equals(s) || "".equals(s);
-        }
 
+    /**
+     * @Author lz
+     * @Description: 只要有一个为enmpty
+     * @param: [objs]
+     * @return: {boolean}
+     * @Date: 2019/5/13 11:25
+     **/
+    public static boolean isEmpty(Object... objs) {
+        boolean isEmpty = false;
+        for (Object o : objs) {
+            if (o == null) {
+                isEmpty = true;
+            } else if (o.getClass().isArray()) {
+                isEmpty = Array.getLength(o) == 0;
+            } else if (o instanceof CharSequence) {
+                isEmpty = ((CharSequence) o).length() == 0;
+            } else if (o instanceof Collection) {
+                isEmpty = ((Collection) o).isEmpty();
+            } else if (o instanceof Map) {
+                isEmpty = ((Map) o).isEmpty();
+            } else {
+                String s = o.toString();
+                isEmpty = "null".equals(s) || "".equals(s);
+            }
+            if (isEmpty)
+                return isEmpty;
+        }
+        return isEmpty;
+    }
+
+    public static boolean isNotEmpty(Object... objs) {
+        return !isEmpty(objs);
     }
 }

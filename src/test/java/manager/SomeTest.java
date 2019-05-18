@@ -10,9 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SomeTest {
     @Test
-    public void someTest(){
-        System.out.println(IdUtil.simpleUUID());
+    public void someTest() throws Exception {
+        try {
+            int i = 1 / 0;
+        } catch (Exception e) {
+            throw new Exception("错误");
+        }
     }
+
     @Test
     public void test2() {
         ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<>();

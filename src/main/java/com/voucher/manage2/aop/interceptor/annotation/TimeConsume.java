@@ -1,4 +1,4 @@
-package com.voucher.manage2.aop.annotation;
+package com.voucher.manage2.aop.interceptor.annotation;
 
 import java.lang.annotation.*;
 

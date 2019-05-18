@@ -1,15 +1,13 @@
 package com.voucher.manage2.controller;
 
-import cn.hutool.core.date.DateUtil;
-import com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage.tools.ObjectUtils;
+import com.voucher.manage2.constant.ResultConstant;
+import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
-import com.voucher.sqlserver.context.Connect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,30 +27,16 @@ public class RoomController {
     private CurrentDao currentDao;
 
     @RequestMapping("getList")
-    public Object getList() {
+    public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
+
         Room room = new Room();
         Integer limit = 10;
         room.setLimit(limit);
         room.setOffset(0);
         room.setNotIn("id");
-       /* Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
-        String searchContent = query.get("searchContent").toString();
-        String state = query.get("state").toString();
-        String neaten_flow = query.get("neaten_flow").toString();
-        //String[] where = {"state = ", state, "neaten_flow = ", neaten_flow, "address like ", "%" + searchContent + "%"};
-        */List<String> searchList = new ArrayList<>();
-        /*if (!ObjectUtils.isEmpty(searchContent)) {
-            searchList.add("address like");
-            searchList.add("%" + searchContent + "%");
-        }
-        if (!ObjectUtils.isEmpty(state)) {
-            searchList.add("state =");
-            searchList.add(state);
-        }
-        if (!ObjectUtils.isEmpty(neaten_flow)) {
-            searchList.add("neaten_flow =");
-            searchList.add(neaten_flow);
-        }*/
+
+        List<String> searchList = new ArrayList<>();
+
         searchList.add("address like");
         searchList.add("%a%");
         searchList.add("num like");
@@ -64,6 +48,7 @@ public class RoomController {
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
+
         Map map = null;
         try {
             map = currentDao.selectTable(room);
@@ -71,6 +56,7 @@ public class RoomController {
             e.printStackTrace();
         }
         return map;
+
     }
 
     @RequestMapping("updateFieldName")
@@ -106,7 +92,7 @@ public class RoomController {
         Integer type = MapUtils.getInteger("type", jsonMap);
         //Map<String, String> selects = (Map<String, String>) jsonMap.get("domains");
         List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
-        if (domains != null) {
+        if (ObjectUtils.isNotEmpty(domains)) {
             selects = new HashMap<>();
             int i = 1;
             for (LinkedHashMap<String, Object> domain : domains) {
@@ -118,14 +104,12 @@ public class RoomController {
     }
 
     @RequestMapping("delField")
-    public Integer delField(String line_uuid) {
-        //lineUUID = "item_a91c9d5ef10061a004fc1d7a08f27a80";
-        //失败返回0
+    public Integer delField(String line_uuid) throws BaseException {
         return currentDao.alterTable(false, "item_room", null, line_uuid);
     }
 
     @RequestMapping("recycleField")
-    public Integer recycleField(String line_uuid) {
+    public Integer recycleField(String line_uuid) throws BaseException {
         return currentDao.recycleField(line_uuid);
     }
 
@@ -138,13 +122,33 @@ public class RoomController {
     public Integer updateSelect(@RequestBody Map<String, Object> jsonMap) {
         //return currentDao.updateSelect();
         System.out.println(jsonMap);
+        Map<String, String> domains = (Map<String, String>) jsonMap.get("domains");
+        String line_uuid = MapUtils.getString("line_uuid", jsonMap);
+        if (ObjectUtils.isEmpty(domains, line_uuid))
+            return ResultConstant.FAILD;
         List<Select> selects = new ArrayList<>();
-        currentDao.updateSelect(selects);
-        return null;
+        for (Map.Entry<String, String> entry : domains.entrySet()) {
+            Select select = new Select();
+            select.setLineUuid(line_uuid);
+            select.setValue(Integer.valueOf(entry.getKey()));
+            select.setName(entry.getValue());
+            selects.add(select);
+        }
+        return currentDao.updateSelect(selects);
+    }
+
+    @RequestMapping("updateTextLength")
+    public Integer updateTextLength(@RequestBody Map<String, Object> jsonMap) {
+        String line_uuid = MapUtils.getString("line_uuid", jsonMap);
+        Integer text_length = MapUtils.getInteger("text_length", jsonMap);
+        if (ObjectUtils.isEmpty(line_uuid, text_length))
+            return ResultConstant.FAILD;
+        return currentDao.updateTextLength("item_room", line_uuid, text_length);
     }
 
     @RequestMapping("test")
     public void test() {
+
         //currentDao.addField("item_room", "aa" + DateUtil.now(), 1, null);
     }
 }

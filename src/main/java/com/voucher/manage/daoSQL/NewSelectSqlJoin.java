@@ -236,9 +236,9 @@ public class NewSelectSqlJoin {
                r++;
               }
 		  */
-           
+
   			int ii=0;
-  			boolean aTerm=false; 
+  			boolean aTerm=false;
   			boolean bTerm=false;
   			boolean cTerm=false;
   			String awhere=null;
@@ -257,7 +257,7 @@ public class NewSelectSqlJoin {
   					aTerm=true;
   					continue;
   				}
-  				
+
   				if(aTerm){
   					awhere=awhere+" ? ";
   			    	aTerm=false;
@@ -267,7 +267,8 @@ public class NewSelectSqlJoin {
   				
   				String REGEX1 = "region=";
   				Pattern pattern1=Pattern.compile(REGEX1);
-  				Matcher matcher1=pattern1.matcher(str);				
+  				Matcher matcher1=pattern1.matcher(str);
+
   				if(matcher1.find()){
   					bwhere=" "+str+" ";
   					bTerm=true;
@@ -279,10 +280,11 @@ public class NewSelectSqlJoin {
   			    	bTerm=false;
   			    	continue;
   				}
-  				
+
+
   				String REGEX2 = "weight=";
   				Pattern pattern2=Pattern.compile(REGEX2);
-  				Matcher matcher2=pattern2.matcher(str);				
+  				Matcher matcher2=pattern2.matcher(str);
   				if(matcher2.find()){
   					cwhere=" "+str+" ";
   					cTerm=true;
@@ -294,7 +296,7 @@ public class NewSelectSqlJoin {
   			    	cTerm=false;
   			    	continue;
   				}
-  				
+
   			    if(ii%2==0){
   			    	whereCommand.append(str);
   			    }else{
@@ -530,7 +532,7 @@ public class NewSelectSqlJoin {
 	          System.out.println("wheres="+wheres);
 	          
 	        	  columnWhere=iterator.next();
-	        	  
+
 	        	  /*
 	        	  int k1=1;
 	        	  for(String whereterm:columnWhere){
@@ -546,17 +548,17 @@ public class NewSelectSqlJoin {
 	               System.out.println("whereCommand="+whereCommand);
 	              }
 	              */
-	        	  
+
 	        	  int ii=0;
-	    			boolean aTerm=false; 
+	    			boolean aTerm=false;
 	    			boolean bTerm=false;
 	    			boolean cTerm=false;
 	    			String awhere=null;
 	    			String bwhere=null;
 	    			String cwhere=null;
-	    			
+
 	    			for(String str : columnWhere){
-	    				
+
 	    				System.out.println("str="+str);
 
 	    				String REGEX = "del=";
@@ -567,14 +569,13 @@ public class NewSelectSqlJoin {
 	    					aTerm=true;
 	    					continue;
 	    				}
-	    				
+
 	    				if(aTerm){
 	    					awhere=awhere+" ? ";
 	    			    	aTerm=false;
 	    			    	continue;
 	    				}
-	    				
-	    				
+			
 	    				String REGEX1 = "region=";
 	    				Pattern pattern1=Pattern.compile(REGEX1);
 	    				Matcher matcher1=pattern1.matcher(str);				
@@ -589,7 +590,7 @@ public class NewSelectSqlJoin {
 	    			    	bTerm=false;
 	    			    	continue;
 	    				}
-	    				
+  				
 	    				String REGEX2 = "weight=";
 	    				Pattern pattern2=Pattern.compile(REGEX2);
 	    				Matcher matcher2=pattern2.matcher(str);				
@@ -604,7 +605,7 @@ public class NewSelectSqlJoin {
 	    			    	cTerm=false;
 	    			    	continue;
 	    				}
-	    				
+
 	    			    if(ii%2==0){
 	    			    	whereCommand.append(str);
 	    			    }else{
@@ -614,13 +615,13 @@ public class NewSelectSqlJoin {
 	    			    ii++;
 	    			}
 	    			String ss = whereCommand.toString();
-	    			
+
 	    			String serach = null;
-	    			
+
 	    			if(ss!=null&&!ss.equals("")){
 	    				serach="("+ss.substring(0,ss.length()-4)+")";
 	    			}
-	    			
+
 	    			if(serach!=null){
 	    				if((awhere!=null&&bwhere!=null)){
 	    					serach=serach+" and ("+awhere+" and "+bwhere+")";
@@ -638,7 +639,7 @@ public class NewSelectSqlJoin {
 	    					serach="("+bwhere+")";
 	    				}
 	    			}
-			 
+
 	          select=select+   //sqlserver分页需要在top也加上where条件
 	          		 "\n  where "+serach;
 	          
