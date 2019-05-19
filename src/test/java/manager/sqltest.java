@@ -66,7 +66,7 @@ public class sqltest {
 		
 		//currentDao.insertTable(test, jsonArray.toJSONString());
 		
-		Map map=currentDao.selectTable(test);
+		Map map=currentDao.selectTable(test,"guid");
 		
 		List rows=(List) map.get("rows");
 		

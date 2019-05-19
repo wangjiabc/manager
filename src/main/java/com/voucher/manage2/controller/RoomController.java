@@ -7,7 +7,10 @@ import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
+import com.voucher.sqlserver.context.Connect;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,69 +22,38 @@ import java.util.*;
 @RequestMapping("/room")
 public class RoomController {
 
-    //private ApplicationContext applicationContext = new Connect().get();
-    //
-    //private CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
+    private ApplicationContext applicationContext = new Connect().get();
 
-    @Autowired
-    private CurrentDao currentDao;
+    private CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
+
 
     @RequestMapping("getList")
-<<<<<<< HEAD
-    public Object getList() {
-=======
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
->>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
         Room room = new Room();
-        Integer limit = 10;
+        Integer limit = MapUtils.getInteger("limit", jsonMap);
         room.setLimit(limit);
-        room.setOffset(0);
+        room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
-       /* Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
-        String searchContent = query.get("searchContent").toString();
-        String state = query.get("state").toString();
-        String neaten_flow = query.get("neaten_flow").toString();
-        //String[] where = {"state = ", state, "neaten_flow = ", neaten_flow, "address like ", "%" + searchContent + "%"};
-<<<<<<< HEAD
-        */List<String> searchList = new ArrayList<>();
-        /*if (!ObjectUtils.isEmpty(searchContent)) {
-=======
+
         List<String> searchList = new ArrayList<>();
-        if (ObjectUtils.isNotEmpty(searchContent)) {
->>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
-            searchList.add("address like");
-            searchList.add("%" + searchContent + "%");
+               
+        if (!searchList.isEmpty()) {
+            String[] where = new String[searchList.size()];
+            room.setWhere(searchList.toArray(where));
         }
-        if (ObjectUtils.isNotEmpty(state)) {
-            searchList.add("state =");
-            searchList.add(state);
-        }
-        if (ObjectUtils.isNotEmpty(neaten_flow)) {
-            searchList.add("neaten_flow =");
-            searchList.add(neaten_flow);
-        }*/
-        searchList.add("address like");
-        searchList.add("%a%");
-        searchList.add("num like");
-        searchList.add("%c%");
-        searchList.add("item_e2c9d7ec9f3af999925c0ce56831801c like");
-        searchList.add("%2%");
+
         searchList.add("del=");
-        searchList.add("false");
-        String[] where = new String[searchList.size()];
-        room.setWhere(searchList.toArray(where));
+        searchList.add("0");
+        
         room.setWhereTerm("or");
-<<<<<<< HEAD
         Map map = null;
         try {
-            map = currentDao.selectTable(room);
+            map = currentDao.selectTable(room,"guid");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return map;
-=======
-        return currentDao.selectTable(room);
->>>>>>> 8d34055006c67eea3d6b16dedb4c4e6ad7d76012
+
     }
 
     @RequestMapping("updateFieldName")
@@ -130,7 +102,7 @@ public class RoomController {
 
     @RequestMapping("delField")
     public Integer delField(String line_uuid) throws BaseException {
-        return currentDao.alterTable(false, "item_room", null, line_uuid);
+        return currentDao.alterTable(false, "item_room","guid", null, line_uuid);
     }
 
     @RequestMapping("recycleField")

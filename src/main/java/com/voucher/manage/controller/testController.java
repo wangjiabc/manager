@@ -76,7 +76,7 @@ public class testController {
     public @ResponseBody
     Integer insert() throws Exception {
 
-        currentDao.alterTable(true, "test", "bbb", "");
+        currentDao.alterTable(true, "test","guid", "bbb", "");
 
         return 1;
 
@@ -118,7 +118,7 @@ public class testController {
         Map map = null;
         try {
             long start = System.currentTimeMillis();
-            map = currentDao.selectTable(room);
+            map = currentDao.selectTable(room,"guid");
             long end = System.currentTimeMillis();
             System.out.println("耗时++++++++++++++++" + (end - start));
         } catch (ClassNotFoundException e) {

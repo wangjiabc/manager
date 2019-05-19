@@ -14,6 +14,7 @@ public class TimeConsumeInterceptor {
     public Object doAroundMethod(ProceedingJoinPoint pjd, TimeConsume timeConsume) throws Throwable {
         long startTime = System.currentTimeMillis();//开始时间
 
+        
         Object[] params = pjd.getArgs();//获取请求参数
         System.out.println("监听到传入参数为:");
         for (Object param : params) {

@@ -310,8 +310,9 @@ public class AutoSqlServer {
     static String tabNameOne = "table_alias";
 
     public static void main(String[] args) {
-        doOneTab(tabNameOne);
-        //doAllTab();
+        //doOneTab(tabNameOne);
+        doAllTab();
+        System.out.println(filePath);
     }
 
     private static void doOneTab(String tabNameOne) {
