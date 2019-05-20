@@ -1,21 +1,23 @@
 package manager;
 
 import cn.hutool.core.util.IdUtil;
+import com.voucher.manage2.utils.MapUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SomeTest {
     @Test
     public void someTest() throws Exception {
-        try {
-            int i = 1 / 0;
-        } catch (Exception e) {
-            throw new Exception("错误");
-        }
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(1, 66);
+        map.put(2, 66);
+        map.put(3, 66);
+        Integer integer = MapUtils.get(1, map);
     }
 
     @Test

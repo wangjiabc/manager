@@ -1,7 +1,5 @@
 package com.voucher.manage2.utils;
 
-import com.voucher.manage.tools.ObjectUtils;
-
 import java.util.Map;
 
 /**
@@ -15,6 +13,12 @@ public final class MapUtils {
         if (ObjectUtils.isEmpty(map))
             return null;
         return map.get(key);
+    }
+
+    public static final <K, V> V get(K key, Map<K, V> map) {
+        Object object = getObject(key, map);
+        V v = object == null ? null : (V) object;
+        return v;
     }
 
     public static final <K, V> String getString(K key, Map<K, V> map) {

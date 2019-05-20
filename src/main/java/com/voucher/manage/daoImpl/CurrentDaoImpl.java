@@ -10,7 +10,7 @@ import com.voucher.manage.daoSQL.*;
 import com.voucher.manage.daoSQL.annotations.DBTable;
 import com.voucher.manage.tools.Md5;
 import com.voucher.manage.tools.MyTestUtil;
-import com.voucher.manage.tools.ObjectUtils;
+import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.aop.interceptor.annotation.TimeConsume;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.constant.RoomConstant;

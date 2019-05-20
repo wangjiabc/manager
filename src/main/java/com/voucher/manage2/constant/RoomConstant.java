@@ -36,7 +36,6 @@ public class RoomConstant {
             put("1", "有");
         }
     };
-    //0:无,1:有
     public static final Map<Integer, String> rowTypeMap = new HashMap<Integer, String>() {
         {
             put(1, " varchar(50) null ");
