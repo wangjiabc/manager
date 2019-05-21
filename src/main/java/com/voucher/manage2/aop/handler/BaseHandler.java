@@ -4,6 +4,7 @@ import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.msg.ErrorMessageBean;
 import com.voucher.manage2.msg.Message;
 import com.voucher.manage2.msg.MessageBean;
+import lombok.extern.java.Log;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -22,7 +23,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  */
 @ControllerAdvice
 public class BaseHandler implements ResponseBodyAdvice<Object> {
-
 
     /**
      * 处理所有不可知异常
@@ -61,8 +61,9 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         //body是返回值
         //HttpServletRequest req = ((ServletServerHttpRequest) request).getServletRequest();
         Class<?> parameterType = returnType.getParameterType();
-        if (parameterType.getName().equals("com.voucher.manage2.msg.ErrorMessageBean"))
+        if ("com.voucher.manage2.msg.ErrorMessageBean".equals(parameterType.getName())) {
             return body;
+        }
         //parameterType.
         System.out.println("++++++++++" + parameterType);
         //if (returnType.getParameterType() instanceof ErrorMessageBean)

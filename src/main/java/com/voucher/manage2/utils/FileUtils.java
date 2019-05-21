@@ -1,8 +1,8 @@
 package com.voucher.manage2.utils;
 
+import com.google.common.collect.Lists;
 import com.voucher.manage2.constant.FileConstant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,32 +11,46 @@ import java.util.List;
  * @date 2019/5/20
  */
 public class FileUtils {
-    private static List<String> IMAGE_TYPE = new ArrayList<String>() {
-        {
-            add("jpg");
-            add("bmp");
-            add("png");
-            add("gif");
-            add("jpeg");
-        }
-    };
+    private static List<String> IMAGE_TYPE = Lists.newArrayList("jpg", "bmp", "png", "jpeg");
 
-    public static boolean isImage(String typeName) {
-        return IMAGE_TYPE.contains(typeName.toLowerCase());
+    public static boolean isImage(String suffixName) {
+        return IMAGE_TYPE.contains(suffixName);
     }
 
-    public Integer getFileType(String typeName) {
-        String lowerName = typeName.toLowerCase();
-        if (ObjectUtils.isEmpty(typeName))
+    public static Integer getFileType(String suffixName) {
+        String lowerName = suffixName.toLowerCase();
+        if (ObjectUtils.isEmpty(suffixName)) {
             return -1;
-        if (isImage(typeName)) {
+        }
+        if (isImage(lowerName)) {
             return FileConstant.IMAGE.type;
         }
-        FileConstant[] values = FileConstant.values();
-        for (FileConstant value : values) {
-            if (value.name.equals(typeName.toLowerCase()))
-                return value.type;
+        if (isExcel(lowerName)) {
+            return FileConstant.EXCEL.type;
         }
-        return -1;
+        if (isWord(lowerName)) {
+            return FileConstant.WORD.type;
+        }
+        if (isPdf(lowerName)) {
+            return FileConstant.PDF.type;
+        }
+
+        return FileConstant.OTHER.type;
+    }
+
+    private static boolean isExcel(String suffixName) {
+        return Lists.newArrayList("xls", "xlxs").contains(suffixName);
+    }
+
+    private static boolean isWord(String suffixName) {
+        return Lists.newArrayList("docx", "doc").contains(suffixName);
+    }
+
+    private static boolean isPdf(String suffixName) {
+        return Lists.newArrayList("pdf").contains(suffixName);
+    }
+
+    public static String getFileTypeName(Integer type) {
+        return FileConstant.FILE_TYPE_MAP.get(type);
     }
 }

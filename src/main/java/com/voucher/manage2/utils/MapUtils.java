@@ -10,8 +10,9 @@ import java.util.Map;
 public final class MapUtils {
 
     public static final <K, V> Object getObject(K key, Map<K, V> map) {
-        if (ObjectUtils.isEmpty(map))
+        if (ObjectUtils.isEmpty(map)) {
             return null;
+        }
         return map.get(key);
     }
 

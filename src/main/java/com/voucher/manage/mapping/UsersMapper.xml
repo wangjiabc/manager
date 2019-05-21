@@ -40,7 +40,7 @@
 		language,province,groupid,country,
 		city,sex,remark,
 		subscribe_time,
-		usersinfo.name,users.place,	
+		usersinfo.name,users.place,
 		usersinfo.headship,usersinfo.email,	
 		address ,phone
 		from users
@@ -62,7 +62,7 @@
 		language,province,groupid,country,
 		city,sex,remark,
 		subscribe_time,
-		usersinfo.name,users.place,	
+		usersinfo.name,users.place,
 		usersinfo.headship,usersinfo.email,	
 		address ,phone,
 		user_asset.charter, user_asset.IDNo,user_asset.hire_phone
@@ -513,7 +513,7 @@
 		language,province,groupid,country,
 		city,sex,remark,
 		subscribe_time,
-		usersinfo.name,users.place,	
+		usersinfo.name,users.place,
 		usersinfo.headship,usersinfo.email,	
 		address ,phone,
 		user_asset.charter, user_asset.IDNo,user_asset.hire_phone

@@ -86,8 +86,9 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             table_alias.setWhere(where);
 
             List<Table_alias> list = SelectExe.get(this.getJdbcTemplate(), table_alias);
-            if (ObjectUtils.isEmpty(list))
+            if (ObjectUtils.isEmpty(list)) {
                 return ResultConstant.FAILD;
+            }
             Table_alias table_alias2 = list.get(0);
 
             sql = "alter table " + tableName + " drop column " + table_alias2.getLine_uuid();
@@ -171,8 +172,9 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         Map<String, Map<Integer, String>> domains = new HashMap<>();
         for (Select select : selects) {
             Map<Integer, String> map = domains.get(select.getLineUuid());
-            if (map == null)
+            if (map == null) {
                 domains.put(select.getLineUuid(), map = new HashMap<>());
+            }
             map.put(select.getValue(), select.getName());
         }
         List<Map<String, Object>> dynLineInfoList = tableAliasMapper.getDynLineInfo();
@@ -196,10 +198,12 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             } else if ("item_room".equals(table_name)) {
                 Map<Integer, String> domain = domains.get(line_uuid);
                 Object text_length = dynLineInfoMap.get(line_uuid);
-                if (ObjectUtils.isNotEmpty(text_length))
+                if (ObjectUtils.isNotEmpty(text_length)) {
                     dynTitleMap.put("text_length", text_length);
-                if (ObjectUtils.isNotEmpty(domains))
+                }
+                if (ObjectUtils.isNotEmpty(domains)) {
                     dynTitleMap.put("domains", domain);
+                }
                 dynTitleList.add(dynTitleMap);
             }
 
@@ -276,7 +280,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer updateTable(String tableName, String line_uuid, String value) {
         Table_alias table_alias = new Table_alias();
         table_alias.setLine_alias(value);
@@ -289,7 +293,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer updateItmeTable(Map<String, Object> roomMap) throws InvocationTargetException, IllegalAccessException {
         Room room = new Room();
         BeanUtils.populate(room, roomMap);
@@ -318,7 +322,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer delItmeTable(String guid) {
         Room room = new Room();
         room.setDel(false);
@@ -369,7 +373,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer recycleField(String line_uuid) {
         //Room room = new Room();
         //room.setDel(false);
@@ -387,10 +391,10 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer addField(String tableName, String fieldName, Integer type, Map<Integer, String> selectValue) {
         //1文本,2数字,3时间,4下拉
-        String sqlType = RoomConstant.rowTypeMap.get(type);
+        String sqlType = RoomConstant.ROW_TYPE_MAP.get(type);
         if (ObjectUtils.isEmpty(type)) {
             return ResultConstant.FAILD;
         }
@@ -428,10 +432,11 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer updateSelect(List<Select> selects) {
-        if (selects == null)
+        if (selects == null) {
             return ResultConstant.FAILD;
+        }
         int update = 0;
         for (Select select : selects) {
             Example example = new Example(Select.class);
@@ -445,15 +450,16 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer updateTextLength(String item_room, String line_uuid, Integer text_length) {
         //字段校验
         Example example = new Example(TableAlias.class);
         example.createCriteria().andEqualTo("table_name", item_room)
                 .andEqualTo("line_uuid", line_uuid);
         List<TableAlias> tableAliases = tableAliasMapper.selectByExample(example);
-        if (ObjectUtils.isEmpty(tableAliases) && tableAliases.size() != 1)
+        if (ObjectUtils.isEmpty(tableAliases) && tableAliases.size() != 1) {
             return ResultConstant.FAILD;
+        }
         return tableAliasMapper.updateTextLength(item_room, line_uuid, text_length);
     }
 

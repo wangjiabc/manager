@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+/**
+ * @Author lz
+ * @Description:资产的操作
+ * @Date: 2019/5/21
+ **/
 @RestController
 @RequestMapping("/room")
 public class RoomController {
@@ -34,9 +39,9 @@ public class RoomController {
         room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
         Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
-        String searchContent = query.get("searchContent").toString();
-        String state = query.get("state").toString();
-        String neaten_flow = query.get("neaten_flow").toString();
+        String searchContent = MapUtils.getString("searchContent", query);
+        String state = MapUtils.getString("state", query);
+        String neaten_flow = MapUtils.getString("neaten_flow", query);
         //String[] where = {"state = ", state, "neaten_flow = ", neaten_flow, "address like ", "%" + searchContent + "%"};
         List<String> searchList = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(searchContent)) {
@@ -74,23 +79,18 @@ public class RoomController {
         return currentDao.delItmeTable(guid);
     }
 
-    //回收逻辑删除
+
     @RequestMapping("recycleRoom")
     public Integer recycleRoom(@RequestBody List<String> guidList) {
+        //回收逻辑删除
         return currentDao.recycleRoom(guidList);
     }
 
-    //@RequestMapping("addField")
-    //public int addField(@RequestParam("title") String fieldName) {
-    //    //fieldName = "ccc";
-    //    return currentDao.alterTable(true, "item_room", fieldName, null);
-    //}
     @RequestMapping("addField")
     public Integer addField(@RequestBody Map<String, Object> jsonMap) {
         Map<Integer, String> selects = null;
         String fieldName = MapUtils.getString("title", jsonMap);
         Integer type = MapUtils.getInteger("type", jsonMap);
-        //Map<String, String> selects = (Map<String, String>) jsonMap.get("domains");
         List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
         if (ObjectUtils.isNotEmpty(domains)) {
             selects = new HashMap<>();
@@ -120,12 +120,12 @@ public class RoomController {
 
     @RequestMapping("updateSelect")
     public Integer updateSelect(@RequestBody Map<String, Object> jsonMap) {
-        //return currentDao.updateSelect();
         System.out.println(jsonMap);
         Map<String, String> domains = (Map<String, String>) jsonMap.get("domains");
         String line_uuid = MapUtils.getString("line_uuid", jsonMap);
-        if (ObjectUtils.isEmpty(domains, line_uuid))
+        if (ObjectUtils.isEmpty(domains, line_uuid)) {
             return ResultConstant.FAILD;
+        }
         List<Select> selects = new ArrayList<>();
         for (Map.Entry<String, String> entry : domains.entrySet()) {
             Select select = new Select();
@@ -141,8 +141,9 @@ public class RoomController {
     public Integer updateTextLength(@RequestBody Map<String, Object> jsonMap) {
         String line_uuid = MapUtils.getString("line_uuid", jsonMap);
         Integer text_length = MapUtils.getInteger("text_length", jsonMap);
-        if (ObjectUtils.isEmpty(line_uuid, text_length))
+        if (ObjectUtils.isEmpty(line_uuid, text_length)) {
             return ResultConstant.FAILD;
+        }
         return currentDao.updateTextLength("item_room", line_uuid, text_length);
     }
 
