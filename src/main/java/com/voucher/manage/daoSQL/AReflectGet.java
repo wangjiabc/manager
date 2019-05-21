@@ -192,6 +192,36 @@ public class AReflectGet {
        return d;
 	}
 	
+	public static Boolean getBooleanMethods(Object object,Class className,Field field,String columnName){
+        String filedName = field.getName();  
+        //获取相应字段的getXXX()方法  
+        String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
+                + filedName.substring(1);
+       // System.out.println(getMethodName);
+        Boolean f=null;
+       try {
+       	Method getMethod =className.getMethod(getMethodName);
+			f= (Boolean) getMethod.invoke(object);
+			return f;
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       return f;
+	}
+	
 	public static String[] getArrayMethods(Object object,Class className,Field field,String columnName){
         String filedName = field.getName();  
         //获取相应字段的getXXX()方法  

@@ -25,7 +25,7 @@ import com.voucher.manage.daoSQL.annotations.SQLString;
 import com.voucher.manage.tools.MyTestUtil;
 
 public class SelectSQLJoin {
-	public static Map<String, Object> get(Object[] objects,String[] joinParameters) throws ClassNotFoundException{
+	public static Map<String, Object> get(Object[] objects,String[][] joinParameters) throws ClassNotFoundException{
         Integer limit=10;
 		Integer offset=0; 
 		String notIn="";
@@ -75,9 +75,9 @@ public class SelectSQLJoin {
           firstTableName=tableName;
           tableName0=firstTableName;
          }else{  
-          String joinParameter=joinParameters[s];
-          leftJionTableName=leftJionTableName+" left join "+tableName+" on " +defaultTable+"."+joinParameter
-        		  +"="+tableName+"."+joinParameter;
+          String[] joinParameter=joinParameters[s];
+          leftJionTableName=leftJionTableName+" left join "+tableName+" on " +defaultTable+"."+joinParameter[0]
+        		  +"="+tableName+"."+joinParameter[1];
           tableName0=tableName;
           s++;
          }
@@ -334,7 +334,7 @@ public class SelectSQLJoin {
       return map;
    }
 	
-	public static Map<String, Object> getCount(Object[] objects,String[] joinParameters) throws ClassNotFoundException{
+	public static Map<String, Object> getCount(Object[] objects,String[][] joinParameters) throws ClassNotFoundException{
 		List<String> columnDefs = new ArrayList<String>();
         String[] columnWhere=null;
         List wheres=new ArrayList<String[]>();
@@ -379,9 +379,9 @@ public class SelectSQLJoin {
 	          firstTableName=tableName;
 	          tableName0=firstTableName;
 	         }else{    
-	          String joinParameter=joinParameters[s];
-	          leftJionTableName=leftJionTableName+" left join "+tableName+" on " +defaultTable+"."+joinParameter
-	        		  +"="+tableName+"."+joinParameter;
+	          String[] joinParameter=joinParameters[s];
+	          leftJionTableName=leftJionTableName+" left join "+tableName+" on " +defaultTable+"."+joinParameter[0]
+	        		  +"="+tableName+"."+joinParameter[1];
 	          tableName0=tableName;
 	          s++;
 	         }

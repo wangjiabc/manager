@@ -71,7 +71,6 @@ public class FileServiceImpl implements FileService {
                 return fileRoom;
             }).collect(Collectors.toList());
             fileRoomMapper.insertList(fileRooms);
-
             //返回图片地址
 
         } catch (IOException e) {

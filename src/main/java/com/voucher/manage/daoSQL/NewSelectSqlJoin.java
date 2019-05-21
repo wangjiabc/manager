@@ -27,10 +27,8 @@ import com.voucher.manage.daoSQL.annotations.SQLString;
 import com.voucher.manage.tools.MyTestUtil;
 
 public class NewSelectSqlJoin {
-
-	private final static String joinParameter="guid";
 	
-	public static Map<String, Object> get(Object object) throws ClassNotFoundException{
+	public static Map<String, Object> get(Object object,String joinParameter) throws ClassNotFoundException{
         Integer limit=10;
 		Integer offset=0; 
 		String notIn="";
@@ -263,11 +261,11 @@ public class NewSelectSqlJoin {
   			    	aTerm=false;
   			    	continue;
   				}
-
-
+	
   				String REGEX1 = "region=";
   				Pattern pattern1=Pattern.compile(REGEX1);
-  				Matcher matcher1=pattern1.matcher(str);
+  				Matcher matcher1=pattern1.matcher(str);				
+
   				if(matcher1.find()){
   					bwhere=" "+str+" ";
   					bTerm=true;
@@ -279,10 +277,11 @@ public class NewSelectSqlJoin {
   			    	bTerm=false;
   			    	continue;
   				}
-
+  				
   				String REGEX2 = "weight=";
   				Pattern pattern2=Pattern.compile(REGEX2);
-  				Matcher matcher2=pattern2.matcher(str);
+  				Matcher matcher2=pattern2.matcher(str);				
+
   				if(matcher2.find()){
   					cwhere=" "+str+" ";
   					cTerm=true;
@@ -429,7 +428,7 @@ public class NewSelectSqlJoin {
    }
 	
 	
-	public static Map<String, Object> getCount(Object object) throws ClassNotFoundException{
+	public static Map<String, Object> getCount(Object object,String joinParameter) throws ClassNotFoundException{
 		List<String> columnDefs = new ArrayList<String>();
         String[] columnWhere=null;
         List wheres=new ArrayList<String[]>();
@@ -574,7 +573,6 @@ public class NewSelectSqlJoin {
 	    			    	continue;
 	    				}
 
-
 	    				String REGEX1 = "region=";
 	    				Pattern pattern1=Pattern.compile(REGEX1);
 	    				Matcher matcher1=pattern1.matcher(str);
@@ -593,6 +591,7 @@ public class NewSelectSqlJoin {
 	    				String REGEX2 = "weight=";
 	    				Pattern pattern2=Pattern.compile(REGEX2);
 	    				Matcher matcher2=pattern2.matcher(str);
+
 	    				if(matcher2.find()){
 	    					cwhere=" "+str+" ";
 	    					cTerm=true;
@@ -604,7 +603,7 @@ public class NewSelectSqlJoin {
 	    			    	cTerm=false;
 	    			    	continue;
 	    				}
-
+	    				
 	    			    if(ii%2==0){
 	    			    	whereCommand.append(str);
 	    			    }else{

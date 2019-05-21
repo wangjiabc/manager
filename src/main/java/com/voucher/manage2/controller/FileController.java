@@ -5,9 +5,13 @@ import cn.hutool.core.io.FileUtil;
 import com.voucher.manage2.constant.FileConstant;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.msg.Message;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -50,5 +54,26 @@ public class FileController {
 
         }
         return null;
+    }
+
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> download(@RequestParam("filename") String filename) throws IOException {
+        //从我们的上传文件夹中去取
+        //String downloadFilePath = "D:\\userUploadFile\\Files";
+        //新建一个文件
+        File file = new File(filename);
+        //http头信息
+        HttpHeaders headers = new HttpHeaders();
+        //设置编码
+        //String downloadFileName = new String(filename.getBytes("UTF-8"), "iso-8859-1");
+
+        headers.setContentDispositionFormData("attachment", filename);
+
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+        //MediaType:互联网媒介类型  contentType：具体请求中的媒体类型信息
+
+        return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+
     }
 }

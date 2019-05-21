@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="js/jquery.js"></script>
+<title>message</title>
+</head>
+<body>
+
+  <div><span>rows=</span><span id="commit" value="0"></span></div>
+<div><span>total=</span><span id="commit2" value="0"></span></div>
+</body>
+</html>
+  <script type="text/javascript">
+
+  ccc();
+  
+  function getlist(){ 
+		var data={"limit":10,"page":1};
+	  	$.ajax({ 
+	      	type:"POST", 
+	      	url:"/manager/room/getList.do", 
+	      	dataType:"json",      
+	      	contentType:"application/json",               
+	      	data:JSON.stringify(data), 
+	      	success:function(data){ 
+	    	  console.log(data);
+	    	  for(var j = 0,len = data.body.rows.length; j < len; j++){
+	              var arr=data.body.rows[j];
+	              var a="";
+	    		  for (var index in arr){
+	    			    console.log(arr[index]);
+	    			    console.log(index);
+	    			    a=a+index+":"+arr[index]+",";
+	    			}
+	    		  aaa=aaa+j+": "+a+"____________";
+	    		}
+			  document.getElementById("commit").innerHTML=aaa;
+			  document.getElementById("commit2").innerHTML=data.body.total;                    
+	     	 } 
+	  	 }); 
+  }
+  
+  function aaa(){   //查租金
+	var data={"limit":10,"offset":0,"chartGUID":"a15cef9e-6033-4fbe-8067-6ebbebace626"};
+  	$.ajax({ 
+      	type:"POST", 
+      	url:"/manager/hireList/getHireList.do", 
+      	dataType:"json",      
+      	contentType:"application/json",               
+      	data:JSON.stringify(data), 
+      	success:function(data){ 
+    	  console.log(data);
+    	  for(var j = 0,len = data.body.rows.length; j < len; j++){
+              var arr=data.body.rows[j];
+              var a="";
+    		  for (var index in arr){
+    			    console.log(arr[index]);
+    			    console.log(index);
+    			    a=a+index+":"+arr[index]+",";
+    			}
+    		  aaa=aaa+j+": "+a+"____________";
+    		}
+		  document.getElementById("commit").innerHTML=aaa;
+		  document.getElementById("commit2").innerHTML=data.body.total;                    
+     	 } 
+  	 }); 
+  
+  }
+  
+  function bbb(){   //查合同
+		var data={"limit":10,"offset":0};
+	  	$.ajax({ 
+	      	type:"POST", 
+	      	url:"/manager/hireList/getChartInfo.do", 
+	      	dataType:"json",      
+	      	contentType:"application/json",               
+	      	data:JSON.stringify(data), 
+	      	success:function(data){ 
+	    	  console.log(data);
+	    	  var aaa="";
+	    	  console.log(data.body.rows[0]);
+	    	  for(var j = 0,len = data.body.rows.length; j < len; j++){
+                  var arr=data.body.rows[j];
+                  var a="";
+	    		  for (var index in arr){
+	    			    console.log(arr[index]);
+	    			    console.log(index);
+	    			    a=a+index+":"+arr[index]+",";
+	    			}
+	    		  aaa=aaa+j+": "+a+"____________";
+	    		}
+			  document.getElementById("commit").innerHTML=aaa;
+			  document.getElementById("commit2").innerHTML=data.body.total;                    
+	     	 } 
+	  	 }); 
+	  
+	  }
+  
+    function ccc(){ //出租
+    	/*
+    	var data={"guids":"\[\"aaaaaa\"]","chartAreas":"\[\"50\"]","contractNo":"ds000","Charter":"ccc","Charter":"ccc",
+    			  "sex":"vv","CardType":"vdfd","IDNo":"sdfds3423","Phone":"2321323","month":"13",
+    			  "hire":"34.6"};
+		*/
+		
+		var data={"guids":"\[\"aaaaaa\",\"ddd\"\]","chartAreas":"\[\"50\",\"10\"\]",
+				"hires":"\[\"50\",\"10\"\]",
+				"contractNo":"ds000","Charter":"ccc","Charter":"ccc",
+				"sex":"vv","CardType":"vdfd","IDNo":"sdfds3423","Phone":"2321323","month":"25",
+  			  };
+		console.log(JSON.stringify(data));
+    	  $.ajax({ 
+    	      type:"POST", 
+    	      url:"/manager/hire/action.do", 
+    	      dataType:"json",      
+    	      contentType:"application/json",               
+    	      data:JSON.stringify(data), 
+    	      success:function(data){ 
+    	    	  console.log(data);
+    			  document.getElementById("commit").innerHTML=data.body;                   
+    	      } 
+    	   }); 
+    }
+  
+  </script>
+

@@ -7,7 +7,10 @@ import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
+import com.voucher.sqlserver.context.Connect;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,16 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-/**
- * @Author lz
- * @Description:资产的操作
- * @Date: 2019/5/21
- **/
 @RestController
 @RequestMapping("/room")
 public class RoomController {
 
-    //private ApplicationContext applicationContext = new Connect().get();
+    private ApplicationContext applicationContext = new Connect().get();
     //
     //private CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
 
@@ -39,9 +37,9 @@ public class RoomController {
         room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
         Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
-        String searchContent = MapUtils.getString("searchContent", query);
-        String state = MapUtils.getString("state", query);
-        String neaten_flow = MapUtils.getString("neaten_flow", query);
+        String searchContent = query.get("searchContent").toString();
+        String state = query.get("state").toString();
+        String neaten_flow = query.get("neaten_flow").toString();
         //String[] where = {"state = ", state, "neaten_flow = ", neaten_flow, "address like ", "%" + searchContent + "%"};
         List<String> searchList = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(searchContent)) {
@@ -61,7 +59,7 @@ public class RoomController {
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
-        return currentDao.selectTable(room);
+        return currentDao.selectTable(room, "guid");
     }
 
     @RequestMapping("updateFieldName")
@@ -105,7 +103,7 @@ public class RoomController {
 
     @RequestMapping("delField")
     public Integer delField(String line_uuid) throws BaseException {
-        return currentDao.alterTable(false, "item_room", null, line_uuid);
+        return currentDao.alterTable(false, "item_room", "guid", null, line_uuid);
     }
 
     @RequestMapping("recycleField")

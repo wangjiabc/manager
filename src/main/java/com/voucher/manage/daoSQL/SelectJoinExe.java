@@ -10,7 +10,7 @@ import com.voucher.manage.daoRowMapper.RowMappersJoin;
 
 public class SelectJoinExe {
 	public static List get(JdbcTemplate getJdbcTemplate,Object[] objects,
-			Object object,String[] joinParames){
+			Object object,String[][] joinParames){
 		   String sql="";
 	        Map<String,Object> map=new HashMap<>();
 	        int amount=objects.length;
@@ -38,7 +38,7 @@ public class SelectJoinExe {
 	}
 	
 	public static Map getCount(JdbcTemplate getJdbcTemplate,Object[] objects,
-			String[] joinParames) {
+			String[][] joinParames) {
 		String sql="";
      Map<String,Object> map=new HashMap<>();
 		try {
