@@ -3,7 +3,7 @@ package com.voucher.manage2.tkmapper.entity;
 import javax.persistence.*;
 
 @Table(name = "[file_room]")
-public class FileRoom {
+public class RoomFile {
     @Column(name = "[file_guid]")
     private String fileGuid;
 

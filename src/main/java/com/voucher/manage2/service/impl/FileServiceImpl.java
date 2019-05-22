@@ -2,27 +2,20 @@ package com.voucher.manage2.service.impl;
 
 import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.util.IdUtil;
-import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.exception.FileUploadException;
-import com.voucher.manage2.msg.Message;
-import com.voucher.manage2.msg.MessageBean;
 import com.voucher.manage2.service.FileService;
-import com.voucher.manage2.tkmapper.entity.FileRoom;
+import com.voucher.manage2.tkmapper.entity.RoomFile;
 import com.voucher.manage2.tkmapper.entity.UploadFile;
-import com.voucher.manage2.tkmapper.mapper.FileRoomMapper;
+import com.voucher.manage2.tkmapper.mapper.RoomFileMapper;
 import com.voucher.manage2.tkmapper.mapper.UploadFileMapper;
 import com.voucher.manage2.utils.FileUtils;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +30,7 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private UploadFileMapper uploadFileMapper;
     @Autowired
-    private FileRoomMapper fileRoomMapper;
+    private RoomFileMapper roomFileMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -77,13 +70,13 @@ public class FileServiceImpl implements FileService {
             uploadFile.setUrl(path);
             uploadFileMapper.insert(uploadFile);
             //文件资产关系入库
-            List<FileRoom> fileRooms = roomGuids.stream().map(e -> {
-                FileRoom fileRoom = new FileRoom();
-                fileRoom.setFileGuid(fileGuid);
-                fileRoom.setRoomGuid(e);
-                return fileRoom;
+            List<RoomFile> roomFiles = roomGuids.stream().map(e -> {
+                RoomFile roomFile = new RoomFile();
+                roomFile.setFileGuid(fileGuid);
+                roomFile.setRoomGuid(e);
+                return roomFile;
             }).collect(Collectors.toList());
-            fileRoomMapper.insertList(fileRooms);
+            roomFileMapper.insertList(roomFiles);
         } catch (Exception e) {
             log.warn("文件入库异常!", e);
             if (tarFile.exists()) {

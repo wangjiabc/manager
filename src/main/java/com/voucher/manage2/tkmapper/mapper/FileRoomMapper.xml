@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.voucher.manage2.tkmapper.mapper.FileRoomMapper">
-  <resultMap id="BaseResultMap" type="com.voucher.manage2.tkmapper.entity.FileRoom">
+<mapper namespace="com.voucher.manage2.tkmapper.mapper.RoomFileMapper">
+  <resultMap id="BaseResultMap" type="com.voucher.manage2.tkmapper.entity.RoomFile">
     <!--
       WARNING - @mbg.generated
     -->
