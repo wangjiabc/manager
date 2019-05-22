@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface FileService {
 
-    List<String> fileUpload(String realPath, MultipartFile file, List<String> roomGuids);
+    String fileUpload( MultipartFile file, List<String> roomGuids);
 }

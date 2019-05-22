@@ -7,6 +7,7 @@ import com.voucher.manage2.msg.MessageBean;
 import lombok.extern.java.Log;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -61,7 +62,13 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         //body是返回值
         //HttpServletRequest req = ((ServletServerHttpRequest) request).getServletRequest();
         Class<?> parameterType = returnType.getParameterType();
-        if ("com.voucher.manage2.msg.ErrorMessageBean".equals(parameterType.getName())) {
+        //if ("com.voucher.manage2.msg.ErrorMessageBean".equals(parameterType.getName())) {
+        //    return body;
+        //}
+        if (body instanceof ErrorMessageBean) {
+            return body;
+        }
+        if (body instanceof byte[]) {
             return body;
         }
         //parameterType.

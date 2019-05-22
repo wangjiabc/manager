@@ -1,16 +1,13 @@
 package com.voucher.manage2.controller;
 
-import cn.hutool.core.io.FileTypeUtil;
-import cn.hutool.core.io.FileUtil;
-import com.voucher.manage2.constant.FileConstant;
-import com.voucher.manage2.exception.BaseException;
-import com.voucher.manage2.msg.Message;
+import com.voucher.manage2.exception.FileUploadException;
+import com.voucher.manage2.service.FileService;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -19,8 +16,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author lz
@@ -30,15 +26,20 @@ import java.util.List;
 @RestController
 @RequestMapping("file")
 public class FileController {
+    @Autowired
+    private FileService fileService;
+
     @PostMapping("upload")
-    public List<String> springUpload(HttpServletRequest request) {
+    public Map<String, List<String>> springUpload(HttpServletRequest request, @RequestBody Map<String, Object> jsonMap) {
+        List<String> fileNames = new ArrayList<>();
+        List<String> failedFileNames = new ArrayList<>();
+        List<String> roomGuids = (List<String>) jsonMap.get("roomGuids");
         //1文件上传
         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
                 request.getSession().getServletContext());
         //检查form中是否有enctype="multipart/form-data"
         if (multipartResolver.isMultipart(request)) {
-            String realPath = request.getSession().getServletContext().getRealPath(File.separator) + File.separator + "upload";
             //将request变成多部分request
             MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
             //获取multiRequest 中所有的文件名
@@ -48,26 +49,32 @@ public class FileController {
                 //一次遍历所有文件
                 MultipartFile file = multiRequest.getFile(iter.next().toString());
                 if (file != null) {
-
+                    try {
+                        fileNames.add(fileService.fileUpload(file, roomGuids));
+                    } catch (FileUploadException e) {
+                        failedFileNames.add(e.getMessage());
+                    }
                 }
             }
-
         }
-        return null;
+        HashMap<String, List<String>> resultMap = new HashMap<>(4);
+        resultMap.put("success", fileNames);
+        resultMap.put("failed", failedFileNames);
+        return resultMap;
     }
 
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> download(@RequestParam("filename") String filename) throws IOException {
+    @GetMapping(value = "/download")
+    public ResponseEntity<byte[]> download(String fileName) throws IOException {
         //从我们的上传文件夹中去取
         //String downloadFilePath = "D:\\userUploadFile\\Files";
         //新建一个文件
-        File file = new File(filename);
+        File file = new File(com.voucher.manage2.utils.FileUtils.getFilePath(fileName)+File.separator + fileName);
         //http头信息
         HttpHeaders headers = new HttpHeaders();
         //设置编码
-        //String downloadFileName = new String(filename.getBytes("UTF-8"), "iso-8859-1");
+        String downloadFileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
 
-        headers.setContentDispositionFormData("attachment", filename);
+        headers.setContentDispositionFormData("attachment", downloadFileName);
 
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 

@@ -3,14 +3,21 @@ package com.voucher.manage2.service.impl;
 import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.util.IdUtil;
 import com.voucher.manage2.exception.BaseException;
+import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.msg.Message;
+import com.voucher.manage2.msg.MessageBean;
 import com.voucher.manage2.service.FileService;
 import com.voucher.manage2.tkmapper.entity.FileRoom;
 import com.voucher.manage2.tkmapper.entity.UploadFile;
 import com.voucher.manage2.tkmapper.mapper.FileRoomMapper;
 import com.voucher.manage2.tkmapper.mapper.UploadFileMapper;
 import com.voucher.manage2.utils.FileUtils;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +31,8 @@ import java.util.stream.Collectors;
  * @description
  * @date 2019/5/20
  */
+@Service
+@Slf4j
 public class FileServiceImpl implements FileService {
     @Autowired
     private UploadFileMapper uploadFileMapper;
@@ -32,25 +41,29 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<String> fileUpload(String realPath, MultipartFile file, List<String> roomGuids) {
-        try {
+    public String fileUpload(MultipartFile file, List<String> roomGuids) {
 
-            String fileName = IdUtil.simpleUUID() + "_" + file.getOriginalFilename();
+        String fileName = IdUtil.simpleUUID() + "_" + file.getOriginalFilename();
+        File tarFile = null;
+        try {
             //文件后缀名
             String suffixName = FileTypeUtil.getType(file.getInputStream());
             //文件类型
             Integer fileType = FileUtils.getFileType(suffixName);
-            //文件类型名
-            String fileTypeName = FileUtils.getFileTypeName(fileType);
             //保存
-            realPath = realPath + File.separator + fileTypeName;
-            String path = realPath + File.separator + fileName;
-            System.out.println("+++++++++" + path);
-            File realPathFile = new File(realPath);
+            //realPath = realPath + File.separator + fileTypeName;
+            //问价保存路径
+            String filePath = FileUtils.getFilePath(fileType);
+            File realPathFile = new File(filePath);
             if (!realPathFile.exists()) {
                 realPathFile.mkdirs();
             }
-            file.transferTo(new File(path));
+            //文件全对象名
+            String path = filePath + File.separator + fileName;
+            System.out.println("+++++++++" + path);
+            //保存的文件对象
+            tarFile = new File(path);
+            file.transferTo(tarFile);
             //TODO 类型是图片就压缩
             //if (FileUtils.isImage(type)) {
             //
@@ -71,12 +84,14 @@ public class FileServiceImpl implements FileService {
                 return fileRoom;
             }).collect(Collectors.toList());
             fileRoomMapper.insertList(fileRooms);
-            //返回图片地址
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new BaseException(Message.FILE_UPLOAD_FAILED, e);
+        } catch (Exception e) {
+            log.warn("文件入库异常!", e);
+            if (tarFile.exists()) {
+                tarFile.delete();
+            }
+            throw new FileUploadException(file.getOriginalFilename(), e);
         }
-        return null;
+        //返回文件名
+        return fileName;
     }
 }
