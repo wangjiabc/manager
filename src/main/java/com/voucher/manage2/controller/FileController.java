@@ -31,9 +31,9 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("upload")
-    public Map<String, List<String>> springUpload(HttpServletRequest request, String[] roomGuids) {
+    public void springUpload(HttpServletRequest request, String[] roomGuids) {
         List<String> fileNames = new ArrayList<>();
-        List<String> failedFileNames = new ArrayList<>();
+        //List<String> failedFileNames = new ArrayList<>();
         //List<String> roomGuids = (List<String>) jsonMap.get("roomGuids");
         //1文件上传
         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
@@ -50,18 +50,18 @@ public class FileController {
                 //一次遍历所有文件
                 MultipartFile file = multiRequest.getFile(iter.next().toString());
                 if (file != null) {
-                    try {
-                        fileNames.add(fileService.fileUpload(file, Lists.newArrayList(roomGuids)));
-                    } catch (FileUploadException e) {
-                        failedFileNames.add(e.getMessage());
-                    }
+                    //try {
+                    fileNames.add(fileService.fileUpload(file, Lists.newArrayList(roomGuids)));
+                    //} catch (FileUploadException e) {
+                    //    failedFileNames.add(e.getMessage());
+                    //}
                 }
             }
         }
-        HashMap<String, List<String>> resultMap = new HashMap<>(4);
-        resultMap.put("success", fileNames);
-        resultMap.put("failed", failedFileNames);
-        return resultMap;
+        //HashMap<String, List<String>> resultMap = new HashMap<>(4);
+        //resultMap.put("success", fileNames);
+        //resultMap.put("failed", failedFileNames);
+        //return resultMap;
     }
 
     @GetMapping(value = "/download")

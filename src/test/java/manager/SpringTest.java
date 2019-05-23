@@ -2,12 +2,10 @@ package manager;
 
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage2.tkmapper.mapper.TableAliasMapper;
-import com.voucher.sqlserver.context.Connect;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

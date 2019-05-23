@@ -45,7 +45,7 @@ public class FileServiceImpl implements FileService {
             Integer fileType = FileUtils.getFileType(suffixName);
             //保存
             //realPath = realPath + File.separator + fileTypeName;
-            //问价保存路径
+            //文件保存路径
             String filePath = FileUtils.getFilePath(fileType);
             File realPathFile = new File(filePath);
             if (!realPathFile.exists()) {

@@ -1,7 +1,5 @@
 package com.voucher.manage2.tkmapper.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 @Table(name = "[upload_file]")
@@ -17,6 +15,9 @@ public class UploadFile {
 
     @Column(name = "[guid]")
     private String guid;
+
+    @Column(name = "[menu_guid]")
+    private String menuGuid;
 
     /**
      * @return type
@@ -72,5 +73,19 @@ public class UploadFile {
      */
     public void setGuid(String guid) {
         this.guid = guid == null ? null : guid.trim();
+    }
+
+    /**
+     * @return menu_guid
+     */
+    public String getMenuGuid() {
+        return menuGuid;
+    }
+
+    /**
+     * @param menuGuid
+     */
+    public void setMenuGuid(String menuGuid) {
+        this.menuGuid = menuGuid == null ? null : menuGuid.trim();
     }
 }

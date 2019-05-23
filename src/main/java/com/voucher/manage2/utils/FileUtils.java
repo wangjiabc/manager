@@ -56,11 +56,11 @@ public class FileUtils {
     }
 
     public static String getFilePath(Integer fileType) {
-        return SpringUtils.getProjectRealPath() + File.separator + "upload" + File.separator + getFileTypeName(fileType);
+        return SpringUtils.getProjectRealPath()+"-upload" + File.separator + getFileTypeName(fileType);
     }
 
     public static String getFilePath(String fileName) {
-        return SpringUtils.getProjectRealPath() + File.separator + "upload" + File.separator
+        return SpringUtils.getProjectRealPath()+"-upload" + File.separator
                 + getFileTypeName(getFileType(fileName.substring(fileName.lastIndexOf(".") + 1)));
     }
 

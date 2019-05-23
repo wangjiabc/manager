@@ -9,5 +9,6 @@
     <result column="upload_time" jdbcType="BIGINT" property="uploadTime" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="guid" jdbcType="VARCHAR" property="guid" />
+    <result column="menu_guid" jdbcType="VARCHAR" property="menuGuid" />
   </resultMap>
 </mapper>

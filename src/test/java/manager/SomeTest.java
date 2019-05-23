@@ -1,6 +1,5 @@
 package manager;
 
-import cn.hutool.core.util.IdUtil;
 import com.voucher.manage2.utils.MapUtils;
 import org.junit.Test;
 
