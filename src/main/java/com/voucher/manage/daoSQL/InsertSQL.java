@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.voucher.manage.daoSQL.annotations.DBTable;
+import com.voucher.manage.daoSQL.annotations.SQLBoolean;
 import com.voucher.manage.daoSQL.annotations.SQLDateTime;
 import com.voucher.manage.daoSQL.annotations.SQLDouble;
 import com.voucher.manage.daoSQL.annotations.SQLFloat;
@@ -105,6 +106,16 @@ public class InsertSQL {
                       columnDefs.add(columnName);
                       params.add(dResult);
                     }
+                }else
+                if(anns[0] instanceof SQLBoolean)
+                {
+                	 SQLBoolean sStr = (SQLBoolean) anns[0];
+                     columnName = (sStr.name().length()<1)?field.getName().toUpperCase():sStr.name();
+                     Boolean dResult=AReflectGet.getBooleanMethods(object, className, field, columnName);
+                     if(dResult!=null){
+                        columnDefs.add(columnName);
+                        params.add(dResult);
+                     }
                 }
          }  
         

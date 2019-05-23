@@ -26,9 +26,9 @@ import com.voucher.manage.daoSQL.annotations.SQLLong;
 import com.voucher.manage.daoSQL.annotations.SQLString;
 import com.voucher.manage.tools.MyTestUtil;
 
-public class NewSelectSqlJoin {
+public class NewSelectSqlJoin2 {
 	
-	public static Map<String, Object> get(Object object,String joinParameter) throws ClassNotFoundException{
+	public static Map<String, Object> get(Object[] objects,String[][] joinParameters,String[] itemjoinParameters) throws ClassNotFoundException{
         Integer limit=10;
 		Integer offset=0; 
 		String notIn="";
@@ -52,7 +52,7 @@ public class NewSelectSqlJoin {
         
         int i=0;
 
-
+        for(Object object:objects){
     		Class className=object.getClass();
        	    String name = className.getName();                                    //从控制台输入一个类名，我们输入User即可
             Class<?> cl = Class.forName(name);                         //加载类，如果该类不在默认路径底下，会报 java.lang.ClassNotFoundException
@@ -61,23 +61,35 @@ public class NewSelectSqlJoin {
             tableName = (dbTable.name().length()<1)?cl.getName():dbTable.name();//获取表的名字，如果没有在DBTable中定义，则获取类名作为Table的名字
             
             defaultTable=tableName;   //把第一张表设为默认表,用于定义默认order的表的值
-
+            break;
+            
+        }
     
       int s=0;  
-
+	  for(Object object:objects){
+		Class className=object.getClass();
+   	    String name = className.getName();                                    //从控制台输入一个类名，我们输入User即可
+        Class<?> cl = Class.forName(name);                         //加载类，如果该类不在默认路径底下，会报 java.lang.ClassNotFoundException
+        DBTable dbTable = cl.getAnnotation(DBTable.class);         //从User类中获取DBTable注解
         try{
          tableName = (dbTable.name().length()<1)?cl.getName():dbTable.name();//获取表的名字，如果没有在DBTable中定义，则获取类名作为Table的名字
 
          if(i==0){
           firstTableName=tableName;
           tableName0=firstTableName;
+         }else{  
+          String[] joinParameter=joinParameters[s];
+          leftJionTableName=leftJionTableName+" left join "+tableName+" on " +defaultTable+"."+joinParameter[0]
+        		  +"="+tableName+"."+joinParameter[1];
+          tableName0=tableName;
+          s++;
          }
         }catch (Exception e) {
 			// TODO: handle exception
          tableName =name;
 		 }
        
-
+         
         for(Field field : cl.getDeclaredFields())                  //获取声明的属性
         {
             String columnName = null;           
@@ -180,26 +192,39 @@ public class NewSelectSqlJoin {
                 	order=orde;
              }
         }
-
         
-        StringBuilder selectCommand = new StringBuilder("SELECT top "+limit+" * ");
-        
-        /*
+        StringBuilder selectCommand = new StringBuilder("SELECT top "+limit);
+                
         for(String columnDef :columnDefs){
             selectCommand.append("\n    "+columnDef+",");
         }
-        */
-
-       String tableName2="[item_"+tableName.substring(1, tableName.length());
-       
-       leftJionTableName=leftJionTableName+" left join "+tableName2+" on " +defaultTable+"."+joinParameter
-          		  +"="+tableName2+"."+joinParameter;
-
         
         select=selectCommand.substring(0,selectCommand.length()-1)+"\n FROM \n   "+firstTableName+leftJionTableName;
         
+        String tableName2="[item_"+tableName.substring(1, tableName.length());
+        
+        try{
+            tableName = (dbTable.name().length()<1)?cl.getName():dbTable.name();//获取表的名字，如果没有在DBTable中定义，则获取类名作为Table的名字
+
+            if(i==0){
+             firstTableName=tableName;
+             tableName0=firstTableName;
+            }else{  
+             String joinParameter=itemjoinParameters[s];
+             leftJionTableName=leftJionTableName+" left join "+tableName2+" on " +defaultTable+"."+joinParameter
+              		  +"="+tableName2+"."+joinParameter;
+             tableName0=tableName;
+             s++;
+            }
+           }catch (Exception e) {
+   			// TODO: handle exception
+            tableName =name;
+   		 }
+        
    
         i++;
+   }
+
  
      
       if(sort==null){
@@ -428,7 +453,7 @@ public class NewSelectSqlJoin {
    }
 	
 	
-	public static Map<String, Object> getCount(Object object,String joinParameter) throws ClassNotFoundException{
+	public static Map<String, Object> getCount(Object[] objects,String[][] joinParameters) throws ClassNotFoundException{
 		List<String> columnDefs = new ArrayList<String>();
         String[] columnWhere=null;
         List wheres=new ArrayList<String[]>();
@@ -444,7 +469,7 @@ public class NewSelectSqlJoin {
         
         Map<String, Object> map=new HashMap<>();
         
-
+        for(Object object:objects){
     		Class className=object.getClass();
        	    String name = className.getName();                                    //从控制台输入一个类名，我们输入User即可
             Class<?> cl = Class.forName(name);                         //加载类，如果该类不在默认路径底下，会报 java.lang.ClassNotFoundException
@@ -453,18 +478,32 @@ public class NewSelectSqlJoin {
             tableName = (dbTable.name().length()<1)?cl.getName():dbTable.name();//获取表的名字，如果没有在DBTable中定义，则获取类名作为Table的名字
             
             defaultTable=tableName;   //把第一张表设为默认表,用于定义默认order的表的值
-
+            break;
+            
+        }
         
         int i=0;
         
         int s=0;
         
+
+		for(Object object:objects){
+			Class className=object.getClass();
+	   	    String name = className.getName();                                    //从控制台输入一个类名，我们输入User即可
+	        Class<?> cl = Class.forName(name);                         //加载类，如果该类不在默认路径底下，会报 java.lang.ClassNotFoundException
+	        DBTable dbTable = cl.getAnnotation(DBTable.class);         //从User类中获取DBTable注解
 	        try{
 	         tableName = (dbTable.name().length()<1)?cl.getName():dbTable.name();//获取表的名字，如果没有在DBTable中定义，则获取类名作为Table的名字
 
 	         if(i==0){
 	          firstTableName=tableName;
 	          tableName0=firstTableName;
+	         }else{    
+	          String[] joinParameter=joinParameters[s];
+	          leftJionTableName=leftJionTableName+" left join "+tableName+" on " +defaultTable+"."+joinParameter[0]
+	        		  +"="+tableName+"."+joinParameter[1];
+	          tableName0=tableName;
+	          s++;
 	         }
 	        }catch (Exception e) {
 				// TODO: handle exception
@@ -506,23 +545,18 @@ public class NewSelectSqlJoin {
 	        }
 	        
 	        StringBuilder selectCommand = new StringBuilder("SELECT count(*)");
-	        
-	        /*
+	                
 	        for(String columnDef :columnDefs){
 	            selectCommand.append("\n    "+columnDef+",");
 	        }
-	        */
-	        
-	        String tableName2="[item_"+tableName.substring(1, tableName.length());
-	        
-	        leftJionTableName=leftJionTableName+" left join "+tableName2+" on " +defaultTable+"."+joinParameter
-	           		  +"="+tableName2+"."+joinParameter;
 	        
 	        select=selectCommand+"\n FROM \n   "+firstTableName+leftJionTableName;
 	        
 	   
-
-	     
+	        i++;
+	   }
+	        
+	       		     
 		if(term){
 	          StringBuilder whereCommand = new StringBuilder();         
 	          Iterator<String[]> iterator=wheres.iterator();

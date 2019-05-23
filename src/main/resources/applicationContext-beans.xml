@@ -13,9 +13,9 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 <!-- 客户端   调用服务端rmi服务配置-->  
 <bean id="flowSpringRMI" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">  
   <!--调用服务端url以及serviceName -->  
-  <property name="serviceUrl" value="rmi://127.0.0.1:1199/flowSpringRMI"/>  
+  <property name="serviceUrl" value="rmi://127.0.0.1:1199/flowSpringRMI"/>
   <!-- 调用服务端的接口 -->  
- <property name="serviceInterface" value="com.rmi.server.Server"/>  
+ <property name="serviceInterface" value="com.rmi.server.Server"/>
   
 </bean>  
  
