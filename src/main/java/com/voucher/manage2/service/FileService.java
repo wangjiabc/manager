@@ -10,7 +10,9 @@ import java.util.List;
  * @Description: 文件操作
  * @Date: 2019/5/22 15:32
  **/
+
 public interface FileService {
+
     /**
      * @Author lz
      * @Description: 上传文件
@@ -19,4 +21,5 @@ public interface FileService {
      * @Date: 2019/5/22 15:32
      **/
     String fileUpload(MultipartFile file, List<String> roomGuids);
+
 }

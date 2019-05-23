@@ -2,7 +2,9 @@ package com.voucher.manage2.service.impl;
 
 import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.util.IdUtil;
+import com.voucher.manage2.constant.MenuConstant;
 import com.voucher.manage2.exception.FileUploadException;
+import com.voucher.manage2.constant.FileConstant;
 import com.voucher.manage2.service.FileService;
 import com.voucher.manage2.tkmapper.entity.RoomFile;
 import com.voucher.manage2.tkmapper.entity.UploadFile;
@@ -17,7 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.voucher.manage2.tkmapper.entity.Menu;
+import com.voucher.manage2.tkmapper.mapper.MenuMapper;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * @author lz
@@ -46,16 +56,16 @@ public class FileServiceImpl implements FileService {
             //保存
             //realPath = realPath + File.separator + fileTypeName;
             //文件保存路径
-            String filePath = FileUtils.getFilePath(fileType);
-            File realPathFile = new File(filePath);
-            if (!realPathFile.exists()) {
-                realPathFile.mkdirs();
-            }
+            //String filePath = FileUtils.getFilePath(fileType);
+            //File realPathFile = new File(filePath);
+            //if (!realPathFile.exists()) {
+            //    realPathFile.mkdirs();
+            //}
             //文件全对象名
-            String path = filePath + File.separator + fileName;
-            System.out.println("+++++++++" + path);
+            tarFile = FileUtils.getFileByFileName(fileName);
+            //System.out.println("+++++++++" + tarPath);
             //保存的文件对象
-            tarFile = new File(path);
+            //tarFile = new File(tarPath);
             file.transferTo(tarFile);
             //TODO 类型是图片就压缩
             //if (FileUtils.isImage(type)) {
@@ -67,7 +77,7 @@ public class FileServiceImpl implements FileService {
             uploadFile.setGuid(fileGuid);
             uploadFile.setType(fileType);
             uploadFile.setUploadTime(System.currentTimeMillis());
-            uploadFile.setUrl(path);
+            uploadFile.setUrl(FileUtils.getFileUrlPath(fileName));
             uploadFileMapper.insert(uploadFile);
             //文件资产关系入库
             List<RoomFile> roomFiles = roomGuids.stream().map(e -> {

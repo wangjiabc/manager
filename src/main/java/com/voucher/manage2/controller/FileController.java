@@ -3,6 +3,7 @@ package com.voucher.manage2.controller;
 import com.google.common.collect.Lists;
 import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.service.FileService;
+import com.voucher.manage2.tkmapper.entity.Menu;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -69,11 +70,11 @@ public class FileController {
         //从我们的上传文件夹中去取
         //String downloadFilePath = "D:\\userUploadFile\\Files";
         //新建一个文件
-        File file = new File(com.voucher.manage2.utils.FileUtils.getFilePath(fileName) + File.separator + fileName);
+        File file = com.voucher.manage2.utils.FileUtils.getFileByFileName(fileName);
         //http头信息
         HttpHeaders headers = new HttpHeaders();
-        //设置编码
-        String downloadFileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+        //设置编码,下载的时的文件名
+        String downloadFileName = new String(fileName.substring(fileName.lastIndexOf("_") + 1).getBytes("UTF-8"), "iso-8859-1");
 
         headers.setContentDispositionFormData("attachment", downloadFileName);
 
@@ -84,4 +85,6 @@ public class FileController {
         return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
 
     }
+
+
 }
