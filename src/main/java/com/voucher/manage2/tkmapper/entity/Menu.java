@@ -2,8 +2,8 @@ package com.voucher.manage2.tkmapper.entity;
 
 import javax.persistence.*;
 
-@Table(name = "[electronic_file]")
-public class ElectronicFile {
+@Table(name = "[Menu]")
+public class Menu {
     @Column(name = "[guid]")
     private String guid;
 
