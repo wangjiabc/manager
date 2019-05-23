@@ -9,5 +9,6 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="level" jdbcType="INTEGER" property="level" />
     <result column="parent_guid" jdbcType="VARCHAR" property="parentGuid" />
+    <result column="root_guid" jdbcType="VARCHAR" property="rootGuid" />
   </resultMap>
 </mapper>

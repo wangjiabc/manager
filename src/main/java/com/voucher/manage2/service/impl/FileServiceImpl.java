@@ -46,7 +46,8 @@ public class FileServiceImpl implements FileService {
     @Transactional(rollbackFor = Exception.class)
     public String fileUpload(MultipartFile file, List<String> roomGuids) {
 
-        String fileName = IdUtil.simpleUUID() + "_" + file.getOriginalFilename();
+        String fileGuid = IdUtil.simpleUUID();
+        String fileName = fileGuid + "_" + file.getOriginalFilename();
         File tarFile = null;
         try {
             //文件后缀名
@@ -64,8 +65,6 @@ public class FileServiceImpl implements FileService {
             //文件全对象名
             tarFile = FileUtils.getFileByFileName(fileName);
             //System.out.println("+++++++++" + tarPath);
-            //保存的文件对象
-            //tarFile = new File(tarPath);
             file.transferTo(tarFile);
             //TODO 类型是图片就压缩
             //if (FileUtils.isImage(type)) {
@@ -73,7 +72,6 @@ public class FileServiceImpl implements FileService {
             //}
             //文件入库
             UploadFile uploadFile = new UploadFile();
-            String fileGuid = IdUtil.simpleUUID();
             uploadFile.setGuid(fileGuid);
             uploadFile.setType(fileType);
             uploadFile.setUploadTime(System.currentTimeMillis());
@@ -82,7 +80,7 @@ public class FileServiceImpl implements FileService {
             //文件资产关系入库
             List<RoomFile> roomFiles = roomGuids.stream().map(e -> {
                 RoomFile roomFile = new RoomFile();
-                roomFile.setFileGuid(fileGuid);
+                roomFile.setFileGuid(fileName);
                 roomFile.setRoomGuid(e);
                 return roomFile;
             }).collect(Collectors.toList());

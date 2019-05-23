@@ -1,12 +1,9 @@
 package com.voucher.manage2.service;
 
-import com.voucher.manage2.tkmapper.entity.Menu;
-
-import java.util.List;
 import java.util.Map;
 
 public interface MenuService {
-    List<Menu> selectMenu(String parentGuid);
+    Object selectMenu(String parentGuid, String roomGuid);
 
     Integer insertMenu(Map<String, Object> jsonMap);
 

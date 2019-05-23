@@ -7,5 +7,6 @@
     -->
     <result column="file_guid" jdbcType="VARCHAR" property="fileGuid" />
     <result column="room_guid" jdbcType="VARCHAR" property="roomGuid" />
+    <result column="menu_guid" jdbcType="VARCHAR" property="menuGuid" />
   </resultMap>
 </mapper>

@@ -2,7 +2,7 @@ package com.voucher.manage2.tkmapper.entity;
 
 import javax.persistence.*;
 
-@Table(name = "[Menu]")
+@Table(name = "[menu]")
 public class Menu {
     @Column(name = "[guid]")
     private String guid;
@@ -15,6 +15,9 @@ public class Menu {
 
     @Column(name = "[parent_guid]")
     private String parentGuid;
+
+    @Column(name = "[root_guid]")
+    private String rootGuid;
 
     /**
      * @return guid
@@ -70,5 +73,19 @@ public class Menu {
      */
     public void setParentGuid(String parentGuid) {
         this.parentGuid = parentGuid == null ? null : parentGuid.trim();
+    }
+
+    /**
+     * @return root_guid
+     */
+    public String getRootGuid() {
+        return rootGuid;
+    }
+
+    /**
+     * @param rootGuid
+     */
+    public void setRootGuid(String rootGuid) {
+        this.rootGuid = rootGuid == null ? null : rootGuid.trim();
     }
 }

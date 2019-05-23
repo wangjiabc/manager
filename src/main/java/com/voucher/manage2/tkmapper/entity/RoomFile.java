@@ -10,6 +10,9 @@ public class RoomFile {
     @Column(name = "[room_guid]")
     private String roomGuid;
 
+    @Column(name = "[menu_guid]")
+    private String menuGuid;
+
     /**
      * @return file_guid
      */
@@ -36,5 +39,19 @@ public class RoomFile {
      */
     public void setRoomGuid(String roomGuid) {
         this.roomGuid = roomGuid == null ? null : roomGuid.trim();
+    }
+
+    /**
+     * @return menu_guid
+     */
+    public String getMenuGuid() {
+        return menuGuid;
+    }
+
+    /**
+     * @param menuGuid
+     */
+    public void setMenuGuid(String menuGuid) {
+        this.menuGuid = menuGuid == null ? null : menuGuid.trim();
     }
 }

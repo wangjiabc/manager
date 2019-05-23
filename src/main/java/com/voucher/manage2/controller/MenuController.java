@@ -1,9 +1,7 @@
 package com.voucher.manage2.controller;
 
-import com.voucher.manage2.constant.FileConstant;
 import com.voucher.manage2.constant.MenuConstant;
 import com.voucher.manage2.service.MenuService;
-import com.voucher.manage2.tkmapper.entity.Menu;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +25,8 @@ public class MenuController {
     private MenuService menuService;
 
     @RequestMapping(value = "/selectFileMenu")
-    public Object selectMenu() {
-        return menuService.selectMenu(MenuConstant.FILE_ROOT_GUID);
+    public Object selectMenu(String roomGuid) {
+        return menuService.selectMenu(MenuConstant.FILE_ROOT_GUID,roomGuid);
     }
 
     @RequestMapping(value = "/insertMenu")

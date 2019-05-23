@@ -14,10 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SomeTest {
     @Test
     public void someTest() throws Exception {
-        String filePath = "E:\\voucher-upload\\05.jpg";
-        File file = new File(filePath);
-        System.out.println(file.exists());
-        file.mkdirs();
+        String filePath = "E:\\voucher-upload/05.jpg";
+        System.out.println(filePath.replaceAll("\\\\", "/"));
     }
 
     @Test
