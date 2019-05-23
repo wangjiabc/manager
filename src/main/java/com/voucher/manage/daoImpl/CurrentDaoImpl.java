@@ -88,7 +88,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
             List<Table_alias> list = SelectExe.get(this.getJdbcTemplate(), table_alias);
             if (ObjectUtils.isEmpty(list)) {
-                return ResultConstant.FAILD;
+                return ResultConstant.FILED;
             }
             Table_alias table_alias2 = list.get(0);
 
@@ -102,7 +102,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
         }
 
-        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILD;
+        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
     }
 
     @Override
@@ -416,7 +416,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
                 i++;
             }
         } else {
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
 
         fields = fields.substring(1, fields.length());
@@ -458,7 +458,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         room.setId(null);
         Integer upNum = UpdateExe.get(this.getJdbcTemplate(), room);
         if (upNum != 1) {
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
         StringBuffer sqlBuf = new StringBuffer(100);
         sqlBuf.append("update item_room set ");
@@ -474,7 +474,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
         //int i = this.getJdbcTemplate().update(sql);
         //return i;
-        return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILD;
+        return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
     }
 
     @Override
@@ -486,11 +486,11 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         room.setWhere(where);
         Integer upNum = UpdateExe.get(this.getJdbcTemplate(), room);
         if (upNum != 1) {
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
         String sql = "update item_room set del = 'true' where guid = '" + guid + "'";
 
-        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILD;
+        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
     }
 
     @Override
@@ -498,7 +498,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         StringBuffer strBuf = new StringBuffer("update room set del = 'true' where guid in (");
         guidList.forEach(e -> strBuf.append("'" + e + "',"));
         strBuf.replace(strBuf.length() - 1, strBuf.length(), ")");
-        return this.getJdbcTemplate().update(strBuf.toString()) == guidList.size() ? ResultConstant.SUCCESS : ResultConstant.FAILD;
+        return this.getJdbcTemplate().update(strBuf.toString()) == guidList.size() ? ResultConstant.SUCCESS : ResultConstant.FILED;
     }
 
     @Override
@@ -523,9 +523,9 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             result = insertTable(room, jsonArray.toJSONString());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
-        return result == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILD;
+        return result == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
     }
 
     @Override
@@ -543,7 +543,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         //table_alias.setWhere(where);
         //return UpdateExe.get(this.getJdbcTemplate(), table_alias) == -1 ? 0 : 1;
         String sql = "update table_alias set del = 'true' where line_uuid = '" + line_uuid + "'";
-        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILD;
+        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
     }
 
     @Override
@@ -552,7 +552,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         //1文本,2数字,3时间,4下拉
         String sqlType = RoomConstant.ROW_TYPE_MAP.get(type);
         if (ObjectUtils.isEmpty(type)) {
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
         String line_uuid = "item_" + Md5.GetMD5Code(UUID.randomUUID().toString()) + "";
         TableAlias tableAlias = new TableAlias();
@@ -584,14 +584,14 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         //int i = 1 / 0;
         //update = this.getJdbcTemplate().update(sql);
         //System.out.println(update);
-        return this.getJdbcTemplate().update(sql) == 0 ? ResultConstant.SUCCESS : ResultConstant.FAILD;
+        return this.getJdbcTemplate().update(sql) == 0 ? ResultConstant.SUCCESS : ResultConstant.FILED;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer updateSelect(List<Select> selects) {
         if (selects == null) {
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
         int update = 0;
         for (Select select : selects) {
@@ -602,7 +602,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             update++;
         }
         SpringUtils.setRollbackOnly(update != selects.size());
-        return update == selects.size() ? ResultConstant.SUCCESS : ResultConstant.FAILD;
+        return update == selects.size() ? ResultConstant.SUCCESS : ResultConstant.FILED;
     }
 
     @Override
@@ -614,7 +614,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
                 .andEqualTo("line_uuid", line_uuid);
         List<TableAlias> tableAliases = tableAliasMapper.selectByExample(example);
         if (ObjectUtils.isEmpty(tableAliases) && tableAliases.size() != 1) {
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
         return tableAliasMapper.updateTextLength(item_room, line_uuid, text_length);
     }

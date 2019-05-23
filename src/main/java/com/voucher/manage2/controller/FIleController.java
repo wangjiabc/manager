@@ -1,5 +1,6 @@
 package com.voucher.manage2.controller;
 
+import com.google.common.collect.Lists;
 import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.service.FileService;
 import com.voucher.manage2.tkmapper.entity.Menu;
@@ -31,10 +32,10 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("upload")
-    public Map<String, List<String>> springUpload(HttpServletRequest request, @RequestBody Map<String, Object> jsonMap) {
+    public Map<String, List<String>> springUpload(HttpServletRequest request, String[] roomGuids) {
         List<String> fileNames = new ArrayList<>();
         List<String> failedFileNames = new ArrayList<>();
-        List<String> roomGuids = (List<String>) jsonMap.get("roomGuids");
+        //List<String> roomGuids = (List<String>) jsonMap.get("roomGuids");
         //1文件上传
         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
@@ -51,7 +52,7 @@ public class FileController {
                 MultipartFile file = multiRequest.getFile(iter.next().toString());
                 if (file != null) {
                     try {
-                        fileNames.add(fileService.fileUpload(file, roomGuids));
+                        fileNames.add(fileService.fileUpload(file, Lists.newArrayList(roomGuids)));
                     } catch (FileUploadException e) {
                         failedFileNames.add(e.getMessage());
                     }
@@ -69,7 +70,7 @@ public class FileController {
         //从我们的上传文件夹中去取
         //String downloadFilePath = "D:\\userUploadFile\\Files";
         //新建一个文件
-        File file = new File(com.voucher.manage2.utils.FileUtils.getFilePath(fileName)+File.separator + fileName);
+        File file = new File(com.voucher.manage2.utils.FileUtils.getFilePath(fileName) + File.separator + fileName);
         //http头信息
         HttpHeaders headers = new HttpHeaders();
         //设置编码

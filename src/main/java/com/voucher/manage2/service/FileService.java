@@ -16,7 +16,7 @@ public interface FileService {
     /**
      * @Author lz
      * @Description: 上传文件
-     * @param: [file, roomGuids]
+     * @param: file, roomGuids
      * @return: {java.lang.String}
      * @Date: 2019/5/22 15:32
      **/

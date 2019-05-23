@@ -6,12 +6,11 @@ import com.voucher.manage2.constant.MenuConstant;
 import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.constant.FileConstant;
 import com.voucher.manage2.service.FileService;
-import com.voucher.manage2.tkmapper.entity.FileRoom;
+import com.voucher.manage2.tkmapper.entity.RoomFile;
 import com.voucher.manage2.tkmapper.entity.UploadFile;
-import com.voucher.manage2.tkmapper.mapper.FileRoomMapper;
+import com.voucher.manage2.tkmapper.mapper.RoomFileMapper;
 import com.voucher.manage2.tkmapper.mapper.UploadFileMapper;
 import com.voucher.manage2.utils.FileUtils;
-import com.voucher.manage2.utils.MapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,13 +36,10 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class FileServiceImpl implements FileService {
-
     @Autowired
     private UploadFileMapper uploadFileMapper;
     @Autowired
-    private FileRoomMapper fileRoomMapper;
-
-
+    private RoomFileMapper roomFileMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -83,13 +79,13 @@ public class FileServiceImpl implements FileService {
             uploadFile.setUrl(path);
             uploadFileMapper.insert(uploadFile);
             //文件资产关系入库
-            List<FileRoom> fileRooms = roomGuids.stream().map(e -> {
-                FileRoom fileRoom = new FileRoom();
-                fileRoom.setFileGuid(fileGuid);
-                fileRoom.setRoomGuid(e);
-                return fileRoom;
+            List<RoomFile> roomFiles = roomGuids.stream().map(e -> {
+                RoomFile roomFile = new RoomFile();
+                roomFile.setFileGuid(fileGuid);
+                roomFile.setRoomGuid(e);
+                return roomFile;
             }).collect(Collectors.toList());
-            fileRoomMapper.insertList(fileRooms);
+            roomFileMapper.insertList(roomFiles);
         } catch (Exception e) {
             log.warn("文件入库异常!", e);
             if (tarFile.exists()) {

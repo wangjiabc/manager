@@ -122,7 +122,7 @@ public class RoomController {
         Map<String, String> domains = (Map<String, String>) jsonMap.get("domains");
         String line_uuid = MapUtils.getString("line_uuid", jsonMap);
         if (ObjectUtils.isEmpty(domains, line_uuid)) {
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
         List<Select> selects = new ArrayList<>();
         for (Map.Entry<String, String> entry : domains.entrySet()) {
@@ -140,7 +140,7 @@ public class RoomController {
         String line_uuid = MapUtils.getString("line_uuid", jsonMap);
         Integer text_length = MapUtils.getInteger("text_length", jsonMap);
         if (ObjectUtils.isEmpty(line_uuid, text_length)) {
-            return ResultConstant.FAILD;
+            return ResultConstant.FILED;
         }
         return currentDao.updateTextLength("item_room", line_uuid, text_length);
     }
