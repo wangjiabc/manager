@@ -31,20 +31,19 @@ public class MenuController {
 
     @RequestMapping(value = "/insertMenu")
     public Integer insertMenu(@RequestBody Map<String, Object> jsonMap) {
-        //System.out.println("insertMenu===" + jsonMap);
         log.debug("insertMenu===" + jsonMap);
         return menuService.insertMenu(jsonMap);
     }
 
     @RequestMapping(value = "/delMenu")
     public Integer delMenu(@RequestBody Map<String, Object> jsonMap) {
-        System.out.println("delMenu===" + jsonMap);
+        log.debug("insertMenu===" + jsonMap);
         return menuService.delMenu(jsonMap);
     }
 
     @RequestMapping(value = "/updateMenu")
     public Integer updateMenu(@RequestBody Map<String, Object> jsonMap) {
-        System.out.println("updateMenu====" + jsonMap);
+        log.debug("insertMenu===" + jsonMap);
         return menuService.updateMenu(jsonMap);
     }
 }
