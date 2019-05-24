@@ -5,6 +5,7 @@ import com.voucher.manage2.utils.MapUtils;
 import org.junit.Test;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,8 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SomeTest {
     @Test
     public void someTest() throws Exception {
-        String filePath = "E:\\voucher-upload/05.jpg";
-        System.out.println(filePath.replaceAll("\\\\", "/"));
+        InetAddress addr = InetAddress.getLocalHost();
+        String ip = addr.getHostAddress().toString(); //获取本机ip
+        System.out.println(ip);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.voucher.manage2.exception;
 
-import com.voucher.manage2.msg.Message;
+import com.voucher.manage2.msg.ExceptionMessage;
 
 /**
  * @author lz
@@ -8,7 +8,7 @@ import com.voucher.manage2.msg.Message;
  * @date 2019/5/15
  */
 public class ParamException extends BaseException {
-    public ParamException(Message message) {
+    public ParamException(ExceptionMessage message) {
         super(message);
     }
 }

@@ -20,11 +20,11 @@ public class ErrorMessageBean extends MessageBean {
         this.msg = msg;
     }
 
-    public static ErrorMessageBean getMessageBean(Message msg) {
+    public static ErrorMessageBean getMessageBean(ExceptionMessage msg) {
         return new ErrorMessageBean(msg.code, msg.msg);
     }
 
-    public static ErrorMessageBean getMessageBean(Message msg, Object body) {
+    public static ErrorMessageBean getMessageBean(ExceptionMessage msg, Object body) {
         return new ErrorMessageBean(msg.code, msg.msg, body);
     }
 

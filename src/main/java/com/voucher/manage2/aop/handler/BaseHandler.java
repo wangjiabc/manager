@@ -2,12 +2,10 @@ package com.voucher.manage2.aop.handler;
 
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.msg.ErrorMessageBean;
-import com.voucher.manage2.msg.Message;
+import com.voucher.manage2.msg.ExceptionMessage;
 import com.voucher.manage2.msg.MessageBean;
-import lombok.extern.java.Log;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -37,7 +35,7 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         // 打印异常堆栈信息
         //LOG.error(e.getMessage(), e);
         e.printStackTrace();
-        return ErrorMessageBean.getMessageBean(Message.EXCEPTION);
+        return ErrorMessageBean.getMessageBean(ExceptionMessage.EXCEPTION);
     }
 
     @ExceptionHandler(BaseException.class)
@@ -75,6 +73,6 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         System.out.println("++++++++++" + parameterType);
         //if (returnType.getParameterType() instanceof ErrorMessageBean)
         // TODO Auto-generated method stub
-        return MessageBean.getMessageBean(Message.SUCCESS, body);
+        return MessageBean.getMessageBean(ExceptionMessage.SUCCESS, body);
     }
 }

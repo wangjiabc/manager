@@ -1,14 +1,13 @@
 package com.voucher.manage2.service.impl;
 
 import cn.hutool.core.util.IdUtil;
-import com.voucher.manage2.constant.FileConstant;
-import com.voucher.manage2.constant.MenuConstant;
 import com.voucher.manage2.dto.MenuDTO;
 import com.voucher.manage2.service.MenuService;
 import com.voucher.manage2.tkmapper.entity.Menu;
 import com.voucher.manage2.tkmapper.entity.RoomFile;
 import com.voucher.manage2.tkmapper.mapper.MenuMapper;
 import com.voucher.manage2.tkmapper.mapper.RoomFileMapper;
+import com.voucher.manage2.utils.FileUtils;
 import com.voucher.manage2.utils.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,31 +46,35 @@ public class MenuServiceImpl implements MenuService {
         roomFileCondition.setRoomGuid(roomGuid);
         List<RoomFile> roomFiles = roomFileMapper.select(roomFileCondition);
         //所有分类下的文件
-        Map<String, List<String>> menuFileMap = new HashMap<>(16);
+        Map<String, List<Map<String, String>>> menuFileMap = new HashMap<>(16);
         for (RoomFile roomFile : roomFiles) {
-            List<String> roomFileList = menuFileMap.get(roomFile.getMenuGuid());
+            List<Map<String, String>> roomFileList = menuFileMap.get(roomFile.getMenuGuid());
             if (roomFileList == null) {
                 roomFileList = new ArrayList<>();
                 menuFileMap.put(roomFile.getMenuGuid(), roomFileList);
             }
-            //存文件guid+名字
-            roomFileList.add(roomFile.getFileGuid());
+            //fileGuid是文件guid+名字,即存的文件名
+            String fileGuid = roomFile.getFileGuid();
+            HashMap<String, String> map = new HashMap<>(4);
+            map.put("name", FileUtils.getDownLoadName(fileGuid));
+            map.put("url", FileUtils.getFileUrlPath(fileGuid));
+            roomFileList.add(map);
         }
         putMenuList(menuDTO, parentGuid, levelMap, menuFileMap);
         return menuDTO;
     }
 
-    private void putMenuList(MenuDTO menuDTO, String parentGuid, Map<String, List<MenuDTO>> levelMap, Map<String, List<String>> roomFileMap) {
+    private void putMenuList(MenuDTO menuDTO, String parentGuid, Map<String, List<MenuDTO>> levelMap, Map<String, List<Map<String, String>>> menuFileMap) {
         //当前菜单
         List<MenuDTO> menus = levelMap.get(parentGuid);
         if (menus == null) {
             //menus为空代表是叶子节点
-            menuDTO.setFileNames(roomFileMap.get(menuDTO.getGuid()));
+            menuDTO.setFiles(menuFileMap.get(menuDTO.getGuid()));
             return;
         } else {
             menuDTO.setChildList(menus);
             for (MenuDTO menu : menus) {
-                putMenuList(menu, menu.getGuid(), levelMap, roomFileMap);
+                putMenuList(menu, menu.getGuid(), levelMap, menuFileMap);
             }
         }
     }

@@ -44,7 +44,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String fileUpload(MultipartFile file, List<String> roomGuids) {
+    public String fileUpload(MultipartFile file, List<String> roomGuids,String menuGuid) {
 
         String fileGuid = IdUtil.simpleUUID();
         String fileName = fileGuid + "_" + file.getOriginalFilename();
@@ -72,7 +72,7 @@ public class FileServiceImpl implements FileService {
             //}
             //文件入库
             UploadFile uploadFile = new UploadFile();
-            uploadFile.setGuid(fileGuid);
+            uploadFile.setGuid(fileName);
             uploadFile.setType(fileType);
             uploadFile.setUploadTime(System.currentTimeMillis());
             uploadFile.setUrl(FileUtils.getFileUrlPath(fileName));

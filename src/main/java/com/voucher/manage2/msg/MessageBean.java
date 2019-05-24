@@ -57,11 +57,11 @@ public class MessageBean {
         return "MessageBean [code=" + code + ", body=" + body + ", msg=" + msg + "]";
     }
 
-    public static MessageBean getMessageBean(Message msg) {
+    public static MessageBean getMessageBean(ExceptionMessage msg) {
         return new MessageBean(msg.code, msg.msg);
     }
 
-    public static MessageBean getMessageBean(Message msg, Object body) {
+    public static MessageBean getMessageBean(ExceptionMessage msg, Object body) {
         return new MessageBean(msg.code, msg.msg, body);
     }
 

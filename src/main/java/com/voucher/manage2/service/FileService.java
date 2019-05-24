@@ -20,6 +20,6 @@ public interface FileService {
      * @return: {java.lang.String}
      * @Date: 2019/5/22 15:32
      **/
-    String fileUpload(MultipartFile file, List<String> roomGuids);
+    String fileUpload(MultipartFile file, List<String> roomGuids,String menuGuid);
 
 }

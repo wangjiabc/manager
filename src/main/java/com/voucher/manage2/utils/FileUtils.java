@@ -2,9 +2,21 @@ package com.voucher.manage2.utils;
 
 import com.google.common.collect.Lists;
 import com.voucher.manage2.constant.FileConstant;
+import com.voucher.manage2.exception.BaseException;
+import com.voucher.manage2.msg.ExceptionMessage;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import javax.management.Query;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lz
@@ -17,6 +29,9 @@ public class FileUtils {
     /*url获取文件的虚拟路径*/
     private static final String FILE_URL_PATH_PREFIX = "file";
     private static final List<String> IMAGE_TYPE = Lists.newArrayList("jpg", "bmp", "png", "jpeg");
+    //项目启动的ip及端口
+    private static final String SERVER_URL = "192.168.100.120:8080";
+
 
     public static boolean isImage(String suffixName) {
         return IMAGE_TYPE.contains(suffixName);
@@ -59,6 +74,10 @@ public class FileUtils {
         return FileConstant.FILE_TYPE_MAP.get(type);
     }
 
+    public static String getFileTypeName(String fileName) {
+        return getFileTypeName(getFileType(fileName.substring(fileName.lastIndexOf(".") + 1)));
+    }
+
     /**
      * @Author lz
      * @Description:获取文件对象名,例 D:\voucher-upload\05.jpg
@@ -68,7 +87,7 @@ public class FileUtils {
      **/
     public static File getFileByFileName(String fileName) {
         String filePath = FILE_PATH + File.separator
-                + getFileTypeName(getFileType(fileName.substring(fileName.lastIndexOf(".") + 1)));
+                + getFileTypeName(fileName);
         File file = new File(filePath);
         if (!file.exists()) {
             file.mkdirs();
@@ -77,7 +96,10 @@ public class FileUtils {
     }
 
     public static String getFileUrlPath(String fileName) {
-        return FILE_URL_PATH_PREFIX + File.separator + fileName;
+        return SERVER_URL + File.separator + FILE_URL_PATH_PREFIX + File.separator + getFileTypeName(fileName) + File.separator + fileName;
     }
 
+    public static String getDownLoadName(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("_") + 1);
+    }
 }
