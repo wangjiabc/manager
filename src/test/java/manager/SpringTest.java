@@ -3,6 +3,7 @@ package manager;
 import cn.hutool.core.util.IdUtil;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage2.constant.FileConstant;
+import com.voucher.manage2.dto.MenuDTO;
 import com.voucher.manage2.tkmapper.entity.Menu;
 import com.voucher.manage2.tkmapper.mapper.MenuMapper;
 import com.voucher.manage2.tkmapper.mapper.TableAliasMapper;
@@ -32,7 +33,7 @@ public class SpringTest {
     public void test1() {
         //FileConstant[] values = FileConstant.values();
         //for (FileConstant value : values) {
-        Menu menu = new Menu();
+        MenuDTO menu = new MenuDTO();
         menu.setRootGuid("a46015f715a94b7ea3668e6e89b23b16");
         menu.setGuid(IdUtil.simpleUUID());
         menu.setLevel(2);
