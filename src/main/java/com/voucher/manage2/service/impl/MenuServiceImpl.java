@@ -3,6 +3,7 @@ package com.voucher.manage2.service.impl;
 import cn.hutool.core.util.IdUtil;
 import com.voucher.manage2.constant.FileConstant;
 import com.voucher.manage2.constant.MenuConstant;
+import com.voucher.manage2.dto.MenuDTO;
 import com.voucher.manage2.service.MenuService;
 import com.voucher.manage2.tkmapper.entity.Menu;
 import com.voucher.manage2.tkmapper.entity.RoomFile;
@@ -25,15 +26,16 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Object selectMenu(String parentGuid, String roomGuid) {
-        List<Object> menuTree = new ArrayList<>();
+        //List<Object> menuTree = new ArrayList<>();
+        MenuDTO menuDTO = new MenuDTO();
         //总共有几级菜单
         //将菜单an等级分类
-        Map<String, List<Menu>> levelMap = new TreeMap<>();
-        Menu menuCondition = new Menu();
+        Map<String, List<MenuDTO>> levelMap = new TreeMap<>();
+        MenuDTO menuCondition = new MenuDTO();
         menuCondition.setRootGuid(parentGuid);
-        List<Menu> menus = menuMapper.select(menuCondition);
-        for (Menu menu : menus) {
-            List<Menu> menuList = levelMap.get(menu.getParentGuid());
+        List<MenuDTO> menus = menuMapper.select(menuCondition);
+        for (MenuDTO menu : menus) {
+            List<MenuDTO> menuList = levelMap.get(menu.getParentGuid());
             if (menuList == null) {
                 menuList = new ArrayList<>();
                 levelMap.put(menu.getParentGuid(), menuList);
@@ -45,51 +47,52 @@ public class MenuServiceImpl implements MenuService {
         roomFileCondition.setRoomGuid(roomGuid);
         List<RoomFile> roomFiles = roomFileMapper.select(roomFileCondition);
         //所有分类下的文件
-        Map<String, List<String>> roomFileMap = new HashMap<>(16);
+        Map<String, List<String>> menuFileMap = new HashMap<>(16);
         for (RoomFile roomFile : roomFiles) {
-            List<String> roomFileList = roomFileMap.get(roomFile.getMenuGuid());
+            List<String> roomFileList = menuFileMap.get(roomFile.getMenuGuid());
             if (roomFileList == null) {
                 roomFileList = new ArrayList<>();
-                roomFileMap.put(roomFile.getMenuGuid(), roomFileList);
+                menuFileMap.put(roomFile.getMenuGuid(), roomFileList);
             }
             //存文件guid+名字
             roomFileList.add(roomFile.getFileGuid());
         }
-        putMenuList(menuTree, parentGuid, levelMap, roomFileMap);
-        return menuTree;
+        putMenuList(menuDTO, parentGuid, levelMap, menuFileMap);
+        return menuDTO;
     }
 
-    private void putMenuList(List<Object> menuTree, String parentGuid, Map<String, List<Menu>> levelMap, Map<String, List<String>> roomFileMap) {
+    private void putMenuList(MenuDTO menuDTO, String parentGuid, Map<String, List<MenuDTO>> levelMap, Map<String, List<String>> roomFileMap) {
         //当前菜单
-        List<Menu> menus = levelMap.get(parentGuid);
+        List<MenuDTO> menus = levelMap.get(parentGuid);
         if (menus == null) {
+            //menus为空代表是叶子节点
+            menuDTO.setFileNames(roomFileMap.get(menuDTO.getGuid()));
             return;
         } else {
-            menuTree.add(menus);
-            for (Menu menu : menus) {
-                List<Object> list = new ArrayList<>();
-                menuTree.add(list);
-                putMenuList(list, menu.getGuid(), levelMap, roomFileMap);
+            menuDTO.setChildList(menus);
+            for (MenuDTO menu : menus) {
+                putMenuList(menu, menu.getGuid(), levelMap, roomFileMap);
             }
         }
     }
 
     @Override
     public Integer insertMenu(Map<String, Object> jsonMap) {
-        Menu menu = new Menu();
+        MenuDTO menu = new MenuDTO();
         menu.setGuid(IdUtil.simpleUUID());
-        menu.setLevel(MapUtils.getInteger("level", jsonMap) + 1);
+        menu.setLevel(MapUtils.getInteger("level", jsonMap));
+        menu.setRootGuid(MapUtils.getString("rootGuid", jsonMap));
         menu.setName(MapUtils.getString("name", jsonMap));
         menu.setParentGuid(MapUtils.getString("parentGuid", jsonMap));
 
-        Integer result = menuMapper.insertSelective(menu);
+        Integer result = menuMapper.insert(menu);
         System.out.println("insertMenu===" + result);
         return result;
     }
 
     @Override
     public Integer delMenu(Map<String, Object> jsonMap) {
-        Menu menu = new Menu();
+        MenuDTO menu = new MenuDTO();
         menu.setGuid(MapUtils.getString("guid", jsonMap));
         Integer result = menuMapper.delete(menu);
         System.out.println("delMenu===" + result);
@@ -98,7 +101,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Integer updateMenu(Map<String, Object> jsonMap) {
-        Menu menu = new Menu();
+        MenuDTO menu = new MenuDTO();
         menu.setName(MapUtils.getString("name", jsonMap));
 
         menu.setGuid(MapUtils.getString("guid", jsonMap));
