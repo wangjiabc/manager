@@ -9,6 +9,7 @@ import com.voucher.manage2.tkmapper.mapper.MenuMapper;
 import com.voucher.manage2.tkmapper.mapper.RoomFileMapper;
 import com.voucher.manage2.utils.FileUtils;
 import com.voucher.manage2.utils.MapUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -16,6 +17,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.*;
 
 @Service
+@Slf4j
 public class MenuServiceImpl implements MenuService {
 
     @Autowired
@@ -89,7 +91,7 @@ public class MenuServiceImpl implements MenuService {
         menu.setParentGuid(MapUtils.getString("parentGuid", jsonMap));
 
         Integer result = menuMapper.insert(menu);
-        System.out.println("insertMenu===" + result);
+        log.debug(String.valueOf(result));
         return result;
     }
 
@@ -98,7 +100,7 @@ public class MenuServiceImpl implements MenuService {
         MenuDTO menu = new MenuDTO();
         menu.setGuid(MapUtils.getString("guid", jsonMap));
         Integer result = menuMapper.delete(menu);
-        System.out.println("delMenu===" + result);
+        log.debug(String.valueOf(result));
         return result;
     }
 
@@ -112,7 +114,7 @@ public class MenuServiceImpl implements MenuService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("guid", menu.getGuid());
         Integer result = menuMapper.updateByExampleSelective(menu, example);
-        System.out.println("updateMenu====" + result);
+        log.debug(String.valueOf(result));
         return result;
     }
 
