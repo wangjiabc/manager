@@ -7,5 +7,5 @@ package com.voucher.manage2.constant;
  */
 public class ResultConstant {
     public static final Integer SUCCESS = 1;
-    public static final Integer FAILD = 0;
+    public static final Integer FILED = 0;
 }
