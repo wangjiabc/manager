@@ -1,6 +1,11 @@
 package com.voucher.manage2.utils;
 
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.ServletContext;
+import java.io.File;
 
 /**
  * @author lz
@@ -19,5 +24,14 @@ public class SpringUtils {
         if (condition) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
+    }
+
+    public static ServletContext getServletContext() {
+        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+        return webApplicationContext.getServletContext();
+    }
+
+    public static String getProjectRealPath() {
+        return getServletContext().getRealPath(File.separator);
     }
 }

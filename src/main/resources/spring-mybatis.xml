@@ -46,7 +46,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 		<property name="logAbandoned" value="true" />
 
         <!-- 监控数据库 -->
-        <property name="filters" value="mergeStat" /> 
+        <property name="filters" value="mergeStat" />
         <!--<property name="filters" value="stat" />-->
         
 	</bean> 

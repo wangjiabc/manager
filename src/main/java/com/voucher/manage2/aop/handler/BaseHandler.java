@@ -2,8 +2,9 @@ package com.voucher.manage2.aop.handler;
 
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.msg.ErrorMessageBean;
-import com.voucher.manage2.msg.Message;
+import com.voucher.manage2.msg.ExceptionMessage;
 import com.voucher.manage2.msg.MessageBean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -21,8 +22,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @date 2019/5/15
  */
 @ControllerAdvice
+@Slf4j
 public class BaseHandler implements ResponseBodyAdvice<Object> {
-
 
     /**
      * 处理所有不可知异常
@@ -34,17 +35,15 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
     @ResponseBody
     public ErrorMessageBean handleException(Exception e) {
         // 打印异常堆栈信息
-        //LOG.error(e.getMessage(), e);
-        e.printStackTrace();
-        return ErrorMessageBean.getMessageBean(Message.EXCEPTION);
+        log.error(e.getMessage(), e);
+        return ErrorMessageBean.getMessageBean(ExceptionMessage.EXCEPTION);
     }
 
     @ExceptionHandler(BaseException.class)
     @ResponseBody
     public ErrorMessageBean handleBaseException(BaseException e) {
         // 打印异常堆栈信息
-        //LOG.error(e.getMessage(), e);
-        e.printStackTrace();
+        log.error(e.getMessage(), e);
         return ErrorMessageBean.getMessageBean(e.msg);
     }
 
@@ -61,12 +60,19 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         //body是返回值
         //HttpServletRequest req = ((ServletServerHttpRequest) request).getServletRequest();
         Class<?> parameterType = returnType.getParameterType();
-        if (parameterType.getName().equals("com.voucher.manage2.msg.ErrorMessageBean"))
+        //if ("com.voucher.manage2.msg.ErrorMessageBean".equals(parameterType.getName())) {
+        //    return body;
+        //}
+        if (body instanceof ErrorMessageBean) {
             return body;
+        }
+        if (body instanceof byte[]) {
+            return body;
+        }
         //parameterType.
-        System.out.println("++++++++++" + parameterType);
+        log.info("++++++++++" + parameterType);
         //if (returnType.getParameterType() instanceof ErrorMessageBean)
         // TODO Auto-generated method stub
-        return MessageBean.getMessageBean(Message.SUCCESS, body);
+        return MessageBean.getMessageBean(ExceptionMessage.SUCCESS, body);
     }
 }

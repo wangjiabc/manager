@@ -204,7 +204,7 @@ public class UserServiceImpl implements UserService {
 
         int total=accessMapper.selectCountAccess(campusId, search,page);
 
-        Map map=new HashMap<>();
+        Map map=new HashMap<>(16);
 
         map.put("rows", list);
 

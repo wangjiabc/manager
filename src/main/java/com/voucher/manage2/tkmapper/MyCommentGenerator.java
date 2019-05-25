@@ -38,6 +38,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         currentDateStr = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date());
     }
 
+    @Override
     public void addJavaFileComment(CompilationUnit compilationUnit) {
         // add no file level comments by default
         return;
@@ -47,15 +48,18 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
      * Adds a suitable comment to warn users that the element was generated, and
      * when it was generated.
      */
+    @Override
     public void addComment(XmlElement xmlElement) {
         return;
     }
 
+    @Override
     public void addRootComment(XmlElement rootElement) {
         // add no document level comments by default
         return;
     }
 
+    @Override
     public void addConfigurationProperties(Properties properties) {
         this.properties.putAll(properties);
 
@@ -72,6 +76,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
      *
      * @param javaElement the java element
      */
+    @Override
     protected void addJavadocTag(JavaElement javaElement, boolean markAsDoNotDelete) {
         javaElement.addJavaDocLine(" *");
         StringBuilder sb = new StringBuilder();
@@ -95,6 +100,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
      *
      * @return a string representing the current timestamp, or null
      */
+    @Override
     protected String getDateString() {
         String result = null;
         if (!suppressDate) {
@@ -103,6 +109,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         return result;
     }
 
+    @Override
     public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable) {
         if (suppressAllComments) {
             return;
@@ -117,6 +124,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         innerClass.addJavaDocLine(" */");
     }
 
+    @Override
     public void addEnumComment(InnerEnum innerEnum, IntrospectedTable introspectedTable) {
         if (suppressAllComments) {
             return;
@@ -132,6 +140,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         innerEnum.addJavaDocLine(" */");
     }
 
+    @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable,
                                 IntrospectedColumn introspectedColumn) {
         if (suppressAllComments) {
@@ -167,6 +176,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         field.addAnnotation("@Column(name = \"" + introspectedColumn.getActualColumnName() + "\")");
     }
 
+    @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
         if (suppressAllComments) {
             return;
@@ -181,6 +191,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         field.addJavaDocLine(" */");
     }
 
+    @Override
     public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
         if (suppressAllComments) {
             return;
@@ -190,6 +201,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         // method.addJavaDocLine(" */");
     }
 
+    @Override
     public void addGetterComment(Method method, IntrospectedTable introspectedTable,
                                  IntrospectedColumn introspectedColumn) {
         if (suppressAllComments) {
@@ -215,6 +227,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         method.addJavaDocLine(" */");
     }
 
+    @Override
     public void addSetterComment(Method method, IntrospectedTable introspectedTable,
                                  IntrospectedColumn introspectedColumn) {
         if (suppressAllComments) {
@@ -241,48 +254,50 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
     }
 
     @Deprecated
+    @Override
     public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable, boolean markAsDoNotDelete) {
 
     }
 
     @Override
     public void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        //topLevelClass.addImportedType("javax.persistence.Column");
-        //topLevelClass.addImportedType("javax.persistence.Id");
-        //topLevelClass.addImportedType("javax.persistence.Table");
-        //topLevelClass.addImportedType("org.apache.ibatis.type.Alias");
-        //topLevelClass.addImportedType("lombok.ToString");
-        //if (suppressAllComments) {
-        //    return;
-        //}
-        //StringBuilder sb = new StringBuilder();
-        //
-        //topLevelClass.addJavaDocLine("/**");
-        //sb.append(" * ");
-        //sb.append(introspectedTable.getFullyQualifiedTable());
-        //topLevelClass.addJavaDocLine(sb.toString());
-        //
-        //sb.setLength(0);
-        //sb.append(" * @author ");
-        //sb.append(systemPro.getProperty("user.name"));
-        //sb.append(" ");
-        //sb.append(currentDateStr);
-        //
-        //// addJavadocTag(innerClass, markAsDoNotDelete);
-        //
-        //topLevelClass.addJavaDocLine(" */");
-        //topLevelClass.addAnnotation("@Table(name = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
-        //topLevelClass.addAnnotation("@Alias(\""
-        //        + toLowerCaseFirstOne(introspectedTable.getTableConfiguration().getDomainObjectName()) + "\")");
-        //topLevelClass.addAnnotation("@ToString");
+        topLevelClass.addImportedType("javax.persistence.Column");
+        topLevelClass.addImportedType("javax.persistence.Id");
+        topLevelClass.addImportedType("javax.persistence.Table");
+        topLevelClass.addImportedType("org.apache.ibatis.type.Alias");
+        topLevelClass.addImportedType("lombok.ToString");
+        if (suppressAllComments) {
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+
+        topLevelClass.addJavaDocLine("/**");
+        sb.append(" * ");
+        sb.append(introspectedTable.getFullyQualifiedTable());
+        topLevelClass.addJavaDocLine(sb.toString());
+
+        sb.setLength(0);
+        sb.append(" * @author ");
+        sb.append(systemPro.getProperty("user.name"));
+        sb.append(" ");
+        sb.append(currentDateStr);
+
+        // addJavadocTag(innerClass, markAsDoNotDelete);
+
+        topLevelClass.addJavaDocLine(" */");
+        topLevelClass.addAnnotation("@Table(name = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
+        topLevelClass.addAnnotation("@Alias(\""
+                + toLowerCaseFirstOne(introspectedTable.getTableConfiguration().getDomainObjectName()) + "\")");
+        topLevelClass.addAnnotation("@ToString");
     }
 
     // 首字母转小写
     public static String toLowerCaseFirstOne(String s) {
-        if (Character.isLowerCase(s.charAt(0)))
+        if (Character.isLowerCase(s.charAt(0))) {
             return s;
-        else
+        } else {
             return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
     }
 
     public void addGeneralMethodAnnotation(Method method, IntrospectedTable introspectedTable,

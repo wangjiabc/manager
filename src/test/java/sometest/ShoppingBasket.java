@@ -1,8 +1,5 @@
 package sometest;
 
-import org.apache.commons.lang.Validate;
-import org.springframework.util.Assert;
-
 import java.util.ArrayList;
 import java.util.List;
 
