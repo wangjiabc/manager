@@ -192,6 +192,12 @@ public class HireDAOImpl extends JdbcDaoSupport implements HireDAO{
 		
 		int month = cal.get(Calendar.MONTH )+1;
 		
+		int end=0;
+		
+		if(chartInfo.getChartMothon()>0){
+			end=chartInfo.getChartMothon();
+		}
+		
 		for(int n=0;n<chartInfo.getChartMothon();n++){
 			
 			HireList hireList=new HireList();
@@ -249,6 +255,20 @@ public class HireDAOImpl extends JdbcDaoSupport implements HireDAO{
 			}
 		
 		}
+		
+		if(chartInfo.getChartEndDate()==null&&chartInfo.getChartMothon()>0){
+			cal.set(year, month-1, cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0); 
+			Date chartEndDate=cal.getTime();
+			ChartInfo chartInfo3=new ChartInfo();
+			chartInfo3.setChartEndDate(chartEndDate);
+			String[] where={"ChartGUID=",chartInfo.getChartGUID()};
+			chartInfo3.setWhere(where);
+			i=UpdateExe.get(this.getJdbcTemplate(), chartInfo3);
+			if (i < 1) {
+	            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+	        }
+		}
+		 
 		
 		return i;
 	}

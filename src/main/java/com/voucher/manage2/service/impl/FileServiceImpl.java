@@ -86,7 +86,7 @@ public class FileServiceImpl implements FileService {
             }).collect(Collectors.toList());
             roomFileMapper.insertList(roomFiles);
         } catch (Exception e) {
-            log.warn("文件入库异常!", e);
+            //log.warn("文件入库异常!", e);
             if (tarFile.exists()) {
                 tarFile.delete();
             }

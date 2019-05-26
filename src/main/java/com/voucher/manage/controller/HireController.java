@@ -24,6 +24,7 @@ import com.voucher.manage.dao.HireDAO;
 import com.voucher.manage.daoModel.ChartInfo;
 import com.voucher.manage.daoModel.ChartRoom;
 import com.voucher.manage.daoModel.Room;
+import com.voucher.manage.tools.MonthDiff;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.sqlserver.context.Connect;
 
@@ -80,9 +81,37 @@ public class HireController {
         String IDNo = MapUtils.getString("IDNo", jsonMap);
 
         String Phone = MapUtils.getString("Phone", jsonMap);
-
-        int month = MapUtils.getInteger("month", jsonMap);
-
+        
+        
+        int month = 0;
+        
+        Date chartBeginDate=null;
+        
+        Date chartEndDate=null;
+        
+        try{
+        	month=MapUtils.getInteger("month", jsonMap);
+        }catch (Exception e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}
+        
+        try{
+        	String sDate=MapUtils.getString("chartBeginDate", jsonMap);
+        	String eDate=MapUtils.getString("chartEndDate", jsonMap);
+        	
+        	DateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+        	
+        	chartBeginDate=format.parse(sDate);
+        	chartEndDate=format.parse(eDate);
+        	
+        	month=MonthDiff.get(chartBeginDate, chartEndDate);
+        	
+        }catch (Exception e) {
+			// TODO: handle exception
+        	e.printStackTrace();
+		}
+        
         Integer augment = null;
 
         Float increment = null;
@@ -111,8 +140,17 @@ public class HireController {
 
         chartInfo.setChartGUID(ChartGUID);
         chartInfo.setContractNo(contractNo);
-        chartInfo.setConcludeDate(date);
-        chartInfo.setChartBeginDate(date);
+		if (chartBeginDate!= null) {
+			chartInfo.setConcludeDate(chartBeginDate);
+			chartInfo.setChartBeginDate(chartBeginDate);
+		}else{
+			chartInfo.setConcludeDate(date);
+			chartInfo.setChartBeginDate(date);
+		}
+		if(chartEndDate!=null){
+			chartInfo.setChartEndDate(chartEndDate);
+		}
+		
         chartInfo.setChartMothon(month);
         chartInfo.setIsHistory(0);
 

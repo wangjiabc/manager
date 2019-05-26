@@ -91,7 +91,7 @@ public class MenuServiceImpl implements MenuService {
         menu.setParentGuid(MapUtils.getString("parentGuid", jsonMap));
 
         Integer result = menuMapper.insert(menu);
-        log.debug(String.valueOf(result));
+        //log.debug(String.valueOf(result));
         return result;
     }
 
@@ -100,7 +100,7 @@ public class MenuServiceImpl implements MenuService {
         MenuDTO menu = new MenuDTO();
         menu.setGuid(MapUtils.getString("guid", jsonMap));
         Integer result = menuMapper.delete(menu);
-        log.debug(String.valueOf(result));
+        //log.debug(String.valueOf(result));
         return result;
     }
 
@@ -114,7 +114,7 @@ public class MenuServiceImpl implements MenuService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("guid", menu.getGuid());
         Integer result = menuMapper.updateByExampleSelective(menu, example);
-        log.debug(String.valueOf(result));
+        //log.debug(String.valueOf(result));
         return result;
     }
 
