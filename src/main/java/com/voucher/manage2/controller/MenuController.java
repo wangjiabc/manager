@@ -25,11 +25,11 @@ public class MenuController {
     private MenuService menuService;
 
     @RequestMapping(value = "/selectFileMenu")
-    public Object selectMenu(String roomGuid) {
-        return menuService.selectMenu(MenuConstant.FILE_ROOT_GUID,roomGuid);
+    public Object selectMenu(String[] roomGuids) {
+        return menuService.selectMenu(MenuConstant.FILE_ROOT_GUID, roomGuids);
     }
 
-    @RequestMapping(value = "/insertMenu")
+    @RequestMapping(value = "/insertFileMenu")
     public Integer insertMenu(@RequestBody Map<String, Object> jsonMap) {
         log.debug("insertMenu===" + jsonMap);
         return menuService.insertMenu(jsonMap);

@@ -70,7 +70,7 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
             return body;
         }
         //parameterType.
-        log.info("++++++++++" + parameterType);
+        log.debug("++++++++++" + parameterType);
         //if (returnType.getParameterType() instanceof ErrorMessageBean)
         // TODO Auto-generated method stub
         return MessageBean.getMessageBean(ExceptionMessage.SUCCESS, body);

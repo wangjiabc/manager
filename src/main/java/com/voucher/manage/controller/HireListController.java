@@ -177,7 +177,7 @@ public class HireListController {
                 selects.put(i++, MapUtils.getString("value", domain));
             }
         }
-        return currentDao.addField(tableName, fieldName, type, selects);
+        return currentDao.addField(tableName, fieldName, type, selects,null);
     }
 
     @RequestMapping("delField")

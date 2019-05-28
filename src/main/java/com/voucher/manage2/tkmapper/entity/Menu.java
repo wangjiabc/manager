@@ -19,6 +19,9 @@ public class Menu {
     @Column(name = "[root_guid]")
     private String rootGuid;
 
+    @Column(name = "[required]")
+    private Boolean required;
+
     /**
      * @return guid
      */
@@ -87,5 +90,19 @@ public class Menu {
      */
     public void setRootGuid(String rootGuid) {
         this.rootGuid = rootGuid == null ? null : rootGuid.trim();
+    }
+
+    /**
+     * @return required
+     */
+    public Boolean getRequired() {
+        return required;
+    }
+
+    /**
+     * @param required
+     */
+    public void setRequired(Boolean required) {
+        this.required = required;
     }
 }

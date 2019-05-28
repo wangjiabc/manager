@@ -3,7 +3,7 @@ package com.voucher.manage2.service;
 import java.util.Map;
 
 public interface MenuService {
-    Object selectMenu(String parentGuid, String roomGuid);
+    Object selectMenu(String parentGuid, String[] roomGuids);
 
     Integer insertMenu(Map<String, Object> jsonMap);
 

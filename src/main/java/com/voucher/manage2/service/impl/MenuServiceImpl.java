@@ -26,12 +26,12 @@ public class MenuServiceImpl implements MenuService {
     private RoomFileMapper roomFileMapper;
 
     @Override
-    public Object selectMenu(String parentGuid, String roomGuid) {
+    public Object selectMenu(String parentGuid, String[] roomGuids) {
         //List<Object> menuTree = new ArrayList<>();
         MenuDTO menuDTO = new MenuDTO();
         //总共有几级菜单
-        //将菜单an等级分类
-        Map<String, List<MenuDTO>> levelMap = new TreeMap<>();
+        //将菜单按parentGuid分类
+        Map<String, List<MenuDTO>> levelMap = new HashMap(32);
         MenuDTO menuCondition = new MenuDTO();
         menuCondition.setRootGuid(parentGuid);
         List<MenuDTO> menus = menuMapper.select(menuCondition);
@@ -43,10 +43,11 @@ public class MenuServiceImpl implements MenuService {
             }
             menuList.add(menu);
         }
+        //所有菜单
+        Example example = new Example(RoomFile.class);
+        example.createCriteria().andIn("roomGuid", Arrays.asList(roomGuids));
+        List<RoomFile> roomFiles = roomFileMapper.selectByExample(example);
         //文件按菜单分类
-        RoomFile roomFileCondition = new RoomFile();
-        roomFileCondition.setRoomGuid(roomGuid);
-        List<RoomFile> roomFiles = roomFileMapper.select(roomFileCondition);
         //所有分类下的文件
         Map<String, List<Map<String, String>>> menuFileMap = new HashMap<>(16);
         for (RoomFile roomFile : roomFiles) {
@@ -89,33 +90,25 @@ public class MenuServiceImpl implements MenuService {
         menu.setRootGuid(MapUtils.getString("rootGuid", jsonMap));
         menu.setName(MapUtils.getString("name", jsonMap));
         menu.setParentGuid(MapUtils.getString("parentGuid", jsonMap));
-
-        Integer result = menuMapper.insert(menu);
-        log.debug(String.valueOf(result));
-        return result;
+        menu.setRequired(MapUtils.getBoole("required", jsonMap));
+        return menuMapper.insert(menu);
     }
 
     @Override
     public Integer delMenu(Map<String, Object> jsonMap) {
         MenuDTO menu = new MenuDTO();
         menu.setGuid(MapUtils.getString("guid", jsonMap));
-        Integer result = menuMapper.delete(menu);
-        log.debug(String.valueOf(result));
-        return result;
+        return menuMapper.delete(menu);
     }
 
     @Override
     public Integer updateMenu(Map<String, Object> jsonMap) {
         MenuDTO menu = new MenuDTO();
         menu.setName(MapUtils.getString("name", jsonMap));
-
-        menu.setGuid(MapUtils.getString("guid", jsonMap));
-        Example example = new Example(Menu.class);
+        Example example = new Example(MenuDTO.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("guid", menu.getGuid());
-        Integer result = menuMapper.updateByExampleSelective(menu, example);
-        log.debug(String.valueOf(result));
-        return result;
+        criteria.andEqualTo("guid", MapUtils.getString("guid", jsonMap));
+        return menuMapper.updateByExampleSelective(menu, example);
     }
 
 }

@@ -1,9 +1,9 @@
 package com.voucher.manage2.controller;
 
 import com.google.common.collect.Lists;
-import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.service.FileService;
-import com.voucher.manage2.tkmapper.entity.Menu;
+import com.voucher.manage2.utils.MapUtils;
+import com.voucher.manage2.utils.ObjectUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +37,9 @@ public class FileController {
     public void springUpload(HttpServletRequest request, String[] roomGuids, String menuGuid) {
         List<String> fileNames = new ArrayList<>();
         //检查form中是否有enctype="multipart/form-data"
+        if (ObjectUtils.isEmpty(menuGuid, roomGuids)) {
+            return;
+        }
         if (multipartResolver.isMultipart(request)) {
             //将request变成多部分request
             MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
@@ -54,15 +57,15 @@ public class FileController {
     }
 
     @GetMapping(value = "/download")
-    public ResponseEntity<byte[]> download(String fileName) throws IOException {
+    public ResponseEntity<byte[]> download(String fieldName) throws IOException {
         //从我们的上传文件夹中去取
         //String downloadFilePath = "D:\\userUploadFile\\Files";
         //新建一个文件
-        File file = com.voucher.manage2.utils.FileUtils.getFileByFileName(fileName);
+        File file = com.voucher.manage2.utils.FileUtils.getFileByFileName(fieldName);
         //http头信息
         HttpHeaders headers = new HttpHeaders();
         //设置编码,下载的时的文件名
-        String downloadFileName = new String(fileName.substring(fileName.lastIndexOf("_") + 1).getBytes("UTF-8"), "iso-8859-1");
+        String downloadFileName = new String(fieldName.substring(fieldName.lastIndexOf("_") + 1).getBytes("UTF-8"), "iso-8859-1");
 
         headers.setContentDispositionFormData("attachment", downloadFileName);
 
@@ -74,5 +77,10 @@ public class FileController {
 
     }
 
+    @PostMapping("/delFile")
+    public void delFile(@RequestBody Map<String, Object> jsonMap) {
+        String url = MapUtils.getString("url", jsonMap);
+        fileService.delFile(url.substring(url.lastIndexOf("\\") + 1));
+    }
 
 }

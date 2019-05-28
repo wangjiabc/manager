@@ -32,7 +32,7 @@ public interface CurrentDao {
 
     Integer recycleField(String line_uuid);
 
-    Integer addField(String tableName, String fieldName, Integer type, Map<Integer,String> selectValue);
+    Integer addField(String tableName, String fieldName, Integer filedType, Map<Integer,String> selectValue,Integer roomType);
 
     Integer updateSelect(List<Select> selects);
 

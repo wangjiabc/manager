@@ -10,5 +10,6 @@
     <result column="level" jdbcType="INTEGER" property="level" />
     <result column="parent_guid" jdbcType="VARCHAR" property="parentGuid" />
     <result column="root_guid" jdbcType="VARCHAR" property="rootGuid" />
+    <result column="required" jdbcType="BIT" property="required" />
   </resultMap>
 </mapper>

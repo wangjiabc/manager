@@ -88,7 +88,8 @@ public class RoomController {
     public Integer addField(@RequestBody Map<String, Object> jsonMap) {
         Map<Integer, String> selects = null;
         String fieldName = MapUtils.getString("title", jsonMap);
-        Integer type = MapUtils.getInteger("type", jsonMap);
+        Integer roomType = MapUtils.getInteger("roomType", jsonMap);
+        Integer filedType = MapUtils.getInteger("fieldType", jsonMap);
         List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
         if (ObjectUtils.isNotEmpty(domains)) {
             selects = new HashMap<>();
@@ -98,7 +99,7 @@ public class RoomController {
             }
         }
         //fieldName = "ccc";
-        return currentDao.addField("item_room", fieldName, type, selects);
+        return currentDao.addField("item_room", fieldName, filedType, selects, roomType);
     }
 
     @RequestMapping("delField")
@@ -122,7 +123,7 @@ public class RoomController {
         Map<String, String> domains = (Map<String, String>) jsonMap.get("domains");
         String line_uuid = MapUtils.getString("line_uuid", jsonMap);
         if (ObjectUtils.isEmpty(domains, line_uuid)) {
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
         List<Select> selects = new ArrayList<>();
         for (Map.Entry<String, String> entry : domains.entrySet()) {
@@ -140,7 +141,7 @@ public class RoomController {
         String line_uuid = MapUtils.getString("line_uuid", jsonMap);
         Integer text_length = MapUtils.getInteger("text_length", jsonMap);
         if (ObjectUtils.isEmpty(line_uuid, text_length)) {
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
         return currentDao.updateTextLength("item_room", line_uuid, text_length);
     }

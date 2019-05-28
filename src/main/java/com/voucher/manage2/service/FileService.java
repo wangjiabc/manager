@@ -13,13 +13,9 @@ import java.util.List;
 
 public interface FileService {
 
-    /**
-     * @Author lz
-     * @Description: 上传文件
-     * @param: file, roomGuids
-     * @return: {java.lang.String}
-     * @Date: 2019/5/22 15:32
-     **/
-    String fileUpload(MultipartFile file, List<String> roomGuids,String menuGuid);
+    String fileUpload(MultipartFile file, List<String> roomGuids, String menuGuid);
+
+    void delFile(String fileGuid);
 
 }
+
