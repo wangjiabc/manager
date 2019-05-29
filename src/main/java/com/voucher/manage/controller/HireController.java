@@ -14,6 +14,7 @@ import com.voucher.manage.dao.HiddenDAO;
 import org.apache.regexp.recompile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,7 @@ import com.voucher.manage.daoModel.ChartRoom;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.sqlserver.context.Connect;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/hire")
 public class HireController {

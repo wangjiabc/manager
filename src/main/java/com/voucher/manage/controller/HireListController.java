@@ -9,10 +9,7 @@ import java.util.Map;
 import com.voucher.manage2.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.ChartInfo;
@@ -22,7 +19,7 @@ import com.voucher.manage.daoModel.HirePay;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.sqlserver.context.Connect;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/hireList")
 public class HireListController {

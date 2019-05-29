@@ -53,6 +53,13 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         return true;
     }
 
+    /**
+     * @Author lz
+     * @Description:先进上面的异常
+     * @param: [body, returnType, selectedContentType, selectedConverterType, request, response]
+     * @return: {java.lang.Object}
+     * @Date: 2019/5/29 15:05
+     **/
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
@@ -60,9 +67,6 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         //body是返回值
         //HttpServletRequest req = ((ServletServerHttpRequest) request).getServletRequest();
         Class<?> parameterType = returnType.getParameterType();
-        //if ("com.voucher.manage2.msg.ErrorMessageBean".equals(parameterType.getName())) {
-        //    return body;
-        //}
         if (body instanceof ErrorMessageBean) {
             return body;
         }
