@@ -244,7 +244,7 @@ public class NewSelectSqlJoin {
   			String cwhere=null;
 
   			for(String str : columnWhere){
-
+  				
   				System.out.println("str="+str);
 
   				String REGEX = "del=";
@@ -576,6 +576,7 @@ public class NewSelectSqlJoin {
 	    				String REGEX1 = "region=";
 	    				Pattern pattern1=Pattern.compile(REGEX1);
 	    				Matcher matcher1=pattern1.matcher(str);
+
 	    				if(matcher1.find()){
 	    					bwhere=" "+str+" ";
 	    					bTerm=true;
@@ -603,7 +604,7 @@ public class NewSelectSqlJoin {
 	    			    	cTerm=false;
 	    			    	continue;
 	    				}
-	    				
+
 	    			    if(ii%2==0){
 	    			    	whereCommand.append(str);
 	    			    }else{

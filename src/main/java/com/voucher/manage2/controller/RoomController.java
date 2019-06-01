@@ -24,7 +24,7 @@ import java.util.*;
 @RequestMapping("/room")
 public class RoomController {
 
-    private ApplicationContext applicationContext = new Connect().get();
+    //private ApplicationContext applicationContext = new Connect().get();
     //
     //private CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
 
@@ -33,6 +33,7 @@ public class RoomController {
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
+
         Room room = new Room();
         Integer limit = MapUtils.getInteger("limit", jsonMap);
         room.setLimit(limit);
@@ -56,12 +57,29 @@ public class RoomController {
             searchList.add("neaten_flow =");
             searchList.add(neaten_flow);
         }
+
+        searchList.add("address like");
+        searchList.add("%a%");
+        searchList.add("num like");
+        searchList.add("%c%");
+        searchList.add("item_e2c9d7ec9f3af999925c0ce56831801c like");
+        searchList.add("%2%");
+
         searchList.add("del=");
         searchList.add("false");
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
-        return currentDao.selectTable(room, "guid");
+
+
+        Map map = null;
+        try {
+            map = currentDao.selectTable(room,"guid");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return map;
+
     }
 
     @RequestMapping("updateFieldName")
