@@ -17,6 +17,9 @@ public class HirePay implements Serializable{
     @SQLString(name="HirePayGUID")
 	private String HirePayGUID;
 
+    @SQLString(name="ChartGUID")
+	private String ChartGUID;
+
     @SQLFloat(name="Amount")
 	private Float Amount;
 
@@ -28,6 +31,9 @@ public class HirePay implements Serializable{
 
     @SQLDateTime(name="OptDate")
 	private Date OptDate;
+
+    @SQLInteger(name="del")
+	private Integer del;
 
 	public void setId(Integer id){
 		this.id = id;
@@ -43,6 +49,14 @@ public class HirePay implements Serializable{
 
 	public String getHirePayGUID(){
 		return HirePayGUID;
+	}
+
+	public void setChartGUID(String ChartGUID){
+		this.ChartGUID = ChartGUID;
+	}
+
+	public String getChartGUID(){
+		return ChartGUID;
 	}
 
 	public void setAmount(Float Amount){
@@ -75,6 +89,14 @@ public class HirePay implements Serializable{
 
 	public Date getOptDate(){
 		return OptDate;
+	}
+
+	public void setDel(Integer del){
+		this.del = del;
+	}
+
+	public Integer getDel(){
+		return del;
 	}
 
 

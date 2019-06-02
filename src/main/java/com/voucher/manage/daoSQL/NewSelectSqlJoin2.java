@@ -77,10 +77,15 @@ public class NewSelectSqlJoin2 {
          if(i==0){
           firstTableName=tableName;
           tableName0=firstTableName;
+          String[] joinParameter=joinParameters[s];
+          leftJionTableName=leftJionTableName+" left join [item_"+defaultTable.replace("[", "")+" on " +defaultTable+"."+joinParameter[0]
+        		  +"=[item_"+defaultTable.replace("[", "")+"."+joinParameter[0];
          }else{  
           String[] joinParameter=joinParameters[s];
           leftJionTableName=leftJionTableName+" left join "+tableName+" on " +defaultTable+"."+joinParameter[0]
-        		  +"="+tableName+"."+joinParameter[1];
+        		  +"="+tableName+"."+joinParameter[1]
+        		  +" left join [item_"+tableName.replace("[", "")+" on " +tableName+"."+joinParameter[0]
+        		  +"=[item_"+tableName.replace("[", "")+"."+joinParameter[0];
           tableName0=tableName;
           s++;
          }
@@ -193,12 +198,8 @@ public class NewSelectSqlJoin2 {
              }
         }
         
-        StringBuilder selectCommand = new StringBuilder("SELECT top "+limit);
-                
-        for(String columnDef :columnDefs){
-            selectCommand.append("\n    "+columnDef+",");
-        }
-        
+        StringBuilder selectCommand = new StringBuilder("SELECT top "+limit+" * ");
+                        
         select=selectCommand.substring(0,selectCommand.length()-1)+"\n FROM \n   "+firstTableName+leftJionTableName;
         
         String tableName2="[item_"+tableName.substring(1, tableName.length());
@@ -211,8 +212,6 @@ public class NewSelectSqlJoin2 {
              tableName0=firstTableName;
             }else{  
              String joinParameter=itemjoinParameters[s];
-             leftJionTableName=leftJionTableName+" left join "+tableName2+" on " +defaultTable+"."+joinParameter
-              		  +"="+tableName2+"."+joinParameter;
              tableName0=tableName;
              s++;
             }

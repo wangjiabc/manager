@@ -29,8 +29,8 @@ public class HireList implements Serializable{
     @SQLFloat(name="Hire")
 	private Float Hire;
 
-    @SQLBoolean(name="State")
-	private Boolean State;
+    @SQLInteger(name="State")
+	private Integer State;
 
     @SQLString(name="Operator")
 	private String Operator;
@@ -46,6 +46,9 @@ public class HireList implements Serializable{
 
     @SQLBoolean(name="IsAddHire")
 	private Boolean IsAddHire;
+
+    @SQLInteger(name="del")
+	private Integer del;
 
 	public void setId(Integer id){
 		this.id = id;
@@ -95,11 +98,11 @@ public class HireList implements Serializable{
 		return Hire;
 	}
 
-	public void setState(Boolean State){
+	public void setState(Integer State){
 		this.State = State;
 	}
 
-	public Boolean getState(){
+	public Integer getState(){
 		return State;
 	}
 
@@ -141,6 +144,14 @@ public class HireList implements Serializable{
 
 	public Boolean getIsAddHire(){
 		return IsAddHire;
+	}
+
+	public void setDel(Integer del){
+		this.del = del;
+	}
+
+	public Integer getDel(){
+		return del;
 	}
 
 

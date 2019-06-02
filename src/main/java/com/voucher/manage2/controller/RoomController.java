@@ -2,6 +2,7 @@ package com.voucher.manage2.controller;
 
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
+import com.voucher.manage.tools.MyTestUtil;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
@@ -57,13 +58,11 @@ public class RoomController {
             searchList.add("neaten_flow =");
             searchList.add(neaten_flow);
         }
-
+/*
         searchList.add("address like");
         searchList.add("%a%");
         searchList.add("num like");
         searchList.add("%c%");
-        searchList.add("item_e2c9d7ec9f3af999925c0ce56831801c like");
-        searchList.add("%2%");
 
         searchList.add("del=");
         searchList.add("false");
@@ -71,7 +70,7 @@ public class RoomController {
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
 
-
+*/
         Map map = null;
         try {
             map = currentDao.selectTable(room,"guid");
@@ -107,18 +106,27 @@ public class RoomController {
     @RequestMapping("addField")
     public Integer addField(@RequestBody Map<String, Object> jsonMap) {
         Map<Integer, String> selects = null;
+        System.out.println("jsonMap");
+        MyTestUtil.print(jsonMap);
         String fieldName = MapUtils.getString("title", jsonMap);
-        Integer type = MapUtils.getInteger("type", jsonMap);
-        List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
-        if (ObjectUtils.isNotEmpty(domains)) {
-            selects = new HashMap<>();
-            int i = 1;
-            for (LinkedHashMap<String, Object> domain : domains) {
-                selects.put(i++, MapUtils.getString("value", domain));
-            }
-        }
+        Integer fieldType = MapUtils.getInteger("fieldType", jsonMap);
+		try {
+			List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
+			System.out.println("domains");
+			MyTestUtil.print(domains);
+			if (ObjectUtils.isNotEmpty(domains)) {
+				selects = new HashMap<>();
+				int i = 1;
+				for (LinkedHashMap<String, Object> domain : domains) {
+					selects.put(i++, MapUtils.getString("value", domain));
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
         //fieldName = "ccc";
-        return currentDao.addField("item_room", fieldName, type, selects);
+        return currentDao.addField("item_room", fieldName, fieldType, selects);
     }
 
     @RequestMapping("delField")

@@ -56,6 +56,15 @@ public class ChartInfo implements Serializable{
     @SQLInteger(name="IsHistory")
 	private Integer IsHistory;
 
+    @SQLInteger(name="IsRelet")
+	private Integer IsRelet;
+
+    @SQLString(name="ReletGUID")
+	private String ReletGUID;
+
+    @SQLInteger(name="del")
+	private Integer del;
+
 	public void setId(Integer id){
 		this.id = id;
 	}
@@ -174,6 +183,30 @@ public class ChartInfo implements Serializable{
 
 	public Integer getIsHistory(){
 		return IsHistory;
+	}
+
+	public void setIsRelet(Integer IsRelet){
+		this.IsRelet = IsRelet;
+	}
+
+	public Integer getIsRelet(){
+		return IsRelet;
+	}
+
+	public void setReletGUID(String ReletGUID){
+		this.ReletGUID = ReletGUID;
+	}
+
+	public String getReletGUID(){
+		return ReletGUID;
+	}
+
+	public void setDel(Integer del){
+		this.del = del;
+	}
+
+	public Integer getDel(){
+		return del;
 	}
 
 
