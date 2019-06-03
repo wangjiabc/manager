@@ -70,8 +70,8 @@ public class MenuController {
 
 
     @RequestMapping(value = "/delLeafMenu")
-    public Integer delLeafMenu(String[] leafMenu) {
-        return menuService.delLeafMenu(Arrays.asList(leafMenu));
+    public Integer delLeafMenu(String[] leafMenus) {
+        return menuService.delLeafMenu(Arrays.asList(leafMenus));
     }
 
     @RequestMapping(value = "/updateMenu")
