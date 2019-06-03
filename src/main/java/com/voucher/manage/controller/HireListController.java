@@ -19,7 +19,7 @@ import com.voucher.manage.daoModel.HirePay;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.sqlserver.context.Connect;
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/hireList")
 public class HireListController {

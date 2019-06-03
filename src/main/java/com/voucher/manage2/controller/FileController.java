@@ -1,9 +1,14 @@
 package com.voucher.manage2.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Lists;
+import com.voucher.manage2.exception.FileUploadException;
+import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.FileService;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +30,7 @@ import java.util.*;
  * @description 文件控制器
  * @date 2019/5/20
  */
+@Slf4j
 @RestController
 @RequestMapping("file")
 public class FileController {
@@ -35,7 +41,6 @@ public class FileController {
 
     @PostMapping("upload")
     public void springUpload(HttpServletRequest request, String[] roomGuids, String menuGuid) {
-        List<String> fileNames = new ArrayList<>();
         //检查form中是否有enctype="multipart/form-data"
         if (ObjectUtils.isEmpty(menuGuid, roomGuids)) {
             return;
@@ -50,7 +55,7 @@ public class FileController {
                 //一次遍历所有文件
                 MultipartFile file = multiRequest.getFile(iter.next().toString());
                 if (file != null) {
-                    fileNames.add(fileService.fileUpload(file, Lists.newArrayList(roomGuids), menuGuid));
+                    fileService.fileUpload(file, Lists.newArrayList(roomGuids), menuGuid);
                 }
             }
         }
@@ -83,4 +88,45 @@ public class FileController {
         fileService.delFile(url.substring(url.lastIndexOf("\\") + 1));
     }
 
+    @RequestMapping("/hireUpload")
+    public void hireUpload(HttpServletRequest request, String hireGuid, String menuGuid) {
+        //检查form中是否有enctype="multipart/form-data"
+        if (ObjectUtils.isEmpty(menuGuid, hireGuid)) {
+            return;
+        }
+        if (multipartResolver.isMultipart(request)) {
+            //将request变成多部分request
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            //获取multiRequest 中所有的文件名
+            Iterator iter = multiRequest.getFileNames();
+            while (iter.hasNext()) {
+                //一次遍历所有文件
+                MultipartFile file = multiRequest.getFile(iter.next().toString());
+                if (file != null) {
+                    String fileName = IdUtil.simpleUUID() + "_" + file.getOriginalFilename();
+                    File tarFile = com.voucher.manage2.utils.FileUtils.getFileByFileName(fileName);
+                    //发生io异常则不存redis
+                    try {
+                        file.transferTo(tarFile);
+                        //TODO
+                        JedisUtil0.lpushString(hireGuid, fileName);
+                    } catch (IOException e) {
+                        log.error("文件存入失败", new FileUploadException(fileName, e));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @Author lz
+     * @Description:出租的图片回显
+     * @return: {void}
+     * @Date: 2019/5/31 10:22
+     **/
+    @GetMapping("/hireUpload")
+    public String hireEcho(String hireGuid) {
+        //TODO
+        return JedisUtil0.bgetString(60 * 15, hireGuid).get(0);
+    }
 }

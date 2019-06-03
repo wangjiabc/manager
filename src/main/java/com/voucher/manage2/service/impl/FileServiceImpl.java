@@ -47,16 +47,15 @@ public class FileServiceImpl implements FileService {
     @Transactional(rollbackFor = Exception.class)
     public String fileUpload(MultipartFile file, List<String> roomGuids, String menuGuid) {
 
-        String fileGuid = IdUtil.simpleUUID();
-        String fileName = fileGuid + "_" + file.getOriginalFilename();
         File tarFile = null;
+        String fileName = IdUtil.simpleUUID() + "_" + file.getOriginalFilename();
         try {
             //文件后缀名
             String suffixName = FileTypeUtil.getType(file.getInputStream());
             //文件类型
             Integer fileType = FileUtils.getFileType(suffixName);
             //保存
-            //文件全对象名
+            //将保存的文件对象
             tarFile = FileUtils.getFileByFileName(fileName);
             //System.out.println("+++++++++" + tarPath);
             file.transferTo(tarFile);
@@ -82,7 +81,7 @@ public class FileServiceImpl implements FileService {
             }).collect(Collectors.toList());
             roomFileMapper.insertList(roomFiles);
         } catch (Exception e) {
-            log.warn("文件入库异常!", e);
+            //log.warn("文件入库异常!", e);
             if (tarFile.exists()) {
                 tarFile.delete();
             }

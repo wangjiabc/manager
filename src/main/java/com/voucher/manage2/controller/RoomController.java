@@ -11,6 +11,7 @@ import com.voucher.sqlserver.context.Connect;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +23,6 @@ import java.util.*;
 @RequestMapping("/room")
 public class RoomController {
 
-    private ApplicationContext applicationContext = new Connect().get();
-    //
-    //private CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
 
     @Autowired
     private CurrentDao currentDao;
@@ -40,7 +38,7 @@ public class RoomController {
         String searchContent = query.get("searchContent").toString();
         String state = query.get("state").toString();
         String neaten_flow = query.get("neaten_flow").toString();
-        //String[] where = {"state = ", state, "neaten_flow = ", neaten_flow, "address like ", "%" + searchContent + "%"};
+
         List<String> searchList = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(searchContent)) {
             searchList.add("address like");

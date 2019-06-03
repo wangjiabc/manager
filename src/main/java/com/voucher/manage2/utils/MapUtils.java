@@ -36,6 +36,10 @@ public final class MapUtils {
         return Long.valueOf(getString(key, map));
     }
 
+    public static final <K, V> Float getFloat(K key, Map<K, V> map) {
+        return Float.valueOf(getString(key, map));
+    }
+
     public static final <K, V> Boolean getBoole(K key, Map<K, V> map) {
         return Boolean.valueOf(getString(key, map));
     }

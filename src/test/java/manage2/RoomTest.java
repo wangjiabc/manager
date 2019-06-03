@@ -47,14 +47,14 @@ public class RoomTest {
     }
 
     @Test
-    public void addExcel() throws IOException, BiffException {
+    public void addExcel() throws IOException, BiffException {/*
         List<Object> list = new ArrayList<>();
         String fileName = "C:\\Users\\Administrator\\Desktop\\全市零售户";
         File[] files = new File(fileName).listFiles();
         for (File file : files) {
             getEexcl(file.getAbsolutePath(), list);
         }
-        System.out.println(list.size());
+        System.out.println(list.size());*/
     }
 
     private <T> void getEexcl(String fileName, List<T> list) throws IOException, BiffException {

@@ -67,6 +67,9 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         //body是返回值
         //HttpServletRequest req = ((ServletServerHttpRequest) request).getServletRequest();
         Class<?> parameterType = returnType.getParameterType();
+        //if ("com.voucher.manage2.msg.ErrorMessageBean".equals(parameterType.getName())) {
+        //    return body;
+        //}
         if (body instanceof ErrorMessageBean) {
             return body;
         }
