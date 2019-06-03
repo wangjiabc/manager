@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -68,10 +69,9 @@ public class MenuController {
     }
 
 
-    @RequestMapping(value = "/delMenu")
-    public Integer delMenu(@RequestBody Map<String, Object> jsonMap) {
-        log.debug("insertMenu===" + jsonMap);
-        return menuService.delMenu(jsonMap);
+    @RequestMapping(value = "/delLeafMenu")
+    public Integer delLeafMenu(String[] leafMenu) {
+        return menuService.delLeafMenu(Arrays.asList(leafMenu));
     }
 
     @RequestMapping(value = "/updateMenu")

@@ -11,9 +11,9 @@ public interface MenuService {
 
     Integer insertMenu(MenuDTO menu);
 
-    Integer delMenu(Map<String, Object> jsonMap);
-
     Integer updateMenu(Map<String, Object> jsonMap);
 
     List<MenuDTO> selectAllRootMenu();
+
+    Integer delLeafMenu(List<String> leafGuids);
 }

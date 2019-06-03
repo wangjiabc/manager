@@ -22,6 +22,9 @@ public class Menu {
     @Column(name = "[required]")
     private Boolean required;
 
+    @Column(name = "[del]")
+    private Boolean del;
+
     /**
      * @return guid
      */
@@ -104,5 +107,13 @@ public class Menu {
      */
     public void setRequired(Boolean required) {
         this.required = required;
+    }
+
+    public Boolean getDel() {
+        return del;
+    }
+
+    public void setDel(Boolean del) {
+        this.del = del;
     }
 }
