@@ -2,16 +2,15 @@ package com.voucher.manage2.controller;
 
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
+import com.voucher.manage2.service.RoomService;
+import com.voucher.manage2.tkmapper.entity.RoomIn;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
-import com.voucher.sqlserver.context.Connect;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+//@CrossOrigin(origins = "http://192.168.10.100:9527")
 @RestController
 @RequestMapping("/room")
 public class RoomController {
@@ -26,9 +26,12 @@ public class RoomController {
 
     @Autowired
     private CurrentDao currentDao;
+    @Autowired
+    private RoomService roomService;
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
+
         Room room = new Room();
         Integer limit = MapUtils.getInteger("limit", jsonMap);
         room.setLimit(limit);
@@ -142,6 +145,24 @@ public class RoomController {
             return ResultConstant.FAILED;
         }
         return currentDao.updateTextLength("item_room", line_uuid, text_length);
+    }
+
+    @RequestMapping("roomIn")
+    public Integer RoomIn(@RequestBody Map<String, Object> jsonMap) {
+        List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
+        if (ObjectUtils.isEmpty(roomGuids)) {
+            return ResultConstant.FAILED;
+        }
+        List<RoomIn> roomIns = new ArrayList<>();
+        for (String roomGuid : roomGuids) {
+            RoomIn roomIn = new RoomIn();
+            roomIn.setDate(MapUtils.getLong("date", jsonMap));
+            roomIn.setMoney(MapUtils.getDouble("money", jsonMap));
+            roomIn.setSource(MapUtils.getString("source", jsonMap));
+            roomIn.setRemark(MapUtils.getString("remark", jsonMap));
+            roomIn.setRoomGuid(roomGuid);
+        }
+        return roomService.roomIn(roomIns);
     }
 
     @RequestMapping("test")

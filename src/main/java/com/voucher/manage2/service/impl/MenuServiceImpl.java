@@ -34,6 +34,7 @@ public class MenuServiceImpl implements MenuService {
         Map<String, List<MenuDTO>> levelMap = new HashMap(32);
         MenuDTO menuCondition = new MenuDTO();
         menuCondition.setRootGuid(rootMenu.getGuid());
+        menuCondition.setDel(false);
         List<MenuDTO> menus = menuMapper.select(menuCondition);
         for (MenuDTO menu : menus) {
             List<MenuDTO> menuList = levelMap.get(menu.getParentGuid());
@@ -93,13 +94,6 @@ public class MenuServiceImpl implements MenuService {
         return menuMapper.insertSelective(menu);
     }
 
-    //@Override
-    //public Integer delMenu(Map<String, Object> jsonMap) {
-    //    MenuDTO menu = new MenuDTO();
-    //    menu.setGuid(MapUtils.getString("guid", jsonMap));
-    //    return menuMapper.delete(menu);
-    //}
-
     @Override
     public Integer updateMenu(Map<String, Object> jsonMap) {
         MenuDTO menu = new MenuDTO();
@@ -125,13 +119,6 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Integer delLeafMenu(List<String> leafGuids) {
         if (ObjectUtils.isNotEmpty(leafGuids)) {
-            //List<MenuDTO> leafMenu = leafGuids.stream().map(e ->
-            //{
-            //    MenuDTO menuDTO = new MenuDTO();
-            //    menuDTO.setGuid(e);
-            //    menuDTO.setDel(true);
-            //    return menuDTO;
-            //}).collect(Collectors.toList());
             Example example = new Example(MenuDTO.class);
             example.createCriteria().andIn("guid", leafGuids);
             MenuDTO menuDTO = new MenuDTO();

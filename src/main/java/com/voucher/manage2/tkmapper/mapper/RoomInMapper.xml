@@ -5,10 +5,12 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="guid" jdbcType="VARCHAR" property="guid" />
+    <result column="room_guid" jdbcType="VARCHAR" property="roomGuid" />
     <result column="date" jdbcType="BIGINT" property="date" />
     <result column="source" jdbcType="VARCHAR" property="source" />
     <result column="money" jdbcType="DOUBLE" property="money" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="type_guid" jdbcType="VARCHAR" property="typeGuid" />
+    <result column="guid" jdbcType="VARCHAR" property="guid" />
   </resultMap>
 </mapper>

@@ -4,8 +4,8 @@ import javax.persistence.*;
 
 @Table(name = "[room_out]")
 public class RoomOut {
-    @Column(name = "[guid]")
-    private String guid;
+    @Column(name = "[room_guid]")
+    private String roomGuid;
 
     @Column(name = "[date]")
     private Long date;
@@ -19,18 +19,21 @@ public class RoomOut {
     @Column(name = "[remark]")
     private String remark;
 
+    @Column(name = "[guid]")
+    private String guid;
+
     /**
-     * @return guid
+     * @return room_guid
      */
-    public String getGuid() {
-        return guid;
+    public String getRoomGuid() {
+        return roomGuid;
     }
 
     /**
-     * @param guid
+     * @param roomGuid
      */
-    public void setGuid(String guid) {
-        this.guid = guid == null ? null : guid.trim();
+    public void setRoomGuid(String roomGuid) {
+        this.roomGuid = roomGuid == null ? null : roomGuid.trim();
     }
 
     /**
@@ -87,5 +90,19 @@ public class RoomOut {
      */
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    /**
+     * @return guid
+     */
+    public String getGuid() {
+        return guid;
+    }
+
+    /**
+     * @param guid
+     */
+    public void setGuid(String guid) {
+        this.guid = guid == null ? null : guid.trim();
     }
 }

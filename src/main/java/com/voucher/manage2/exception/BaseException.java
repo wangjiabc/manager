@@ -23,4 +23,12 @@ public class BaseException extends RuntimeException {
     public BaseException(String msg, Throwable cause) {
         super(msg, cause);
     }
+
+    public static BaseException getDefault(Throwable e) {
+        return new BaseException(ExceptionMessage.EXCEPTION, e);
+    }
+
+    public static BaseException getDefault() {
+        return new BaseException(ExceptionMessage.EXCEPTION);
+    }
 }

@@ -1,12 +1,12 @@
 package com.voucher.manage2.controller;
 
 import cn.hutool.core.util.IdUtil;
-import com.voucher.manage2.constant.MenuConstant;
+import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.dto.MenuDTO;
 import com.voucher.manage2.service.MenuService;
-import com.voucher.manage2.tkmapper.entity.Menu;
 import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.MapUtils;
+import com.voucher.manage2.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,9 +31,12 @@ public class MenuController {
     private MenuService menuService;
 
     @RequestMapping(value = "/selectFileMenu")
-    public Object selectMenu(String[] roomGuids) {
+    public Object selectMenu(String[] roomGuids, String rootGuid) {
+        if (ObjectUtils.isEmpty(rootGuid)) {
+            return ResultConstant.FAILED;
+        }
         MenuDTO menuDTO = new MenuDTO();
-        menuDTO.setGuid(MenuConstant.FILE_ROOT_GUID);
+        menuDTO.setGuid(rootGuid);
         return menuService.selectMenu(menuDTO, roomGuids);
     }
 
@@ -52,7 +54,7 @@ public class MenuController {
         menu.setRootGuid(MapUtils.getString("rootGuid", jsonMap));
         menu.setName(MapUtils.getString("name", jsonMap));
         menu.setParentGuid(MapUtils.getString("parentGuid", jsonMap));
-        menu.setRequired(MapUtils.getBoole("required", jsonMap));
+        menu.setRequired(MapUtils.getBoolean("required", jsonMap));
         return menuService.insertMenu(menu);
     }
 
@@ -70,8 +72,9 @@ public class MenuController {
 
 
     @RequestMapping(value = "/delLeafMenu")
-    public Integer delLeafMenu(String[] leafMenus) {
-        return menuService.delLeafMenu(Arrays.asList(leafMenus));
+    public Integer delLeafMenu(@RequestBody Map<String, Object> jsonMap) {
+
+        return menuService.delLeafMenu((List<String>) jsonMap.get("leafMenus"));
     }
 
     @RequestMapping(value = "/updateMenu")

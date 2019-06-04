@@ -4,8 +4,8 @@ import javax.persistence.*;
 
 @Table(name = "[room_in]")
 public class RoomIn {
-    @Column(name = "[guid]")
-    private String guid;
+    @Column(name = "[room_guid]")
+    private String roomGuid;
 
     @Column(name = "[date]")
     private Long date;
@@ -19,18 +19,24 @@ public class RoomIn {
     @Column(name = "[remark]")
     private String remark;
 
+    @Column(name = "[type_guid]")
+    private String typeGuid;
+
+    @Column(name = "[guid]")
+    private String guid;
+
     /**
-     * @return guid
+     * @return room_guid
      */
-    public String getGuid() {
-        return guid;
+    public String getRoomGuid() {
+        return roomGuid;
     }
 
     /**
-     * @param guid
+     * @param roomGuid
      */
-    public void setGuid(String guid) {
-        this.guid = guid == null ? null : guid.trim();
+    public void setRoomGuid(String roomGuid) {
+        this.roomGuid = roomGuid == null ? null : roomGuid.trim();
     }
 
     /**
@@ -87,5 +93,33 @@ public class RoomIn {
      */
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    /**
+     * @return type_guid
+     */
+    public String getTypeGuid() {
+        return typeGuid;
+    }
+
+    /**
+     * @param typeGuid
+     */
+    public void setTypeGuid(String typeGuid) {
+        this.typeGuid = typeGuid == null ? null : typeGuid.trim();
+    }
+
+    /**
+     * @return guid
+     */
+    public String getGuid() {
+        return guid;
+    }
+
+    /**
+     * @param guid
+     */
+    public void setGuid(String guid) {
+        this.guid = guid == null ? null : guid.trim();
     }
 }
