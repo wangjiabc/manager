@@ -33,4 +33,9 @@ public class CommonUtils {
         //TODO
         return null;
     }
+
+    public static String getCurrentUserName() {
+        //TODO
+        return null;
+    }
 }

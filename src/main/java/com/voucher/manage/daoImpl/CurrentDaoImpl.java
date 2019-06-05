@@ -11,6 +11,9 @@ import com.voucher.manage.daoSQL.*;
 import com.voucher.manage.daoSQL.annotations.DBTable;
 import com.voucher.manage.tools.Md5;
 import com.voucher.manage.tools.MyTestUtil;
+import com.voucher.manage2.exception.BaseException;
+import com.voucher.manage2.msg.ErrorMessageBean;
+import com.voucher.manage2.msg.ExceptionMessage;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.aop.interceptor.annotation.TimeConsume;
 import com.voucher.manage2.constant.ResultConstant;
@@ -24,12 +27,15 @@ import com.voucher.manage2.utils.SpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import tk.mybatis.mapper.entity.Example;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
@@ -199,17 +205,21 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             }
         }
 
+        String REGEX = "item_";
+        Pattern pattern = Pattern.compile(REGEX);
+
         for (Table_alias table_alias1 : aliasList) {
             Map<String, Object> dynTitleMap = new HashMap<>(8);
             String line_uuid = table_alias1.getLine_uuid();
             String table_name = table_alias1.getTable_name();
             dynTitleMap.put("field", line_uuid);
             dynTitleMap.put("title", table_alias1.getLine_alias());
-            dynTitleMap.put("fieldType", table_alias1.getRow_type());
+            dynTitleMap.put("rowType", table_alias1.getRow_type());
             dynTitleMap.put("roomType", table_alias1.getRoom_type());
-            if ("room".equals(table_name)) {
+            Matcher matcher = pattern.matcher(table_name);
+            if (!matcher.find()) {
                 fixedTitleList.add(dynTitleMap);
-            } else if ("item_room".equals(table_name)) {
+            } else {
                 Map<Integer, String> domain = domains.get(line_uuid);
                 Object text_length = dynLineInfoMap.get(line_uuid);
                 if (ObjectUtils.isNotEmpty(text_length)) {
@@ -334,6 +344,9 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
                 }
             }
 
+            String REGEX = "item_";
+            Pattern pattern = Pattern.compile(REGEX);
+
             for (Table_alias table_alias1 : aliasList) {
                 Map<String, Object> dynTitleMap = new HashMap<>();
                 String line_uuid = table_alias1.getLine_uuid();
@@ -341,17 +354,16 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
                 dynTitleMap.put("field", line_uuid);
                 dynTitleMap.put("title", table_alias1.getLine_alias());
                 dynTitleMap.put("type", table_alias1.getRow_type());
-                if ("room".equals(table_name)) {
+                Matcher matcher = pattern.matcher(table_name);
+                if (!matcher.find()) {
                     fixedTitleList.add(dynTitleMap);
-                } else if ("item_room".equals(table_name)) {
+                } else {
                     Map<Integer, String> domain = domains.get(line_uuid);
                     Object text_length = dynLineInfoMap.get(line_uuid);
-                    if (ObjectUtils.isNotEmpty(text_length)) {
+                    if (ObjectUtils.isNotEmpty(text_length))
                         dynTitleMap.put("text_length", text_length);
-                    }
-                    if (ObjectUtils.isNotEmpty(domains)) {
+                    if (ObjectUtils.isNotEmpty(domains))
                         dynTitleMap.put("domains", domain);
-                    }
                     dynTitleList.add(dynTitleMap);
                 }
 
@@ -455,28 +467,46 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     public Integer updateItmeTable(Map<String, Object> roomMap) throws InvocationTargetException, IllegalAccessException {
         Room room = new Room();
         BeanUtils.populate(room, roomMap);
-        String[] where = {"id=", room.getId() + ""};
-        room.setWhere(where);
+        String[] where = {"guid=", room.getGuid() + ""};
         room.setId(null);
+        room.setGuid(null);
+        room.setAsset_check_date(null);
+        room.setHidden_check_date(null);
+        room.setWhere(where);
+        MyTestUtil.print(room);
         Integer upNum = UpdateExe.get(this.getJdbcTemplate(), room);
         if (upNum != 1) {
-            return ResultConstant.FAILED;
+            throw BaseException.getDefault();
         }
         StringBuffer sqlBuf = new StringBuffer(100);
         sqlBuf.append("update item_room set ");
+        boolean isnotempty = false;
         roomMap.forEach((k, v) -> {
             if (k.startsWith("item") && ObjectUtils.isNotEmpty(k, v)) {
+                System.out.println(k + "='" + v + "',");
                 sqlBuf.append(k + "='" + v + "',");
             }
         });
-        sqlBuf.deleteCharAt(sqlBuf.lastIndexOf(","));
-        sqlBuf.append(" where guid = '" + room.getGuid() + "'");
+        try {
+            sqlBuf.deleteCharAt(sqlBuf.lastIndexOf(","));
+            sqlBuf.append("where guid='" + MapUtils.getString("guid", roomMap) + "'");
+            isnotempty = true;
+        } catch (Exception e) {
+            //e.printStackTrace();
+            throw BaseException.getDefault(e);
+        }
 
         //String sql = " update " + tableName + " set " + line_uuid + "=" + value + " where guid=" + guid;
 
         //int i = this.getJdbcTemplate().update(sql);
         //return i;
-        return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
+        //return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
+        if (isnotempty) {
+            return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
+        } else {
+            return ResultConstant.SUCCESS;
+        }
+
     }
 
     @Override

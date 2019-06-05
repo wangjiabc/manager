@@ -17,7 +17,7 @@ public class DoGenerator {
     private static Configuration config;
     private static List<String> warnings;
     private static Context context;
-    private static String[] tableNames = {"room_in", "room_out","room_log"};
+    private static String[] tableNames = {"room"};
 
     static {
         warnings = new ArrayList<>();

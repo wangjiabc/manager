@@ -1,15 +1,18 @@
 package com.voucher.manage2.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage2.service.RoomService;
 import com.voucher.manage2.tkmapper.entity.RoomIn;
+import com.voucher.manage2.tkmapper.entity.RoomOut;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-//@CrossOrigin(origins = "http://192.168.10.100:9527")
 @RestController
 @RequestMapping("/room")
 public class RoomController {
@@ -148,21 +150,47 @@ public class RoomController {
     }
 
     @RequestMapping("roomIn")
-    public Integer RoomIn(@RequestBody Map<String, Object> jsonMap) {
+    public Integer RoomIn(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
         if (ObjectUtils.isEmpty(roomGuids)) {
-            return ResultConstant.FAILED;
+            throw BaseException.getDefault();
         }
         List<RoomIn> roomIns = new ArrayList<>();
         for (String roomGuid : roomGuids) {
             RoomIn roomIn = new RoomIn();
-            roomIn.setDate(MapUtils.getLong("date", jsonMap));
-            roomIn.setMoney(MapUtils.getDouble("money", jsonMap));
-            roomIn.setSource(MapUtils.getString("source", jsonMap));
-            roomIn.setRemark(MapUtils.getString("remark", jsonMap));
+            BeanUtils.populate(roomIn, jsonMap);
+            //roomIn.setDate(MapUtils.getLong("date", jsonMap));
+            //roomIn.setMoney(MapUtils.getDouble("money", jsonMap));
+            //roomIn.setSource(MapUtils.getString("source", jsonMap));
+            //roomIn.setRemark(MapUtils.getString("remark", jsonMap));
+            //roomIn.setTypeGuid(MapUtils.getString("type", jsonMap));
+            roomIn.setGuid(IdUtil.simpleUUID());
             roomIn.setRoomGuid(roomGuid);
+            roomIns.add(roomIn);
         }
         return roomService.roomIn(roomIns);
+    }
+
+    @RequestMapping("roomOut")
+    public Integer roomOut(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
+        List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
+        if (ObjectUtils.isEmpty(roomGuids)) {
+            throw BaseException.getDefault();
+        }
+        List<RoomOut> roomOuts = new ArrayList<>();
+        for (String roomGuid : roomGuids) {
+            RoomOut roomOut = new RoomOut();
+            BeanUtils.populate(roomOut, jsonMap);
+            //roomOut.setDate(MapUtils.getLong("date", jsonMap));
+            //roomOut.setMoney(MapUtils.getDouble("money", jsonMap));
+            //roomOut.setDestination(MapUtils.getString("destination", jsonMap));
+            //roomOut.setRemark(MapUtils.getString("remark", jsonMap));
+            //roomOut.setTypeGuid(MapUtils.getString("type", jsonMap));
+            roomOut.setGuid(IdUtil.simpleUUID());
+            roomOut.setRoomGuid(roomGuid);
+            roomOuts.add(roomOut);
+        }
+        return roomService.roomOut(roomOuts);
     }
 
     @RequestMapping("test")

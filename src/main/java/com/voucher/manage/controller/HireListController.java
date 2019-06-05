@@ -42,6 +42,23 @@ public class HireListController {
 
         List<String> searchList = new ArrayList<>();
 
+        searchList.add("del=");
+        searchList.add("0");
+        
+        String chartGUID = MapUtils.getString("chartGUID", jsonMap);
+
+        if (chartGUID != null) {
+            searchList.add("[ChartInfo].ChartGUID=");
+            searchList.add(chartGUID);
+        }
+
+        String guid=MapUtils.getString("guid", jsonMap);
+        
+        if (guid != null) {
+            searchList.add("[ChartRoom].guid=");
+            searchList.add(guid);
+        }
+        
         String[] where = new String[searchList.size()];
         if (where.length > 0)
             chartInfo.setWhere(searchList.toArray(where));
@@ -56,7 +73,7 @@ public class HireListController {
 
     }
 
-    @RequestMapping("getChartInfo")
+    @RequestMapping("getChartInfoRoom")
     public Object getChartInfo(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
 
         Integer limit = MapUtils.getInteger("limit", jsonMap);
@@ -74,6 +91,9 @@ public class HireListController {
 
         List<String> searchList = new ArrayList<>();
 
+        searchList.add("del=");
+        searchList.add("0");
+        
         String chartGUID = MapUtils.getString("chartGUID", jsonMap);
 
         if (chartGUID != null) {
@@ -81,6 +101,14 @@ public class HireListController {
             searchList.add(chartGUID);
         }
 
+        String guid=MapUtils.getString("guid", jsonMap);
+        
+        if (guid != null) {
+            searchList.add("[ChartRoom].guid=");
+            searchList.add(guid);
+        }
+
+        
         String[] where = new String[searchList.size()];
         if (where.length > 0) {
             chartInfo.setWhere(searchList.toArray(where));
@@ -114,6 +142,9 @@ public class HireListController {
 
         List<String> searchList = new ArrayList<>();
 
+        searchList.add("del=");
+        searchList.add("0");
+        
         String chartGUID = MapUtils.getString("chartGUID", jsonMap);
 
         if (chartGUID != null) {
@@ -147,6 +178,9 @@ public class HireListController {
 
         List<String> searchList = new ArrayList<>();
 
+        searchList.add("del=");
+        searchList.add("0");
+        
         String[] where = new String[searchList.size()];
         if (where.length > 0)
             hirePay.setWhere(searchList.toArray(where));

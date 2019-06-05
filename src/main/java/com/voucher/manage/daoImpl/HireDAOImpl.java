@@ -14,6 +14,7 @@ import com.voucher.manage.dao.HireDAO;
 import com.voucher.manage.daoModel.ChartInfo;
 import com.voucher.manage.daoModel.ChartRoom;
 import com.voucher.manage.daoModel.HireList;
+import com.voucher.manage.daoModel.HirePay;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage.daoModelJoin.ChartInfo_ChartRoom;
 import com.voucher.manage.daoSQL.InsertExe;
@@ -206,7 +207,7 @@ public class HireDAOImpl extends JdbcDaoSupport implements HireDAO{
 			hireList.setChartGUID(chartInfo.getChartGUID());
 			hireList.setHire(allHire);
 			hireList.setHireDate(date);
-			hireList.setState(false);
+			hireList.setState(0);
 						
 			if(month<=12){
 				cal.set(year, month, cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);  
@@ -269,6 +270,131 @@ public class HireDAOImpl extends JdbcDaoSupport implements HireDAO{
 	        }
 		}
 		 
+		
+		return i;
+	}
+
+	@Override
+	public Integer deleteHire(ChartInfo chartInfo) {
+		// TODO Auto-generated method stub
+		
+		int i=UpdateExe.get(this.getJdbcTemplate(), chartInfo);
+		
+		if (i < 1) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+		
+		HireList hireList=new HireList();
+		
+		hireList.setDel(1);
+		
+		String[] where={"ChartGUID=",chartInfo.getChartGUID()};
+		
+		hireList.setWhere(where);
+		
+		i=UpdateExe.get(this.getJdbcTemplate(), hireList);
+		
+		if (i < 1) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+		
+		HirePay hirePay=new HirePay();
+		
+		hirePay.setDel(1);
+		
+		hirePay.setWhere(where);
+		
+		UpdateExe.get(this.getJdbcTemplate(), hirePay);
+		
+		return i;
+		
+	}
+
+	@Override
+	public Integer insertHirePay(List<HireList> hireLists) {
+		// TODO Auto-generated method stub
+		
+		UUID uuid=UUID.randomUUID();
+		
+		String hirePayGUID=uuid.toString();
+		
+		Iterator<HireList> iterator=hireLists.iterator();
+		
+		String chartGUID="";
+		
+		int i=0;
+		
+		float amount=0;
+		
+		while (iterator.hasNext()) {
+						
+			HireList hireList=iterator.next();
+			hireList.setState(1);
+			
+			hireList.setHirePayGUID(hirePayGUID);
+			
+			String[] where={"HireGUID=",hireList.getHireGUID()};
+			
+			hireList.setWhere(where);
+			
+			i=UpdateExe.get(this.getJdbcTemplate(), hireList);
+			
+			amount=amount+hireList.getHire();
+			
+			chartGUID=hireList.getChartGUID();
+			
+			if (i < 1) {
+	            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+	        }
+		}
+		
+		HirePay hirePay=new HirePay();
+		
+		hirePay.setHirePayGUID(hirePayGUID);
+		
+		hirePay.setChartGUID(chartGUID);
+		
+		hirePay.setAmount(amount);
+		
+		hirePay.setOptDate(new Date());
+		
+
+		i=InsertExe.get(this.getJdbcTemplate(), hirePay);
+		
+		if (i < 1) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+		
+		return i;
+	}
+
+	@Override
+	public Integer deleteHirePay(HirePay hirePay) {
+		// TODO Auto-generated method stub
+		
+		hirePay.setDel(1);
+		
+		String[] where={"HirePayGUID=",hirePay.getHirePayGUID()};
+		
+		hirePay.setWhere(where);
+		
+		int i=UpdateExe.get(this.getJdbcTemplate(), hirePay);
+		
+		if (i < 1) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+		
+		HireList hireList=new HireList();
+		
+		hireList.setState(0);
+		
+		hireList.setWhere(where);
+		
+		i=UpdateExe.get(this.getJdbcTemplate(), hireList);
+		
+		if (i < 1) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
 		
 		return i;
 	}

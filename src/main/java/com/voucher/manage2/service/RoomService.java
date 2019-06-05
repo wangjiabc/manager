@@ -1,6 +1,7 @@
 package com.voucher.manage2.service;
 
 import com.voucher.manage2.tkmapper.entity.RoomIn;
+import com.voucher.manage2.tkmapper.entity.RoomOut;
 
 import java.util.List;
 
@@ -17,5 +18,14 @@ public interface RoomService {
      * @return: {java.lang.Integer}
      * @Date: 2019/6/3 15:36
      **/
-    Integer roomIn(List<RoomIn> roomIn);
+    Integer roomIn(List<RoomIn> roomIns);
+
+    /**
+     * @Author lz
+     * @Description: 出账
+     * @param: [roomOuts]
+     * @return: {java.lang.Integer}
+     * @Date: 2019/6/5 15:19
+     **/
+    Integer roomOut(List<RoomOut> roomOuts);
 }

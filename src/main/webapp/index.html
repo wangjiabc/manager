@@ -13,7 +13,7 @@
 </html>
   <script type="text/javascript">
 
-  ccc();
+  bbb();
   
   function getlist(){ 
 		var data={"limit":10,"page":1};
@@ -69,7 +69,7 @@
   }
   
   function bbb(){   //查合同
-		var data={"limit":10,"offset":0};
+		var data={"limit":10,"offset":0,"guid":"125f8791ce4f4593be38b00144d9d3e3"};
 	  	$.ajax({ 
 	      	type:"POST", 
 	      	url:"/manager/hireList/getChartInfo.do", 
@@ -104,11 +104,11 @@
     			  "hire":"34.6"};
 		*/
 		
-		var data={"guids":"\[\"aaaaaa\",\"ddd\"\]","chartAreas":"\[\"50\",\"10\"\]",
+		var data={"guids":"\[\"125f8791ce4f4593be38b00144d9d3e3\",\"d53af56b434846f3a1337b718ab79632\"\]","chartAreas":"\[\"50\",\"10\"\]",
 				"hires":"\[\"50\",\"10\"\]",
 				"contractNo":"ds000","Charter":"ccc","Charter":"ccc","augment":"1","increment":"0.07",
 				"augmentGenre":"1","augmentDate":"2020-5",
-				"sex":"vv","CardType":"vdfd","IDNo":"sdfds3423","Phone":"2321323",//"month":"1",
+				"sex":"vv","CardType":"vdfd","IDNo":"sdfds3423","Phone":"2321323","month":"10",
 				"chartBeginDate":"2019-5-10","chartEndDate":"2021-6-4"
   			  };
 		console.log(JSON.stringify(data));

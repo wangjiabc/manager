@@ -111,6 +111,4 @@ http://www.springframework.org/schema/context
                      advice-ref="sql_transactionAdvice" order="1"/>
     </aop:config>
 
-    <!--<import resource="sping-aop.xml"/>-->
-    <!--<import resource="spring-tkmybatis.xml"/>-->
 </beans>

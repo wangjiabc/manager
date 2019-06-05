@@ -19,6 +19,9 @@ public class RoomOut {
     @Column(name = "[remark]")
     private String remark;
 
+    @Column(name = "[type_guid]")
+    private String typeGuid;
+
     @Column(name = "[guid]")
     private String guid;
 
@@ -90,6 +93,20 @@ public class RoomOut {
      */
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    /**
+     * @return type_guid
+     */
+    public String getTypeGuid() {
+        return typeGuid;
+    }
+
+    /**
+     * @param typeGuid
+     */
+    public void setTypeGuid(String typeGuid) {
+        this.typeGuid = typeGuid == null ? null : typeGuid.trim();
     }
 
     /**

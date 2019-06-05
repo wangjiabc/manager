@@ -12,13 +12,18 @@ public class RoomConstant {
             put("3", "土地");
         }
     };
-    //1:已出租.2:空置,3:不可出租,4已划拨
-    public static final Map<String, String> STATE_MAP = new HashMap<String, String>() {
+    //1:已出租.2:可出租,3:不可出租,4已划拨,5自用,6已出售,7已拆迁,8已拆除,9已灭失
+    public static final Map<Integer, String> STATE_MAP = new HashMap<Integer, String>() {
         {
-            put("1", "已出租");
-            put("2", "空置");
-            put("3", "不可出租");
-            put("4", "已划拨");
+            put(1, "已出租");
+            put(2, "可出租");
+            put(3, "不可出租");
+            put(4, "已划拨");
+            put(5, "自用");
+            put(6, "已出售");
+            put(7, "已拆迁");
+            put(8, "已拆除");
+            put(9, "已灭失");
         }
     };
     //1:提交申请,2:正在申请,3:申请通过
