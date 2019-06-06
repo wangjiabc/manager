@@ -1,5 +1,6 @@
 package com.voucher.manage2.utils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,4 +37,24 @@ public final class MapUtils {
         return Long.valueOf(getString(key, map));
     }
 
+    public static final <K, V> Float getFloat(K key, Map<K, V> map) {
+        return Float.valueOf(getString(key, map));
+    }
+
+    public static final <K, V> Boolean getBoolean(K key, Map<K, V> map) {
+        return Boolean.valueOf(getString(key, map));
+    }
+
+    public static final <K, V> List<String> getStrList(K key, Map<K, V> map) {
+        Object object = getObject(key, map);
+        if (ObjectUtils.isEmpty(object)) {
+            return null;
+        }
+        return (List<String>) object;
+    }
+
+
+    public static Double getDouble(String key, Map<String, Object> map) {
+        return Double.valueOf(getString(key, map));
+    }
 }

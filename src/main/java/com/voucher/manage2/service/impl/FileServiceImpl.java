@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FilterReader;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,25 +45,17 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String fileUpload(MultipartFile file, List<String> roomGuids,String menuGuid) {
+    public String fileUpload(MultipartFile file, List<String> roomGuids, String menuGuid) {
 
-        String fileGuid = IdUtil.simpleUUID();
-        String fileName = fileGuid + "_" + file.getOriginalFilename();
         File tarFile = null;
+        String fileName = IdUtil.simpleUUID() + "_" + file.getOriginalFilename();
         try {
             //文件后缀名
             String suffixName = FileTypeUtil.getType(file.getInputStream());
             //文件类型
             Integer fileType = FileUtils.getFileType(suffixName);
             //保存
-            //realPath = realPath + File.separator + fileTypeName;
-            //文件保存路径
-            //String filePath = FileUtils.getFilePath(fileType);
-            //File realPathFile = new File(filePath);
-            //if (!realPathFile.exists()) {
-            //    realPathFile.mkdirs();
-            //}
-            //文件全对象名
+            //将保存的文件对象
             tarFile = FileUtils.getFileByFileName(fileName);
             //System.out.println("+++++++++" + tarPath);
             file.transferTo(tarFile);
@@ -76,12 +69,14 @@ public class FileServiceImpl implements FileService {
             uploadFile.setType(fileType);
             uploadFile.setUploadTime(System.currentTimeMillis());
             uploadFile.setUrl(FileUtils.getFileUrlPath(fileName));
+            uploadFile.setMenuGuid(menuGuid);
             uploadFileMapper.insert(uploadFile);
             //文件资产关系入库
-            List<RoomFile> roomFiles = roomGuids.stream().map(e -> {
+            List<RoomFile> roomFiles = roomGuids.stream().map(roomGuid -> {
                 RoomFile roomFile = new RoomFile();
                 roomFile.setFileGuid(fileName);
-                roomFile.setRoomGuid(e);
+                roomFile.setRoomGuid(roomGuid);
+                roomFile.setMenuGuid(menuGuid);
                 return roomFile;
             }).collect(Collectors.toList());
             roomFileMapper.insertList(roomFiles);
@@ -94,5 +89,22 @@ public class FileServiceImpl implements FileService {
         }
         //返回文件名
         return fileName;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delFile(String fileGuid) {
+        Example example1 = new Example(UploadFile.class);
+        example1.createCriteria().andEqualTo("guid", fileGuid);
+        uploadFileMapper.deleteByExample(example1);
+
+        Example example = new Example(RoomFile.class);
+        example.createCriteria().andEqualTo("fileGuid", fileGuid);
+        roomFileMapper.deleteByExample(example);
+
+        File file = FileUtils.getFileByFileName(fileGuid);
+        if (file.exists()) {
+            file.delete();
+        }
     }
 }

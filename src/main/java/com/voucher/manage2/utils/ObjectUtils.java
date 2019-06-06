@@ -18,6 +18,9 @@ public class ObjectUtils extends org.springframework.util.ObjectUtils {
             return true;
         }
         boolean isEmpty = false;
+        if (objs.getClass().isArray()) {
+            isEmpty = Array.getLength(objs) == 0;
+        }
         for (Object o : objs) {
             if (o == null) {
                 isEmpty = true;

@@ -19,5 +19,23 @@ import java.util.Set;
  */
 @Slf4j
 public class CommonUtils {
+    public static String getCurrentToken() {
+        //TODO
+        return null;
+    }
 
+    public static Object getCurrentUser() {
+        //TODO
+        return null;
+    }
+
+    public static String getCurrentUserGuid() {
+        //TODO
+        return null;
+    }
+
+    public static String getCurrentUserName() {
+        //TODO
+        return null;
+    }
 }

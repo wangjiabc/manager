@@ -1,18 +1,19 @@
 package com.voucher.manage2.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
-import com.voucher.manage.tools.MyTestUtil;
+import com.voucher.manage2.service.RoomService;
+import com.voucher.manage2.tkmapper.entity.RoomIn;
+import com.voucher.manage2.tkmapper.entity.RoomOut;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
-import com.voucher.sqlserver.context.Connect;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,17 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-@CrossOrigin(origins = "http://192.168.10.100:9527")
 @RestController
 @RequestMapping("/room")
 public class RoomController {
 
-    //private ApplicationContext applicationContext = new Connect().get();
-    //
-    //private CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
 
     @Autowired
     private CurrentDao currentDao;
+    @Autowired
+    private RoomService roomService;
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
@@ -44,7 +43,7 @@ public class RoomController {
         String searchContent = query.get("searchContent").toString();
         String state = query.get("state").toString();
         String neaten_flow = query.get("neaten_flow").toString();
-        //String[] where = {"state = ", state, "neaten_flow = ", neaten_flow, "address like ", "%" + searchContent + "%"};
+
         List<String> searchList = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(searchContent)) {
             searchList.add("address like");
@@ -58,27 +57,12 @@ public class RoomController {
             searchList.add("neaten_flow =");
             searchList.add(neaten_flow);
         }
-/*
-        searchList.add("address like");
-        searchList.add("%a%");
-        searchList.add("num like");
-        searchList.add("%c%");
-
         searchList.add("del=");
         searchList.add("false");
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
-
-*/
-        Map map = null;
-        try {
-            map = currentDao.selectTable(room,"guid");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return map;
-
+        return currentDao.selectTable(room, "guid");
     }
 
     @RequestMapping("updateFieldName")
@@ -106,27 +90,19 @@ public class RoomController {
     @RequestMapping("addField")
     public Integer addField(@RequestBody Map<String, Object> jsonMap) {
         Map<Integer, String> selects = null;
-        System.out.println("jsonMap");
-        MyTestUtil.print(jsonMap);
         String fieldName = MapUtils.getString("title", jsonMap);
-        Integer fieldType = MapUtils.getInteger("fieldType", jsonMap);
-		try {
-			List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
-			System.out.println("domains");
-			MyTestUtil.print(domains);
-			if (ObjectUtils.isNotEmpty(domains)) {
-				selects = new HashMap<>();
-				int i = 1;
-				for (LinkedHashMap<String, Object> domain : domains) {
-					selects.put(i++, MapUtils.getString("value", domain));
-				}
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+        Integer roomType = MapUtils.getInteger("roomType", jsonMap);
+        Integer filedType = MapUtils.getInteger("rowType", jsonMap);
+        List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
+        if (ObjectUtils.isNotEmpty(domains)) {
+            selects = new HashMap<>();
+            int i = 1;
+            for (LinkedHashMap<String, Object> domain : domains) {
+                selects.put(i++, MapUtils.getString("value", domain));
+            }
+        }
         //fieldName = "ccc";
-        return currentDao.addField("item_room", fieldName, fieldType, selects);
+        return currentDao.addField("item_room", fieldName, filedType, selects, roomType);
     }
 
     @RequestMapping("delField")
@@ -150,7 +126,7 @@ public class RoomController {
         Map<String, String> domains = (Map<String, String>) jsonMap.get("domains");
         String line_uuid = MapUtils.getString("line_uuid", jsonMap);
         if (ObjectUtils.isEmpty(domains, line_uuid)) {
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
         List<Select> selects = new ArrayList<>();
         for (Map.Entry<String, String> entry : domains.entrySet()) {
@@ -168,9 +144,43 @@ public class RoomController {
         String line_uuid = MapUtils.getString("line_uuid", jsonMap);
         Integer text_length = MapUtils.getInteger("text_length", jsonMap);
         if (ObjectUtils.isEmpty(line_uuid, text_length)) {
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
         return currentDao.updateTextLength("item_room", line_uuid, text_length);
+    }
+
+    @RequestMapping("roomIn")
+    public Integer RoomIn(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
+        List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
+        if (ObjectUtils.isEmpty(roomGuids)) {
+            throw BaseException.getDefault();
+        }
+        List<RoomIn> roomIns = new ArrayList<>();
+        for (String roomGuid : roomGuids) {
+            RoomIn roomIn = new RoomIn();
+            BeanUtils.populate(roomIn, jsonMap);
+            roomIn.setGuid(IdUtil.simpleUUID());
+            roomIn.setRoomGuid(roomGuid);
+            roomIns.add(roomIn);
+        }
+        return roomService.roomIn(roomIns);
+    }
+
+    @RequestMapping("roomOut")
+    public Integer roomOut(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
+        List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
+        if (ObjectUtils.isEmpty(roomGuids)) {
+            throw BaseException.getDefault();
+        }
+        List<RoomOut> roomOuts = new ArrayList<>();
+        for (String roomGuid : roomGuids) {
+            RoomOut roomOut = new RoomOut();
+            BeanUtils.populate(roomOut, jsonMap);
+            roomOut.setGuid(IdUtil.simpleUUID());
+            roomOut.setRoomGuid(roomGuid);
+            roomOuts.add(roomOut);
+        }
+        return roomService.roomOut(roomOuts);
     }
 
     @RequestMapping("test")

@@ -35,7 +35,7 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
     @ResponseBody
     public ErrorMessageBean handleException(Exception e) {
         // 打印异常堆栈信息
-        //log.error(e.getMessage(), e);
+        log.error(e.getMessage(), e);
         return ErrorMessageBean.getMessageBean(ExceptionMessage.EXCEPTION);
     }
 
@@ -43,7 +43,7 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
     @ResponseBody
     public ErrorMessageBean handleBaseException(BaseException e) {
         // 打印异常堆栈信息
-        //log.error(e.getMessage(), e);
+        log.error(e.getMessage(), e);
         return ErrorMessageBean.getMessageBean(e.msg);
     }
 
@@ -53,6 +53,13 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
         return true;
     }
 
+    /**
+     * @Author lz
+     * @Description:先进上面的异常
+     * @param: [body, returnType, selectedContentType, selectedConverterType, request, response]
+     * @return: {java.lang.Object}
+     * @Date: 2019/5/29 15:05
+     **/
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
@@ -70,7 +77,7 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
             return body;
         }
         //parameterType.
-        //log.info("++++++++++" + parameterType);
+        log.debug("++++++++++" + parameterType);
         //if (returnType.getParameterType() instanceof ErrorMessageBean)
         // TODO Auto-generated method stub
         return MessageBean.getMessageBean(ExceptionMessage.SUCCESS, body);

@@ -16,6 +16,7 @@ http://www.springframework.org/schema/context
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:jdbc.properties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
     </bean>
 
     <!-- DriverManagerDataSource建立连接是只要有连接就新建一个connection,根本没有连接池的作用 -->
@@ -110,6 +111,4 @@ http://www.springframework.org/schema/context
                      advice-ref="sql_transactionAdvice" order="1"/>
     </aop:config>
 
-    <!--<import resource="sping-aop.xml"/>-->
-    <!--<import resource="spring-tkmybatis.xml"/>-->
 </beans>

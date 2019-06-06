@@ -11,6 +11,9 @@ import com.voucher.manage.daoSQL.*;
 import com.voucher.manage.daoSQL.annotations.DBTable;
 import com.voucher.manage.tools.Md5;
 import com.voucher.manage.tools.MyTestUtil;
+import com.voucher.manage2.exception.BaseException;
+import com.voucher.manage2.msg.ErrorMessageBean;
+import com.voucher.manage2.msg.ExceptionMessage;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.aop.interceptor.annotation.TimeConsume;
 import com.voucher.manage2.constant.ResultConstant;
@@ -24,6 +27,7 @@ import com.voucher.manage2.utils.SpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import tk.mybatis.mapper.entity.Example;
@@ -41,24 +45,24 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     private SelectMapper selectMapper;
 
     @Override
-    public void createTable(String tableName,String joinParameter) {
+    public void createTable(String tableName, String joinParameter) {
         // TODO Auto-generated method stub
 
-        String sql = "create table " + tableName + " (id int IDENTITY(1,1) NOT NULL,"+joinParameter+" varchar(50) null) ";
+        String sql = "create table " + tableName + " (id int IDENTITY(1,1) NOT NULL," + joinParameter + " varchar(50) null) ";
 
         this.getJdbcTemplate().update(sql);
 
     }
 
     @Override
-    public int alterTable(Boolean addOrDel, String tableName,String joinParameter,String lineName, String line_uuid) {
+    public int alterTable(Boolean addOrDel, String tableName, String joinParameter, String lineName, String line_uuid) {
         // TODO Auto-generated method stub
         String sql;
 
         if (addOrDel) {
             String uuid = "item_" + Md5.GetMD5Code(UUID.randomUUID().toString());
             if (existTable(tableName) < 1) {
-                createTable(tableName,joinParameter);
+                createTable(tableName, joinParameter);
             }
 
             sql = "alter table " + tableName + " add " + uuid + " varchar(max) null ";
@@ -90,7 +94,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
             List<Table_alias> list = SelectExe.get(this.getJdbcTemplate(), table_alias);
             if (ObjectUtils.isEmpty(list)) {
-                return ResultConstant.FILED;
+                return ResultConstant.FAILED;
             }
             Table_alias table_alias2 = list.get(0);
 
@@ -104,7 +108,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
         }
 
-        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
+        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
     }
 
     @Override
@@ -117,15 +121,15 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
     @Override
     @TimeConsume
-    public Map selectTable(Object object,String joinParameter) throws ClassNotFoundException {
+    public Map selectTable(Object object, String joinParameter) throws ClassNotFoundException {
         // TODO Auto-generated method stub
 
-        Map hMap = NewSelectSqlJoin.get(object,joinParameter);
+        Map hMap = NewSelectSqlJoin.get(object, joinParameter);
 
         String sql = (String) hMap.get("sql");
         List params = (List) hMap.get("params");
 
-        Map hMap2 = NewSelectSqlJoin.getCount(object,joinParameter);
+        Map hMap2 = NewSelectSqlJoin.getCount(object, joinParameter);
 
         String sql2 = (String) hMap2.get("sql");
         List params2 = (List) hMap2.get("params");
@@ -143,7 +147,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
             String tableName2 = "[item_" + tableName.substring(1);
 
-            createTable(tableName2,joinParameter);
+            createTable(tableName2, joinParameter);
         }
         //表格数据
         List<Map> list = this.getJdbcTemplate().query(sql, params.toArray(), new RowMappersTableJoin(getJdbcTemplate(), className, tableName));
@@ -172,12 +176,12 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
         //下拉信息
         List<Select> selects = new ArrayList<>();
-        try{
-        	selects= selectMapper.selectAll();
-        }catch (Exception e) {
-			// TODO: handle exception
-        	e.printStackTrace();
-		}
+        try {
+            selects = selectMapper.selectAll();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
         Map<String, Map<Integer, String>> domains = new HashMap<>();
         for (Select select : selects) {
             Map<Integer, String> map = domains.get(select.getLineUuid());
@@ -186,13 +190,13 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             }
             map.put(select.getValue(), select.getName());
         }
-        List<Map<String, Object>> dynLineInfoList=null;
-        try{
-        	dynLineInfoList= tableAliasMapper.getDynLineInfo();
-        }catch (Exception e) {
-			// TODO: handle exception
-        	e.printStackTrace();
-		}
+        List<Map<String, Object>> dynLineInfoList = null;
+        try {
+            dynLineInfoList = tableAliasMapper.getDynLineInfo();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
         Map<String, Object> dynLineInfoMap = null;
         if (ObjectUtils.isNotEmpty(dynLineInfoList)) {
             dynLineInfoMap = new HashMap<>();
@@ -202,16 +206,17 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         }
 
         String REGEX = "item_";
-		Pattern pattern=Pattern.compile(REGEX);
-		        
+        Pattern pattern = Pattern.compile(REGEX);
+
         for (Table_alias table_alias1 : aliasList) {
-            Map<String, Object> dynTitleMap = new HashMap<>();
+            Map<String, Object> dynTitleMap = new HashMap<>(8);
             String line_uuid = table_alias1.getLine_uuid();
             String table_name = table_alias1.getTable_name();
             dynTitleMap.put("field", line_uuid);
             dynTitleMap.put("title", table_alias1.getLine_alias());
-            dynTitleMap.put("type", table_alias1.getRow_type());
-            Matcher matcher=pattern.matcher(table_name);
+            dynTitleMap.put("rowType", table_alias1.getRow_type());
+            dynTitleMap.put("roomType", table_alias1.getRoom_type());
+            Matcher matcher = pattern.matcher(table_name);
             if (!matcher.find()) {
                 fixedTitleList.add(dynTitleMap);
             } else {
@@ -230,7 +235,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         MyTestUtil.print(aliasList);
         MyTestUtil.print(list);
 
-        Map map = new HashMap<>();
+        Map map = new HashMap<>(8);
         map.put("rows", list);
         map.put("total", total);
         map.put("fixedTitle", fixedTitleList);
@@ -240,143 +245,142 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     }
 
     @Override
-    @TimeConsume
-    public Map selectTable(Object[] objects,String[][] joinParameters,String[] itemjoinParameters) throws ClassNotFoundException {
+    public Map selectTable(Object[] objects, String[][] joinParameters, String[] itemjoinParameters) throws ClassNotFoundException {
         // TODO Auto-generated method stub
 
-        Map hMap = NewSelectSqlJoin2.get(objects,joinParameters,itemjoinParameters);
+        Map hMap = NewSelectSqlJoin2.get(objects, joinParameters, itemjoinParameters);
 
         String sql = (String) hMap.get("sql");
         List params = (List) hMap.get("params");
 
-        Map hMap2 = NewSelectSqlJoin2.getCount(objects,joinParameters);
+        Map hMap2 = NewSelectSqlJoin2.getCount(objects, joinParameters);
 
         String sql2 = (String) hMap2.get("sql");
         List params2 = (List) hMap2.get("params");
 
-		List<Map<String, Object>> fixedTitleList = new ArrayList<>();
-		List<Map<String, Object>> dynTitleList = new ArrayList<>();
-        
-		List<Class> classNames = new ArrayList<>();
-		
-		List<String> tableNames = new ArrayList<>();
-		
-		int s=0;
-		for (Object object : objects) {
-			
-			Class className = object.getClass();
-			String name = className.getName(); // 从控制台输入一个类名，我们输入User即可
-			Class<?> cl = Class.forName(name); // 加载类，如果该类不在默认路径底下，会报
-												// java.lang.ClassNotFoundException
-			DBTable dbTable = cl.getAnnotation(DBTable.class);
+        List<Map<String, Object>> fixedTitleList = new ArrayList<>();
+        List<Map<String, Object>> dynTitleList = new ArrayList<>();
 
-			String tableName = (dbTable.name().length() < 1) ? cl.getName() : dbTable.name();// 获取表的名字，如果没有在DBTable中定义，则获取类名作为Table的名字
+        List<Class> classNames = new ArrayList<>();
 
-			classNames.add(className);
-			tableNames.add(tableName);
-			
-			int exist = existTable("item_" + tableName.substring(1, tableName.length() - 1));
+        List<String> tableNames = new ArrayList<>();
 
-			if (exist < 1) {
+        int s = 0;
+        for (Object object : objects) {
 
-				String tableName2 = "[item_" + tableName.substring(1);
+            Class className = object.getClass();
+            String name = className.getName(); // 从控制台输入一个类名，我们输入User即可
+            Class<?> cl = Class.forName(name); // 加载类，如果该类不在默认路径底下，会报
+            // java.lang.ClassNotFoundException
+            DBTable dbTable = cl.getAnnotation(DBTable.class);
 
-		        try{
-		             String joinParameter=itemjoinParameters[s];
-		             createTable(tableName2, joinParameter);
-		             s++;
-		            
-		           }catch (Exception e) {
-		   			// TODO: handle exception
-		            tableName =name;
-		   		 }				
-				
-			}
+            String tableName = (dbTable.name().length() < 1) ? cl.getName() : dbTable.name();// 获取表的名字，如果没有在DBTable中定义，则获取类名作为Table的名字
 
-			Table_alias table_alias = new Table_alias();
-			table_alias.setLimit(1000);
-			table_alias.setOffset(0);
-			table_alias.setNotIn("id");
-			String[] where = { "del=", "false" };
-			table_alias.setWhere(where);
+            classNames.add(className);
+            tableNames.add(tableName);
 
-			tableName = tableName.substring(1, tableName.length() - 1);
+            int exist = existTable("item_" + tableName.substring(1, tableName.length() - 1));
 
-			// String[] where = {"table_name=", tableName};
+            if (exist < 1) {
 
-			System.out.println(tableName);
+                String tableName2 = "[item_" + tableName.substring(1);
 
-			// table_alias.setWhere(where);
-			// 表头信息
-			List<Table_alias> aliasList = SelectExe.get(this.getJdbcTemplate(), table_alias);
+                try {
+                    String joinParameter = itemjoinParameters[s];
+                    createTable(tableName2, joinParameter);
+                    s++;
 
-			// 下拉信息
-			List<Select> selects = new ArrayList<>();
-			try {
-				selects = selectMapper.selectAll();
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-			Map<String, Map<Integer, String>> domains = new HashMap<>();
-			for (Select select : selects) {
-				Map<Integer, String> map = domains.get(select.getLineUuid());
-				if (map == null)
-					domains.put(select.getLineUuid(), map = new HashMap<>());
-				map.put(select.getValue(), select.getName());
-			}
-			List<Map<String, Object>> dynLineInfoList = null;
-			try {
-				dynLineInfoList = tableAliasMapper.getDynLineInfo();
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-			Map<String, Object> dynLineInfoMap = null;
-			if (ObjectUtils.isNotEmpty(dynLineInfoList)) {
-				dynLineInfoMap = new HashMap<>();
-				for (Map<String, Object> map : dynLineInfoList) {
-					dynLineInfoMap.put(MapUtils.getString("line_uuid", map), map.get("max_length"));
-				}
-			}
+                } catch (Exception e) {
+                    // TODO: handle exception
+                    tableName = name;
+                }
 
-			String REGEX = "item_";
-			Pattern pattern=Pattern.compile(REGEX);
-			
-			for (Table_alias table_alias1 : aliasList) {
-				Map<String, Object> dynTitleMap = new HashMap<>();
-				String line_uuid = table_alias1.getLine_uuid();
-				String table_name = table_alias1.getTable_name();
-				dynTitleMap.put("field", line_uuid);
-				dynTitleMap.put("title", table_alias1.getLine_alias());
-				dynTitleMap.put("type", table_alias1.getRow_type());
-				Matcher matcher=pattern.matcher(table_name);
-				if (!matcher.find()) {
-					fixedTitleList.add(dynTitleMap);
-				} else{
-					Map<Integer, String> domain = domains.get(line_uuid);
-					Object text_length = dynLineInfoMap.get(line_uuid);
-					if (ObjectUtils.isNotEmpty(text_length))
-						dynTitleMap.put("text_length", text_length);
-					if (ObjectUtils.isNotEmpty(domains))
-						dynTitleMap.put("domains", domain);
-					dynTitleList.add(dynTitleMap);
-				}
+            }
 
-			}
-			MyTestUtil.print(aliasList);
-			
-		}
-        
-		Class[] classNames_=new Class[classNames.size()];
-		String[] tableName_=new String[tableNames.size()];
-		
-		// 表格数据
-		List<Map> list = this.getJdbcTemplate().query(sql, params.toArray(),
-				new RowMappersTableJoin2(getJdbcTemplate(), classNames.toArray(classNames_),tableNames.toArray(tableName_)));
+            Table_alias table_alias = new Table_alias();
+            table_alias.setLimit(1000);
+            table_alias.setOffset(0);
+            table_alias.setNotIn("id");
+            String[] where = {"del=", "false"};
+            table_alias.setWhere(where);
 
-		int total = (int) this.getJdbcTemplate().queryForMap(sql2, params2.toArray()).get("");
-		
+            tableName = tableName.substring(1, tableName.length() - 1);
+
+            // String[] where = {"table_name=", tableName};
+
+            System.out.println(tableName);
+
+            // table_alias.setWhere(where);
+            // 表头信息
+            List<Table_alias> aliasList = SelectExe.get(this.getJdbcTemplate(), table_alias);
+
+            // 下拉信息
+            List<Select> selects = new ArrayList<>();
+            try {
+                selects = selectMapper.selectAll();
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+            Map<String, Map<Integer, String>> domains = new HashMap<>();
+            for (Select select : selects) {
+                Map<Integer, String> map = domains.get(select.getLineUuid());
+                if (map == null)
+                    domains.put(select.getLineUuid(), map = new HashMap<>());
+                map.put(select.getValue(), select.getName());
+            }
+            List<Map<String, Object>> dynLineInfoList = null;
+            try {
+                dynLineInfoList = tableAliasMapper.getDynLineInfo();
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+            Map<String, Object> dynLineInfoMap = null;
+            if (ObjectUtils.isNotEmpty(dynLineInfoList)) {
+                dynLineInfoMap = new HashMap<>();
+                for (Map<String, Object> map : dynLineInfoList) {
+                    dynLineInfoMap.put(MapUtils.getString("line_uuid", map), map.get("max_length"));
+                }
+            }
+
+            String REGEX = "item_";
+            Pattern pattern = Pattern.compile(REGEX);
+
+            for (Table_alias table_alias1 : aliasList) {
+                Map<String, Object> dynTitleMap = new HashMap<>();
+                String line_uuid = table_alias1.getLine_uuid();
+                String table_name = table_alias1.getTable_name();
+                dynTitleMap.put("field", line_uuid);
+                dynTitleMap.put("title", table_alias1.getLine_alias());
+                dynTitleMap.put("type", table_alias1.getRow_type());
+                Matcher matcher = pattern.matcher(table_name);
+                if (!matcher.find()) {
+                    fixedTitleList.add(dynTitleMap);
+                } else {
+                    Map<Integer, String> domain = domains.get(line_uuid);
+                    Object text_length = dynLineInfoMap.get(line_uuid);
+                    if (ObjectUtils.isNotEmpty(text_length))
+                        dynTitleMap.put("text_length", text_length);
+                    if (ObjectUtils.isNotEmpty(domains))
+                        dynTitleMap.put("domains", domain);
+                    dynTitleList.add(dynTitleMap);
+                }
+
+            }
+            MyTestUtil.print(aliasList);
+
+        }
+
+        Class[] classNames_ = new Class[classNames.size()];
+        String[] tableName_ = new String[tableNames.size()];
+
+        // 表格数据
+        List<Map> list = this.getJdbcTemplate().query(sql, params.toArray(),
+                new RowMappersTableJoin2(getJdbcTemplate(), classNames.toArray(classNames_), tableNames.toArray(tableName_)));
+
+        int total = (int) this.getJdbcTemplate().queryForMap(sql2, params2.toArray()).get("");
+
         Map map = new HashMap<>();
         map.put("rows", list);
         map.put("total", total);
@@ -385,7 +389,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
 
         return map;
     }
-    
+
     @Override
     public Integer insertTable(Object object, String val) throws ClassNotFoundException {
         // TODO Auto-generated method stub
@@ -426,7 +430,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
                 i++;
             }
         } else {
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
 
         fields = fields.substring(1, fields.length());
@@ -472,36 +476,37 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         MyTestUtil.print(room);
         Integer upNum = UpdateExe.get(this.getJdbcTemplate(), room);
         if (upNum != 1) {
-            return ResultConstant.FILED;
+            throw BaseException.getDefault();
         }
         StringBuffer sqlBuf = new StringBuffer(100);
         sqlBuf.append("update item_room set ");
-        boolean isnotempty=false;
+        boolean isnotempty = false;
         roomMap.forEach((k, v) -> {
             if (k.startsWith("item") && ObjectUtils.isNotEmpty(k, v)) {
-            	System.out.println(k + "='" + v + "',");
-                sqlBuf.append(k + "='" + v + "',");               
+                System.out.println(k + "='" + v + "',");
+                sqlBuf.append(k + "='" + v + "',");
             }
         });
-        try{
-        	sqlBuf.deleteCharAt(sqlBuf.lastIndexOf(","));
-        	sqlBuf.append(where);
-        	 isnotempty=true;
-        }catch (Exception e) {
-			// TODO: handle exception
-        	//e.printStackTrace();
-		}
+        try {
+            sqlBuf.deleteCharAt(sqlBuf.lastIndexOf(","));
+            sqlBuf.append("where guid='" + MapUtils.getString("guid", roomMap) + "'");
+            isnotempty = true;
+        } catch (Exception e) {
+            //e.printStackTrace();
+            throw BaseException.getDefault(e);
+        }
 
         //String sql = " update " + tableName + " set " + line_uuid + "=" + value + " where guid=" + guid;
 
         //int i = this.getJdbcTemplate().update(sql);
         //return i;
-        if(isnotempty){
-        	return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
-        }else {
-        	return ResultConstant.SUCCESS;
-		}
-        
+        //return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
+        if (isnotempty) {
+            return this.getJdbcTemplate().update(sqlBuf.toString()) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
+        } else {
+            return ResultConstant.SUCCESS;
+        }
+
     }
 
     @Override
@@ -513,11 +518,11 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         room.setWhere(where);
         Integer upNum = UpdateExe.get(this.getJdbcTemplate(), room);
         if (upNum != 1) {
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
         String sql = "update item_room set del = 'true' where guid = '" + guid + "'";
 
-        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
+        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
     }
 
     @Override
@@ -525,7 +530,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         StringBuffer strBuf = new StringBuffer("update room set del = 'true' where guid in (");
         guidList.forEach(e -> strBuf.append("'" + e + "',"));
         strBuf.replace(strBuf.length() - 1, strBuf.length(), ")");
-        return this.getJdbcTemplate().update(strBuf.toString()) == guidList.size() ? ResultConstant.SUCCESS : ResultConstant.FILED;
+        return this.getJdbcTemplate().update(strBuf.toString()) == guidList.size() ? ResultConstant.SUCCESS : ResultConstant.FAILED;
     }
 
     @Override
@@ -550,9 +555,9 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             result = insertTable(room, jsonArray.toJSONString());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
-        return result == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
+        return result == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
     }
 
     @Override
@@ -570,22 +575,23 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         //table_alias.setWhere(where);
         //return UpdateExe.get(this.getJdbcTemplate(), table_alias) == -1 ? 0 : 1;
         String sql = "update table_alias set del = 'true' where line_uuid = '" + line_uuid + "'";
-        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FILED;
+        return this.getJdbcTemplate().update(sql) == 1 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer addField(String tableName, String fieldName, Integer type, Map<Integer, String> selectValue) {
+    public Integer addField(String tableName, String fieldName, Integer filedType, Map<Integer, String> selectValue, Integer roomType) {
         //1文本,2数字,3时间,4下拉
-        String sqlType = RoomConstant.ROW_TYPE_MAP.get(type);
-        if (ObjectUtils.isEmpty(type)) {
-            return ResultConstant.FILED;
+        String sqlType = RoomConstant.ROW_TYPE_MAP.get(filedType);
+        if (ObjectUtils.isEmpty(filedType)) {
+            return ResultConstant.FAILED;
         }
         String line_uuid = "item_" + Md5.GetMD5Code(UUID.randomUUID().toString()) + "";
         TableAlias tableAlias = new TableAlias();
         tableAlias.setTableName(tableName);
         tableAlias.setLineAlias(fieldName);
-        tableAlias.setRowType(type);
+        tableAlias.setRowType(filedType);
+        tableAlias.setRoomType(roomType);
         tableAlias.setLineUuid(line_uuid);
         tableAlias.setDate(System.currentTimeMillis());
         //int update = InsertExe.get(this.getJdbcTemplate(), tableAlias);
@@ -611,14 +617,14 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         //int i = 1 / 0;
         //update = this.getJdbcTemplate().update(sql);
         //System.out.println(update);
-        return this.getJdbcTemplate().update(sql) == 0 ? ResultConstant.SUCCESS : ResultConstant.FILED;
+        return this.getJdbcTemplate().update(sql) == 0 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer updateSelect(List<Select> selects) {
         if (selects == null) {
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
         int update = 0;
         for (Select select : selects) {
@@ -629,7 +635,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             update++;
         }
         SpringUtils.setRollbackOnly(update != selects.size());
-        return update == selects.size() ? ResultConstant.SUCCESS : ResultConstant.FILED;
+        return update == selects.size() ? ResultConstant.SUCCESS : ResultConstant.FAILED;
     }
 
     @Override
@@ -641,7 +647,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
                 .andEqualTo("line_uuid", line_uuid);
         List<TableAlias> tableAliases = tableAliasMapper.selectByExample(example);
         if (ObjectUtils.isEmpty(tableAliases) && tableAliases.size() != 1) {
-            return ResultConstant.FILED;
+            return ResultConstant.FAILED;
         }
         return tableAliasMapper.updateTextLength(item_room, line_uuid, text_length);
     }

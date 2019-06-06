@@ -19,6 +19,7 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
 
     <context:component-scan base-package="com.voucher.manage.serviceImpl"/>
     <context:component-scan base-package="com.voucher.manage2.service.impl"/>
+    <context:component-scan base-package="com.voucher.manage2.cache"/>
 
     <!--  
 	<context:component-scan base-package="com.voucher.inswept.topic.consumer"></context:component-scan>
@@ -41,4 +42,5 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
     <import resource="sping-aop.xml"/>
     <import resource="spring-tkmybatis.xml"/>
     <import resource="spring-sqlservers.xml"/>
+    <import resource="spring-redis.xml"/>
 </beans>

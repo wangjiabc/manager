@@ -13,6 +13,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 ">
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:jdbc.properties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
     </bean>
     <!-- <task:annotation-driven /> -->
     <!-- jndi方式 -->

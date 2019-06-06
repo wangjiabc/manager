@@ -1,9 +1,16 @@
 package com.voucher.manage2.controller;
 
-import com.voucher.manage2.constant.MenuConstant;
+import cn.hutool.core.util.IdUtil;
+import com.voucher.manage2.constant.ResultConstant;
+import com.voucher.manage2.dto.MenuDTO;
+import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.service.MenuService;
+import com.voucher.manage2.utils.CommonUtils;
+import com.voucher.manage2.utils.MapUtils;
+import com.voucher.manage2.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,25 +32,59 @@ public class MenuController {
     private MenuService menuService;
 
     @RequestMapping(value = "/selectFileMenu")
-    public Object selectMenu(String roomGuid) {
-        return menuService.selectMenu(MenuConstant.FILE_ROOT_GUID,roomGuid);
+    public Object selectMenu(String[] roomGuids, String rootGuid) {
+        if (ObjectUtils.isEmpty(rootGuid)) {
+            return ResultConstant.FAILED;
+        }
+        MenuDTO menuDTO = new MenuDTO();
+        menuDTO.setGuid(rootGuid);
+        return menuService.selectMenu(menuDTO, roomGuids);
     }
 
-    @RequestMapping(value = "/insertMenu")
+    @RequestMapping(value = "/selectAllRootMenu")
+    public List<MenuDTO> selectMenu() {
+        return menuService.selectAllRootMenu();
+    }
+
+    @RequestMapping(value = "/insertFileMenu")
     public Integer insertMenu(@RequestBody Map<String, Object> jsonMap) {
-        //log.debug("insertMenu===" + jsonMap);
-        return menuService.insertMenu(jsonMap);
+        log.debug("insertMenu===" + jsonMap);
+        MenuDTO menu = new MenuDTO();
+        menu.setGuid(IdUtil.simpleUUID());
+        menu.setLevel(MapUtils.getInteger("level", jsonMap));
+        menu.setRootGuid(MapUtils.getString("rootGuid", jsonMap));
+        menu.setName(MapUtils.getString("name", jsonMap));
+        menu.setParentGuid(MapUtils.getString("parentGuid", jsonMap));
+        menu.setRequired(MapUtils.getBoolean("required", jsonMap));
+        return menuService.insertMenu(menu);
     }
 
-    @RequestMapping(value = "/delMenu")
-    public Integer delMenu(@RequestBody Map<String, Object> jsonMap) {
-        //log.debug("insertMenu===" + jsonMap);
-        return menuService.delMenu(jsonMap);
+    @GetMapping(value = "/insertRootMenu")
+    public Integer insertRootMenu(String name) {
+        MenuDTO menu = new MenuDTO();
+        String rootGuid = IdUtil.simpleUUID();
+        menu.setGuid(rootGuid);
+        menu.setLevel(0);
+        menu.setRootGuid(rootGuid);
+        menu.setName(name);
+        menu.setParentGuid(CommonUtils.getCurrentUserGuid());
+        return menuService.insertMenu(menu);
+    }
+
+
+    @RequestMapping(value = "/delLeafMenu")
+    public Integer delLeafMenu(@RequestBody Map<String, Object> jsonMap) {
+
+        List<String> leafMenus = (List<String>) jsonMap.get("leafMenus");
+        if (ObjectUtils.isEmpty(leafMenus)) {
+            throw BaseException.getDefault();
+        }
+        return menuService.delLeafMenu(leafMenus);
     }
 
     @RequestMapping(value = "/updateMenu")
     public Integer updateMenu(@RequestBody Map<String, Object> jsonMap) {
-        //log.debug("insertMenu===" + jsonMap);
+        log.debug("insertMenu===" + jsonMap);
         return menuService.updateMenu(jsonMap);
     }
 }
