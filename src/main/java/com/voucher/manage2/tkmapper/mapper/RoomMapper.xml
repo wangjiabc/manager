@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.voucher.manage2.tkmapper.mapper.RoomMapper">
+  <resultMap id="BaseResultMap" type="com.voucher.manage2.tkmapper.entity.Room">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="guid" jdbcType="VARCHAR" property="guid" />
+    <result column="num" jdbcType="VARCHAR" property="num" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="build_area" jdbcType="DOUBLE" property="buildArea" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="manage_region" jdbcType="VARCHAR" property="manageRegion" />
+    <result column="room_property" jdbcType="INTEGER" property="roomProperty" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="hidden_check_date" jdbcType="BIGINT" property="hiddenCheckDate" />
+    <result column="asset_check_date" jdbcType="BIGINT" property="assetCheckDate" />
+    <result column="hidden" jdbcType="INTEGER" property="hidden" />
+    <result column="neaten_flow" jdbcType="INTEGER" property="neatenFlow" />
+    <result column="del" jdbcType="BIT" property="del" />
+  </resultMap>
+</mapper>
