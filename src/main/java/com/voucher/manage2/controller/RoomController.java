@@ -92,7 +92,7 @@ public class RoomController {
         Map<Integer, String> selects = null;
         String fieldName = MapUtils.getString("title", jsonMap);
         Integer roomType = MapUtils.getInteger("roomType", jsonMap);
-        Integer filedType = MapUtils.getInteger("fieldType", jsonMap);
+        Integer filedType = MapUtils.getInteger("rowType", jsonMap);
         List<LinkedHashMap<String, Object>> domains = (List<LinkedHashMap<String, Object>>) jsonMap.get("domains");
         if (ObjectUtils.isNotEmpty(domains)) {
             selects = new HashMap<>();
@@ -159,11 +159,6 @@ public class RoomController {
         for (String roomGuid : roomGuids) {
             RoomIn roomIn = new RoomIn();
             BeanUtils.populate(roomIn, jsonMap);
-            //roomIn.setDate(MapUtils.getLong("date", jsonMap));
-            //roomIn.setMoney(MapUtils.getDouble("money", jsonMap));
-            //roomIn.setSource(MapUtils.getString("source", jsonMap));
-            //roomIn.setRemark(MapUtils.getString("remark", jsonMap));
-            //roomIn.setTypeGuid(MapUtils.getString("type", jsonMap));
             roomIn.setGuid(IdUtil.simpleUUID());
             roomIn.setRoomGuid(roomGuid);
             roomIns.add(roomIn);
@@ -181,11 +176,6 @@ public class RoomController {
         for (String roomGuid : roomGuids) {
             RoomOut roomOut = new RoomOut();
             BeanUtils.populate(roomOut, jsonMap);
-            //roomOut.setDate(MapUtils.getLong("date", jsonMap));
-            //roomOut.setMoney(MapUtils.getDouble("money", jsonMap));
-            //roomOut.setDestination(MapUtils.getString("destination", jsonMap));
-            //roomOut.setRemark(MapUtils.getString("remark", jsonMap));
-            //roomOut.setTypeGuid(MapUtils.getString("type", jsonMap));
             roomOut.setGuid(IdUtil.simpleUUID());
             roomOut.setRoomGuid(roomGuid);
             roomOuts.add(roomOut);

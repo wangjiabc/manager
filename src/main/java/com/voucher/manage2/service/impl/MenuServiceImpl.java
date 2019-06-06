@@ -109,6 +109,7 @@ public class MenuServiceImpl implements MenuService {
         ArrayList<MenuDTO> result = new ArrayList<>();
         MenuDTO menuCondition = new MenuDTO();
         menuCondition.setLevel(0);
+        menuCondition.setDel(false);
         List<MenuDTO> rootMenus = menuMapper.select(menuCondition);
         for (MenuDTO rootMenu : rootMenus) {
             result.add(menuService.selectMenu(rootMenu, null));
@@ -118,14 +119,11 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Integer delLeafMenu(List<String> leafGuids) {
-        if (ObjectUtils.isNotEmpty(leafGuids)) {
-            Example example = new Example(MenuDTO.class);
-            example.createCriteria().andIn("guid", leafGuids);
-            MenuDTO menuDTO = new MenuDTO();
-            menuDTO.setDel(true);
-            return menuMapper.updateByExampleSelective(menuDTO, example);
-        }
-        return null;
+        MenuDTO menuDTO = new MenuDTO();
+        menuDTO.setDel(true);
+        Example example = new Example(MenuDTO.class);
+        example.createCriteria().andIn("guid", leafGuids);
+        return menuMapper.updateByExampleSelective(menuDTO, example);
     }
 
 }

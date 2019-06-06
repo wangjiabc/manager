@@ -15,7 +15,7 @@ import java.util.List;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = {"classpath:/*.xml"})
-public class RoomTest {
+public class SomeTest {
     //ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-sqlservers.xml");
     //
     //CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");

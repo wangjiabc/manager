@@ -3,6 +3,7 @@ package com.voucher.manage2.controller;
 import cn.hutool.core.util.IdUtil;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.dto.MenuDTO;
+import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.service.MenuService;
 import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.MapUtils;
@@ -74,7 +75,11 @@ public class MenuController {
     @RequestMapping(value = "/delLeafMenu")
     public Integer delLeafMenu(@RequestBody Map<String, Object> jsonMap) {
 
-        return menuService.delLeafMenu((List<String>) jsonMap.get("leafMenus"));
+        List<String> leafMenus = (List<String>) jsonMap.get("leafMenus");
+        if (ObjectUtils.isEmpty(leafMenus)) {
+            throw BaseException.getDefault();
+        }
+        return menuService.delLeafMenu(leafMenus);
     }
 
     @RequestMapping(value = "/updateMenu")

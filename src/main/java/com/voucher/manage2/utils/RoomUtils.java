@@ -18,14 +18,15 @@ public class RoomUtils {
     /**
      * 资产操作记录说明模板
      */
-    public static final String INTRODUCTION_TEMP = "操作人:{},操作类型{},金额{}元,时间{}";
+    public static final String INTRODUCTION_TEMP = "操作人:{},操作类型:{},金额:{}元,时间:{}";
 
     public static String getRoomLogIntroduction(RoomIn roomIn) {
-        return StrUtil.format(INTRODUCTION_TEMP, CommonUtils.getCurrentUserName(), SystemCache.MENU_CACHE.get(roomIn.getTypeGuid()).getName(), roomIn.getMoney(), roomIn.getDate());
+        //DateUtil.formatBetween()
+        return StrUtil.format(INTRODUCTION_TEMP, CommonUtils.getCurrentUserName(), SystemCache.MENU_CACHE.get(roomIn.getTypeGuid()).getName(), roomIn.getMoney(), TimeUtils.formatTime(roomIn.getDate(),TimeUtils.exp2));
     }
 
     public static String getRoomLogIntroduction(RoomOut roomOut) {
-        return StrUtil.format(INTRODUCTION_TEMP, CommonUtils.getCurrentUserName(), SystemCache.MENU_CACHE.get(roomOut.getTypeGuid()).getName(), roomOut.getMoney(), roomOut.getDate());
+        return StrUtil.format(INTRODUCTION_TEMP, CommonUtils.getCurrentUserName(), SystemCache.MENU_CACHE.get(roomOut.getTypeGuid()).getName(), roomOut.getMoney(), TimeUtils.formatTime(roomOut.getDate(),TimeUtils.exp2));
     }
 
     /**
