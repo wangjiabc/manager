@@ -111,7 +111,7 @@ public class FileController {
                         //TODO
                         JedisUtil0.lpushString(hireGuid, fileName);
                     } catch (IOException e) {
-                        log.error("文件存入失败", new FileUploadException(fileName, e));
+                        //log.error("文件存入失败", new FileUploadException(fileName, e));
                     }
                 }
             }

@@ -1,7 +1,8 @@
-package com.voucher.manage.daoModel;
+package modules;
 
 import java.io.Serializable;
 
+import com.voucher.crab2died.annotation.ExcelField;
 import com.voucher.manage.daoSQL.annotations.*;
 
 @DBTable(name="[room]")
@@ -9,52 +10,52 @@ public class Room implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
-    @SQLInteger(name="id")
+    @ExcelField(title = "id", order = 1)
 	private Integer id;
 
-    @SQLString(name="guid")
+    @ExcelField(title = "guid", order = 2)
 	private String guid;
 
-    @SQLString(name="num")
+    @ExcelField(title = "num", order = 3)
 	private String num;
 
-    @SQLString(name="address")
+    @ExcelField(title = "address", order = 4)
 	private String address;
 
-    @SQLFloat(name="build_area")
+    @ExcelField(title = "build_area", order = 5)
 	private Float build_area;
 
-    @SQLString(name="region")
+    @ExcelField(title = "region", order = 6)
 	private String region;
 
-    @SQLString(name="manage_region")
+    @ExcelField(title = "manage_region", order = 7)
 	private String manage_region;
 
-    @SQLInteger(name="room_property")
+    @ExcelField(title = "room_property", order = 8)
 	private Integer room_property;
 
-    @SQLInteger(name="state")
+    @ExcelField(title = "state", order = 9)
 	private Integer state;
 
-    @SQLLong(name="hidden_check_date")
+    @ExcelField(title = "hidden_check_date", order = 10)
 	private Long hidden_check_date;
 
-    @SQLLong(name="asset_check_date")
+    @ExcelField(title = "asset_check_date", order = 11)
 	private Long asset_check_date;
 
-    @SQLInteger(name="hidden")
+    @ExcelField(title = "hidden", order = 12)
 	private Integer hidden;
 
-    @SQLInteger(name="neaten_flow")
+    @ExcelField(title = "neaten_flow", order = 13)
 	private Integer neaten_flow;
 
-    @SQLBoolean(name="del")
+    @ExcelField(title = "del", order = 14)
 	private Boolean del;
 
-    @SQLLong(name="in_date")
+    @ExcelField(title = "in_date", order = 15)
 	private Long in_date;
 
-    @SQLString(name="in_type")
+    @ExcelField(title = "in_type", order = 16)
 	private String in_type;
 
 	public void setId(Integer id){

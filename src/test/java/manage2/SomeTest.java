@@ -20,13 +20,13 @@ public class SomeTest {
     //
     //CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
 
-    @Test
+
     public void addField() {
         String fieldName = "测试2显示名";
         //currentDao.alterTable(true, "room", fieldName, null);
     }
 
-    @Test
+
     public void insertTable() throws ClassNotFoundException {
         //insert into [item_room] (guid,build_area,room_property,state)  values (?,?,?,?)]; nested exception is java.sql.SQLException: 列名 'build_area' 无效。
         String guid = "111aaaaaaaaa";
@@ -46,7 +46,7 @@ public class SomeTest {
         //currentDao.insertTable(room, jsonArray.toJSONString());
     }
 
-    @Test
+
     public void addExcel() throws IOException, BiffException {/*
         List<Object> list = new ArrayList<>();
         String fileName = "C:\\Users\\Administrator\\Desktop\\全市零售户";

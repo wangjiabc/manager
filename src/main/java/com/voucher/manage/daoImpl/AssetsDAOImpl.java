@@ -51,6 +51,13 @@ public class AssetsDAOImpl extends JdbcDaoSupport implements AssetsDAO{
 	public List getRoom(Room room) {
 		return SelectExe.get(this.getJdbcTemplate(),room);
 	}
+
+
+	@Override
+	public List getChartInfo(com.voucher.manage.daoModel.ChartInfo chartInfo) {
+		// TODO Auto-generated method stub
+		return SelectExe.get(this.getJdbcTemplate(), chartInfo);
+	}
 	
 	
 }
