@@ -317,10 +317,36 @@ public class JedisUtil0 {
         try {
             shardedJedis.lpush(key, value);
         } catch (Exception e) {
-            log.error("getStringBlock from redis unsuccessfully:{}", e);
+            log.error("getStringBlock from redis unsuccessfully!", e);
         } finally {
             releaseResource(shardedJedis);
         }
     }
 
+    public static <T> void setObject(String key, T value) {
+        if (ObjectUtils.isNotEmpty(key, value)) {
+            ShardedJedis shardedJedis = getShardedJedis();
+            try {
+                shardedJedis.set(key.getBytes(), ObjectUtils.serialize(value));
+            } catch (Exception e) {
+                log.error("setObject to redis unsuccessfully!", e);
+            } finally {
+                releaseResource(shardedJedis);
+            }
+        }
+    }
+
+    public static <T> T sgetObject(String key) {
+        if (ObjectUtils.isNotEmpty(key)) {
+            ShardedJedis shardedJedis = getShardedJedis();
+            try {
+                return ObjectUtils.unserialize(shardedJedis.get(key.getBytes()));
+            } catch (Exception e) {
+                log.error("setObject to redis unsuccessfully!", e);
+            } finally {
+                releaseResource(shardedJedis);
+            }
+        }
+        return null;
+    }
 }

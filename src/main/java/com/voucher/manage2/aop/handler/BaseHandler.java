@@ -4,12 +4,14 @@ import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.msg.ErrorMessageBean;
 import com.voucher.manage2.msg.ExceptionMessage;
 import com.voucher.manage2.msg.MessageBean;
+import com.voucher.manage2.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,12 +46,17 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
     public ErrorMessageBean handleBaseException(BaseException e) {
         // 打印异常堆栈信息
         log.error(e.getMessage(), e);
-        return ErrorMessageBean.getMessageBean(e.msg);
+        if (ObjectUtils.isEmpty(e.getMsg())) {
+            return ErrorMessageBean.getMessageBean(999, e.getMessage());
+        } else {
+            return ErrorMessageBean.getMessageBean(e.getMsg());
+        }
     }
 
-    //是否对方法进行增强判定
+
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> aClass) {
+        //是否对方法进行增强判定
         return true;
     }
 

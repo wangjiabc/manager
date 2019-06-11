@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.voucher.manage2.tkmapper.mapper.TableAliasMapper">
+  <resultMap id="BaseResultMap" type="com.voucher.manage2.tkmapper.entity.TableAlias">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="line_alias" jdbcType="VARCHAR" property="lineAlias" />
+    <result column="line_uuid" jdbcType="VARCHAR" property="lineUuid" />
+    <result column="date" jdbcType="BIGINT" property="date" />
+    <result column="del" jdbcType="BIT" property="del" />
+    <result column="row_type" jdbcType="INTEGER" property="rowType" />
+    <result column="room_type" jdbcType="INTEGER" property="roomType" />
+  </resultMap>
+</mapper>

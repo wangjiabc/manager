@@ -17,7 +17,7 @@ public class DoGenerator {
     private static Configuration config;
     private static List<String> warnings;
     private static Context context;
-    private static String[] tableNames = {"room"};
+    private static String[] tableNames = {"sys_user"};
 
     static {
         warnings = new ArrayList<>();
@@ -65,5 +65,6 @@ public class DoGenerator {
         context.addTableConfiguration(tableConfiguration);
         //config.addContext(context);
     }
+
 
 }

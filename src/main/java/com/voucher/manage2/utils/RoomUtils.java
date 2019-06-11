@@ -1,6 +1,7 @@
 package com.voucher.manage2.utils;
 
 import cn.hutool.core.util.StrUtil;
+import com.google.common.collect.Lists;
 import com.voucher.manage2.cache.SystemCache;
 import com.voucher.manage2.constant.RoomConstant;
 import com.voucher.manage2.exception.BaseException;
@@ -22,11 +23,11 @@ public class RoomUtils {
 
     public static String getRoomLogIntroduction(RoomIn roomIn) {
         //DateUtil.formatBetween()
-        return StrUtil.format(INTRODUCTION_TEMP, CommonUtils.getCurrentUserName(), SystemCache.MENU_CACHE.get(roomIn.getTypeGuid()).getName(), roomIn.getMoney(), TimeUtils.formatTime(roomIn.getDate(),TimeUtils.exp2));
+        return StrUtil.format(INTRODUCTION_TEMP, CommonUtils.getCurrentUserName(), SystemCache.MENU_CACHE.get(roomIn.getTypeGuid()).getName(), roomIn.getMoney(), TimeUtils.formatTime(roomIn.getDate(), TimeUtils.exp2));
     }
 
     public static String getRoomLogIntroduction(RoomOut roomOut) {
-        return StrUtil.format(INTRODUCTION_TEMP, CommonUtils.getCurrentUserName(), SystemCache.MENU_CACHE.get(roomOut.getTypeGuid()).getName(), roomOut.getMoney(), TimeUtils.formatTime(roomOut.getDate(),TimeUtils.exp2));
+        return StrUtil.format(INTRODUCTION_TEMP, CommonUtils.getCurrentUserName(), SystemCache.MENU_CACHE.get(roomOut.getTypeGuid()).getName(), roomOut.getMoney(), TimeUtils.formatTime(roomOut.getDate(), TimeUtils.exp2));
     }
 
     /**
@@ -45,5 +46,13 @@ public class RoomUtils {
             }
         }
         throw BaseException.getDefault();
+    }
+
+    /**
+     * 根据资产状态检测资产是否可出账
+     */
+    public static boolean checkRoomOutByState(Integer state) {
+        //0,空置,1:已出租.2:可出租,3:不可出租,4已划拨,5自用,6已出售,7已拆迁,8已拆除,9已灭失
+        return Lists.newArrayList(0, 3).contains(state);
     }
 }

@@ -12,6 +12,7 @@ import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
 
+import com.voucher.manage2.utils.RoomUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -167,20 +168,32 @@ public class RoomController {
     }
 
     @RequestMapping("roomOut")
-    public Integer roomOut(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
-        List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
-        if (ObjectUtils.isEmpty(roomGuids)) {
-            throw BaseException.getDefault();
+    public Object roomOut(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
+        //不可出租,空置的才可以出账
+        List<String> roomGuids = new ArrayList<>();
+        List<String> faildRoomGuids = new ArrayList<>();
+        List<Map<String, Object>> rooms = (List<Map<String, Object>>) jsonMap.get("rooms");
+        for (Map<String, Object> room : rooms) {
+            String guid = MapUtils.getString("guid", room);
+            if (RoomUtils.checkRoomOutByState(MapUtils.getInteger("state", room))) {
+                roomGuids.add(guid);
+            } else {
+                faildRoomGuids.add(guid);
+            }
         }
-        List<RoomOut> roomOuts = new ArrayList<>();
-        for (String roomGuid : roomGuids) {
-            RoomOut roomOut = new RoomOut();
-            BeanUtils.populate(roomOut, jsonMap);
-            roomOut.setGuid(IdUtil.simpleUUID());
-            roomOut.setRoomGuid(roomGuid);
-            roomOuts.add(roomOut);
+
+        if (ObjectUtils.isNotEmpty(roomGuids)) {
+            List<RoomOut> roomOuts = new ArrayList<>();
+            for (String roomGuid : roomGuids) {
+                RoomOut roomOut = new RoomOut();
+                BeanUtils.populate(roomOut, jsonMap);
+                roomOut.setGuid(IdUtil.simpleUUID());
+                roomOut.setRoomGuid(roomGuid);
+                roomOuts.add(roomOut);
+            }
+            roomService.roomOut(roomOuts);
         }
-        return roomService.roomOut(roomOuts);
+        return faildRoomGuids;
     }
 
     @RequestMapping("test")

@@ -58,11 +58,11 @@ public class MessageBean {
     }
 
     public static MessageBean getMessageBean(ExceptionMessage msg) {
-        return new MessageBean(msg.code, msg.msg);
+        return new MessageBean(msg.getCode(), msg.getMsg());
     }
 
     public static MessageBean getMessageBean(ExceptionMessage msg, Object body) {
-        return new MessageBean(msg.code, msg.msg, body);
+        return new MessageBean(msg.getCode(), msg.getMsg(), body);
     }
 
     public static MessageBean getMessageBean(Integer code, String msg) {

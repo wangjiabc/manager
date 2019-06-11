@@ -15,11 +15,19 @@ public enum ExceptionMessage {
 
     EXCEPTION(999, "未知异常");
 
-    public Integer code;
-    public String msg;
+    private Integer code;
+    private String msg;
 
     ExceptionMessage(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
     }
 }

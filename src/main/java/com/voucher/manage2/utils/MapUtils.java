@@ -1,5 +1,6 @@
 package com.voucher.manage2.utils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,5 +57,13 @@ public final class MapUtils {
 
     public static Double getDouble(String key, Map<String, Object> map) {
         return Double.valueOf(getString(key, map));
+    }
+
+    public static Map<String, Object> getStrMap(String key, Map<String, Object> map) {
+        Object obj = get(key, map);
+        if (obj != null && obj instanceof Map) {
+            return (Map<String, Object>) obj;
+        }
+        return new HashMap<>(16);
     }
 }

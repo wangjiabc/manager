@@ -18,5 +18,7 @@
     <result column="hidden" jdbcType="INTEGER" property="hidden" />
     <result column="neaten_flow" jdbcType="INTEGER" property="neatenFlow" />
     <result column="del" jdbcType="BIT" property="del" />
+    <result column="in_date" jdbcType="BIGINT" property="inDate" />
+    <result column="in_type" jdbcType="VARCHAR" property="inType" />
   </resultMap>
 </mapper>

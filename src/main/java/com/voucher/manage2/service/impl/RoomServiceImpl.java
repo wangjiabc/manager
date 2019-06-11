@@ -41,6 +41,7 @@ public class RoomServiceImpl implements RoomService {
     @Transactional(rollbackFor = Exception.class)
     public Integer roomIn(List<RoomIn> roomIns) {
         List<RoomLog> roomLogs = new ArrayList<>();
+        List<String> roomGuids = new ArrayList<>();
         for (RoomIn roomIn : roomIns) {
             RoomLog roomLog = new RoomLog();
             roomLog.setDate(System.currentTimeMillis());
@@ -49,7 +50,16 @@ public class RoomServiceImpl implements RoomService {
             roomLog.setIntroduction(RoomUtils.getRoomLogIntroduction(roomIn));
             roomLog.setOperationType(roomIn.getTypeGuid());
             roomLogs.add(roomLog);
+            roomGuids.add(roomIn.getRoomGuid());
         }
+        //更改资产状态
+        Room roomTemp = new Room();
+        roomTemp.setInDate(roomIns.get(0).getDate());
+        roomTemp.setInType(roomIns.get(0).getTypeGuid());
+        Example example = new Example(Room.class);
+        example.createCriteria().andIn("guid", roomGuids);
+        roomMapper.updateByExampleSelective(roomTemp, example);
+
         roomInMapper.insertList(roomIns);
         return roomLogMapper.insertList(roomLogs);
     }
@@ -70,11 +80,13 @@ public class RoomServiceImpl implements RoomService {
             roomGuids.add(roomOut.getRoomGuid());
         }
 
-        Room room = new Room();
-        room.setState(RoomUtils.getRoomStateByTypeGuid(roomOuts.get(0).getTypeGuid()));
+        //更改资产状态
+        Room roomTemp = new Room();
+        roomTemp.setState(RoomUtils.getRoomStateByTypeGuid(roomOuts.get(0).getTypeGuid()));
         Example example = new Example(Room.class);
         example.createCriteria().andIn("guid", roomGuids);
-        roomMapper.updateByExampleSelective(room, example);
+        roomMapper.updateByExampleSelective(roomTemp, example);
+
         roomOutMapper.insertList(roomOuts);
         return roomLogMapper.insertList(roomLogs);
     }

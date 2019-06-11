@@ -43,6 +43,12 @@ public class Room {
     @Column(name = "[del]")
     private Boolean del;
 
+    @Column(name = "[in_date]")
+    private Long inDate;
+
+    @Column(name = "[in_type]")
+    private String inType;
+
     /**
      * @return guid
      */
@@ -223,5 +229,33 @@ public class Room {
      */
     public void setDel(Boolean del) {
         this.del = del;
+    }
+
+    /**
+     * @return in_date
+     */
+    public Long getInDate() {
+        return inDate;
+    }
+
+    /**
+     * @param inDate
+     */
+    public void setInDate(Long inDate) {
+        this.inDate = inDate;
+    }
+
+    /**
+     * @return in_type
+     */
+    public String getInType() {
+        return inType;
+    }
+
+    /**
+     * @param inType
+     */
+    public void setInType(String inType) {
+        this.inType = inType == null ? null : inType.trim();
     }
 }

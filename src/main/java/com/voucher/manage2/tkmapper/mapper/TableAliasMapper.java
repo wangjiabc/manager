@@ -17,8 +17,8 @@ public interface TableAliasMapper extends Mapper<TableAlias>, InsertListMapper<T
      * @return: {java.util.List<java.util.Map<java.lang.String,java.lang.Object>>}
      * @Date: 2019/5/14 11:22
      **/
-    @Select("SELECT b.name line_uuid,b.max_length FROM sys.tables a join sys.columns b on b.object_id = a.object_id\n" +
-            "join INFORMATION_SCHEMA.COLUMNS c on b.name=c.COLUMN_NAME and a.name=c.TABLE_NAME \n" +
+    @Select("SELECT b.name line_uuid,b.max_length FROM sys.tables a join sys.columns b on b.object_id = a.object_id " +
+            "join INFORMATION_SCHEMA.COLUMNS c on b.name=c.COLUMN_NAME and a.name=c.TABLE_NAME " +
             "where a.name='item_room' AND DATA_TYPE = 'varchar'")
     List<Map<String, Object>> getDynLineInfo();
 
