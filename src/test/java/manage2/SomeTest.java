@@ -22,8 +22,7 @@ public class SomeTest {
 
     @Test
     public void addField() {
-        String fieldName = "测试2显示名";
-        //currentDao.alterTable(true, "room", fieldName, null);
+
     }
 
     @Test

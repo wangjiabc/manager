@@ -1,6 +1,7 @@
 package com.voucher.manage2.controller;
 
 import cn.hutool.core.util.IdUtil;
+import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.*;
 import com.voucher.manage2.utils.MapUtils;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author lz
@@ -23,18 +26,30 @@ import java.util.Map;
 public class SysController {
     @Autowired
     private SysService sysService;
+    private final Pattern urlPattern = Pattern.compile("^/[a-z]+/[a-z]+\\.do$");
 
     @RequestMapping("addUrls")
     public Integer addUrls(@RequestBody Map<String, Object> jsonMap) {
         List<Map<String, Object>> urls = (List<Map<String, Object>>) jsonMap.get("urls");
         List<SysUrl> sysUrls = new ArrayList<>();
         for (Map<String, Object> url : urls) {
-            SysUrl sysUrl = new SysUrl();
-            sysUrl.setName(MapUtils.getString("name", url));
-            sysUrl.setUrl(MapUtils.getString("url", url));
-            sysUrls.add(sysUrl);
+            String urlStr = MapUtils.getString("url", url);
+            if (urlPattern.matcher(urlStr).find()) {
+                SysUrl sysUrl = new SysUrl();
+                sysUrl.setName(MapUtils.getString("name", url));
+                //^/[a-z]+/[a-z]+\.do$
+                sysUrl.setUrl(urlStr);
+                sysUrls.add(sysUrl);
+            } else {
+                throw BaseException.getDefault("url非法,示例:/aa/bb.do");
+            }
         }
         return sysService.addUrls(sysUrls);
+    }
+
+    @RequestMapping("getUrls")
+    public List<SysUrl> getUrls(String urlCondition) {
+        return sysService.getUrls(urlCondition);
     }
 
     @RequestMapping("addModel")
@@ -113,20 +128,18 @@ public class SysController {
     public Integer addUserConditions(@RequestBody Map<String, Object> jsonMap) {
         List<Map<String, Object>> conditions = (List<Map<String, Object>>) MapUtils.get("conditions", jsonMap);
         String userGuid = MapUtils.getString("userGuid", jsonMap);
-        SysUserCondition sysUserCondition = new SysUserCondition();
-        sysUserCondition.setGuid(IdUtil.simpleUUID());
-        sysUserCondition.setUserGuid(userGuid);
-        StringBuilder sqlCondition = new StringBuilder();
+        List<SysUserCondition> sysUserConditionArrayList = new ArrayList<>();
         for (Map<String, Object> condition : conditions) {
-            sqlCondition.append("," + MapUtils.getString("lineUuid", condition) + "=" + MapUtils.getString("value", condition));
+            SysUserCondition sysUserCondition = new SysUserCondition();
+            sysUserCondition.setGuid(IdUtil.simpleUUID());
+            sysUserCondition.setUserGuid(userGuid);
+            sysUserCondition.setLineUuid(MapUtils.getString("lineUuid", condition));
+            sysUserConditionArrayList.add(sysUserCondition);
+            //sqlCondition.append("," + MapUtils.getString("lineUuid", condition) + "=" + MapUtils.getString("value", condition));
         }
-        sysUserCondition.setSqlCondition(sqlCondition.delete(0, 1).toString());
-        return sysService.addUserConditions(sysUserCondition);
+        //sysUserCondition.setSqlCondition(sqlCondition.delete(0, 1).toString());
+        return sysService.addUserConditions(sysUserConditionArrayList);
     }
 
-    @RequestMapping("login")
-    public boolean login() {
-        return true;
-    }
 
 }

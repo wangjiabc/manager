@@ -7,6 +7,7 @@
     -->
     <result column="guid" jdbcType="VARCHAR" property="guid" />
     <result column="user_guid" jdbcType="VARCHAR" property="userGuid" />
-    <result column="sql_condition" jdbcType="VARCHAR" property="sqlCondition" />
+    <result column="line_uuid" jdbcType="VARCHAR" property="lineUuid" />
+    <result column="line_value" jdbcType="INTEGER" property="lineValue" />
   </resultMap>
 </mapper>

@@ -20,5 +20,17 @@ public interface SysService {
 
     Integer addUserRoles(List<SysUserRole> userRoles);
 
-    Integer addUserConditions(SysUserCondition userCondition);
+    Integer addUserConditions(List<SysUserCondition> userCondition);
+
+    List<SysUrl> getUrls(String urlCondition);
+
+    List<SysModel> getModelsLikeModelName(String modelName);
+
+    List<SysModel> getModelsByRoleGuid(String RoleGuid);
+
+    List<SysRole> getRolesLikeRoleName(String roleName);
+
+    List<SysRole> getRolesByUserGuid(String userGuid);
+
+    List<SysUserCondition> getUserConditionsByUserGuid(String guid);
 }

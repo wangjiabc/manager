@@ -10,8 +10,11 @@ public class SysUserCondition {
     @Column(name = "[user_guid]")
     private String userGuid;
 
-    @Column(name = "[sql_condition]")
-    private String sqlCondition;
+    @Column(name = "[line_uuid]")
+    private String lineUuid;
+
+    @Column(name = "[line_value]")
+    private Integer lineValue;
 
     /**
      * @return guid
@@ -42,16 +45,30 @@ public class SysUserCondition {
     }
 
     /**
-     * @return sql_condition
+     * @return line_uuid
      */
-    public String getSqlCondition() {
-        return sqlCondition;
+    public String getLineUuid() {
+        return lineUuid;
     }
 
     /**
-     * @param sqlCondition
+     * @param lineUuid
      */
-    public void setSqlCondition(String sqlCondition) {
-        this.sqlCondition = sqlCondition == null ? null : sqlCondition.trim();
+    public void setLineUuid(String lineUuid) {
+        this.lineUuid = lineUuid == null ? null : lineUuid.trim();
+    }
+
+    /**
+     * @return line_value
+     */
+    public Integer getLineValue() {
+        return lineValue;
+    }
+
+    /**
+     * @param lineValue
+     */
+    public void setLineValue(Integer lineValue) {
+        this.lineValue = lineValue;
     }
 }

@@ -4,8 +4,11 @@ import cn.hutool.core.util.IdUtil;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage2.service.RoomService;
+import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.RoomIn;
 import com.voucher.manage2.tkmapper.entity.RoomOut;
+import com.voucher.manage2.tkmapper.entity.SysUserCondition;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
@@ -14,6 +17,7 @@ import com.voucher.manage2.utils.MapUtils;
 
 import com.voucher.manage2.utils.RoomUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.aspectj.lang.annotation.Around;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +35,8 @@ public class RoomController {
     private CurrentDao currentDao;
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private SysService sysService;
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
@@ -40,10 +46,10 @@ public class RoomController {
         room.setLimit(limit);
         room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
-        Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
-        String searchContent = query.get("searchContent").toString();
-        String state = query.get("state").toString();
-        String neaten_flow = query.get("neaten_flow").toString();
+        Map<String, Object> query = MapUtils.getStrMap("query", jsonMap);
+        Object searchContent = query.get("searchContent");
+        Object state = query.get("state");
+        Object neaten_flow = query.get("neaten_flow");
 
         List<String> searchList = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(searchContent)) {
@@ -52,14 +58,23 @@ public class RoomController {
         }
         if (ObjectUtils.isNotEmpty(state)) {
             searchList.add("state =");
-            searchList.add(state);
+            searchList.add(state.toString());
         }
         if (ObjectUtils.isNotEmpty(neaten_flow)) {
             searchList.add("neaten_flow =");
-            searchList.add(neaten_flow);
+            searchList.add(neaten_flow.toString());
         }
         searchList.add("del=");
         searchList.add("false");
+        List<String> userConditonList = new ArrayList<>();
+        List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
+        if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
+            for (SysUserCondition sysUserCondition : sysUserConditionList) {
+                userConditonList.add(sysUserCondition.getLineUuid() + "=");
+                userConditonList.add(sysUserCondition.getLineValue() + "");
+            }
+        }
+        searchList.addAll(userConditonList);
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
