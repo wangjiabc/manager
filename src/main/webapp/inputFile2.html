@@ -9,6 +9,12 @@
 	<div >
 		
 		<div class="modal-header">
+			<label>ip：</label><input id="ip" name="name" type="text" />
+			<label>数据库：</label><input id="database" name="name" type="text" />
+			<label>用户名：</label><input id="name" name="name" type="text" />
+         	 <label>密码：</label><input id="password" name="password" type="password" />
+          	<button onclick="register();">连接</button>
+          	<span id="state"></span>
 			<h4 class="modal-title">选择excel文件</h4>
 		</div>
 		
@@ -63,21 +69,50 @@
 </body>
  <script type="text/javascript">
  
+ var exceldata = [];
 
-		var exceldata = [];
+	var allTable;
+ 
+ 		function register(){
+ 			
+ 			var ip=document.getElementById("ip").value;
+ 			var database=document.getElementById("database").value;
+ 			var userName=document.getElementById("name").value;
+			var password=document.getElementById("password").value;
+			
+			$.ajax({
+			      type: "POST",
+			      url: "/manager/excel/getConnection.do",
+			      data: { 
+			    	  ip:ip,
+			    	  database:database,
+			    	  userName:userName,
+			    	  password:password
+			    	  },
+			      dataType: "json",
+			      error: function (request){
+			   	   console.log(request);
+			      },
+			      success: function (text) {
+			    	  console.log(text);
+			    	  var data=text.body;
+			    		  document.getElementById("state").innerText=data.result;
+			    		  
+			    			var xhr = new XMLHttpRequest();
+			    			xhr.open("GET", "/manager/excel/getTableNames.do?database="+database+"&userName="+userName+"&password="+password);
+			    			xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			    			xhr.send();
+			    			xhr.onreadystatechange = function() {
+			    				if (xhr.readyState == 4 && xhr.status == 200) {
+			    						var b = JSON.parse(xhr.responseText);
+			    						allTable= b.body;
+			    				}
+			    			}
+			      }
+			});
+			
+ 		}
 
-		var allTable;
-		
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "/manager/excel/getTableNames.do");
-		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		xhr.send();
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-					var b = JSON.parse(xhr.responseText);
-					allTable= b.body;
-			}
-		}
 
 		var tablenumber=0;
 		
@@ -86,13 +121,16 @@
 		function execute(){
 			var json=JSON.stringify(parames);
 			console.log(json);
-			var limitLine=document.getElementById("start").value
-			var offsetLine=document.getElementById("end").value
-			console.log(limitLine);
-			console.log(offsetLine);
+			var limitLine=document.getElementById("start").value;
+			var offsetLine=document.getElementById("end").value;
+			var ip=document.getElementById("ip").value;
+ 			var database=document.getElementById("database").value;
+ 			var userName=document.getElementById("name").value;
+			var password=document.getElementById("password").value;
+
 			$.ajax({
 			      type: "POST",
-			      url: "/manager/excel/intoList.do",
+			      url: "/manager/excel/intoList.do?database="+database+"&userName="+userName+"&password="+password,
 			      data: { 
 			    	  "json":json,
 			    	  limitLine:limitLine,
@@ -157,9 +195,15 @@
 			console.log(grade1);
 			var tableName = encodeURI(encodeURI(grade1));
 
+			var ip=document.getElementById("ip").value;
+ 			var database=document.getElementById("database").value;
+ 			var userName=document.getElementById("name").value;
+			var password=document.getElementById("password").value;
+			
 			var xhr = new XMLHttpRequest();
 			xhr.open("get", "/manager/excel/getTableColumns.do?tableName="
-					+ tableName, true);
+					+ tableName+"&database="+database+"&userName="+userName
+					+"&password="+password, true);
 			xhr.send();
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4 && xhr.status == 200) {

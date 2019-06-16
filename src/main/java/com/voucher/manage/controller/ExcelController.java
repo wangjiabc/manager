@@ -68,8 +68,12 @@ class DBUtils {
         }
     }
 
-    public static Connection getConnection(String url) throws Exception {
-        return DriverManager.getConnection(url, prop.getProperty("sql_username"), prop.getProperty("sql_password"));
+    public static Connection getConnection(String url,String username,String password) throws Exception {
+    	if(username==null||username.equals(""))
+    		username=prop.getProperty("sql_username");
+    	if(password==null||password.equals(""))
+    		password=prop.getProperty("sql_password");
+        return DriverManager.getConnection(url, username,password);
     }
 
     public static void close(Connection conn) {
@@ -166,14 +170,81 @@ public class ExcelController {
           
     }
 	
+    @RequestMapping("/getConnection")
+    public @ResponseBody Map getConnection(String ip,String database,String userName,String password
+    		,HttpServletRequest request) {
+    	
+    	 Connection conn = null;
+    	 
+    	 Map map=new HashMap<>();
+    	 
+    	 ip="jdbc:jtds:sqlserver://"+ip+"/"+database;
+    	 
+    	try {
+             conn = DBUtils.getConnection(ip,userName,password);
+             map.put("result", "连接成功");
+             
+             String cookie=request.getSession().getId();
+             
+             Map connectMap=new HashMap<>();
+             
+             connectMap.put("ip", ip);
+             connectMap.put("userName", userName);
+             connectMap.put("password", password);
+     		
+     		LinkedHashMap<String, Map<String,Object>> linkedHashMap=Singleton.getInstance().getRegisterMapLong();
+     		
+     		Map<String,Object> linkedMap=linkedHashMap.get(cookie);
+    		
+     		if(linkedMap==null)
+     			linkedMap=new HashMap<>();
+    		
+    		linkedMap.put("startTime", new Date());
+    		linkedMap.put("connectMap", connectMap);
+     		
+         	linkedHashMap.put(cookie, linkedMap);
+             
+         } catch (Exception var11) {
+             var11.printStackTrace();
+             map.put("result", "连接失败");
+         } finally {
+             DBUtils.close(conn);
+         }
+
+    	return map;
+    }
+    
     @RequestMapping("/getTableNames")
-    public @ResponseBody List<String> getTableNames() {
+    public @ResponseBody List<String> getTableNames(String database,String userName,String password,HttpServletRequest request) {
         Connection conn = null;
-        String sql = "SELECT Name FROM " + DBUtils.dataBase + "..SysObjects Where XType='U' ORDER BY Name";
+        
+        String sql ="";
+        
+        if(database==null||database.equals("")){
+        	sql="SELECT Name FROM " + DBUtils.dataBase + "..SysObjects Where XType='U' ORDER BY Name";
+        }else {
+        	sql="SELECT Name FROM " + database + "..SysObjects Where XType='U' ORDER BY Name";
+		}
+        
         ArrayList tabNames = null;
 
         try {
-            conn = DBUtils.getConnection(DBUtils.url);
+        	if(userName!=null&&password!=null){
+        		String cookie=request.getSession().getId();
+        		
+        		LinkedHashMap<String, Map<String,Object>> linkedHashMap=Singleton.getInstance().getRegisterMapLong();
+         		
+         		Map<String,Object> linkedMap=linkedHashMap.get(cookie);
+         		
+         		Map connectMap=(Map) linkedMap.get("connectMap");
+         		
+         		conn = DBUtils.getConnection((String) connectMap.get("ip"),userName,password);
+         		MyTestUtil.print(connectMap);
+        	}else{
+        		conn = DBUtils.getConnection(DBUtils.url,userName,password);
+        		System.out.println("userName="+userName+"   pa="+password);
+        	}
+        	
             PreparedStatement prep = conn.prepareStatement(sql);
             ResultSet rs = prep.executeQuery();
             tabNames = new ArrayList();
@@ -208,42 +279,47 @@ public class ExcelController {
    
     
     @RequestMapping("/getTableColumns")
-    public @ResponseBody List<String> getTableColumns(@RequestParam String tableName) {
+    public @ResponseBody List<Map> getTableColumns(@RequestParam String tableName,
+    		String database,String userName,String password,HttpServletRequest request) {
         Connection conn = null;
         String sql = "select top 1 * from " + tableName;
         ArrayList tabNames = null;
 
-        List colNames = new ArrayList<>();
+        List<Map> colNames = new ArrayList<>();
         String[] colType;
         int[] colSize;
         
         try {
-            conn = DBUtils.getConnection(DBUtils.url);
+        	if(database!=null&&userName!=null&&password!=null){
+        		String cookie=request.getSession().getId();
+        		
+        		LinkedHashMap<String, Map<String,Object>> linkedHashMap=Singleton.getInstance().getRegisterMapLong();
+         		
+         		Map<String,Object> linkedMap=linkedHashMap.get(cookie);
+         		
+         		Map connectMap=(Map) linkedMap.get("connectMap");
+         		
+         		conn = DBUtils.getConnection((String) connectMap.get("ip"),userName,password);
+        	}else{
+        		conn = DBUtils.getConnection(DBUtils.url,userName,password);
+        	}
             PreparedStatement prep = conn.prepareStatement(sql);
             ResultSetMetaData rsmd = prep.getMetaData();
             System.out.println("rsmd=" + rsmd);
             int size = rsmd.getColumnCount();           
             colType = new String[size];
             colSize = new int[size];
-            boolean f_util_date = false;
-            boolean f_Clob = false;
-            boolean f_Blob = false;
             
             for (int i = 0; i < rsmd.getColumnCount(); ++i) {
-                colNames.add(rsmd.getColumnName(i + 1));
+            	
+            	Map map=new HashMap<>();
+                map.put("colName",rsmd.getColumnName(i + 1));
                 colType[i] = rsmd.getColumnTypeName(i + 1);
-                if (colType[i].equalsIgnoreCase("datetime")) {
-                    f_util_date = true;
-                }
 
-                if (colType[i].equalsIgnoreCase("text")) {
-                    f_Clob = true;
-                }
+                map.put("type", colType[i]);
 
-                if (colType[i].equalsIgnoreCase("image")) {
-                    f_Blob = true;
-                }
-
+                colNames.add(map);
+                
                 colSize[i] = rsmd.getColumnDisplaySize(i + 1);
             }
 
@@ -264,7 +340,7 @@ public class ExcelController {
     	   	
     	List<String> list=new ArrayList<>();
 
-    	Map<String,Object> map=new HashMap<>();
+    	
     	
     	File targetFile=new File(filePath+file.getName());
         
@@ -280,11 +356,17 @@ public class ExcelController {
         	e.printStackTrace();
 		} 
 
-        
-    	map.put("excelPath", filePath+file.getName());
-		map.put("startTime", new Date());
-		
 		LinkedHashMap<String, Map<String,Object>> linkedHashMap=Singleton.getInstance().getRegisterMapLong();
+		
+		Map<String,Object> linkedMap=linkedHashMap.get(cookie);
+		
+		Map<String,Object> map=new HashMap<>();
+		
+		if(linkedMap!=null)
+			map=linkedMap;
+		
+		map.put("excelPath", filePath+file.getName());
+		map.put("startTime", new Date());
 		
     	linkedHashMap.put(cookie, map);
     	
@@ -316,8 +398,8 @@ public class ExcelController {
     }
     
     @RequestMapping("/intoList")
-    public @ResponseBody Map intoList(@RequestParam String json,Integer limitLine,
-            Integer offsetLine,HttpServletRequest request) {
+    public @ResponseBody Map intoList(@RequestParam String json,String limitLine,
+            String offsetLine,String database,String userName,String password,HttpServletRequest request) {
     	    	
     	Map<String, String> jsonMap = 
     			JSONObject.parseObject(json, new TypeReference<Map<String, String>>(){});
@@ -328,14 +410,25 @@ public class ExcelController {
     	
     	Map<String,Object> linkedMap=linkedHashMap.get(cookie);
     	
+    	MyTestUtil.print(linkedMap);
+    	
     	String excelPath=(String) linkedMap.get("excelPath");
     	
     	Map map=new HashMap<>();
     	
     	map.put("result", "输入值为空");
     	
-    	if(limitLine==null)
-    		limitLine=0;
+    	int start=0;
+    	int end=0;
+    	
+    	if(limitLine!=null){
+    		try{
+    			start=Integer.parseInt(limitLine);
+    		}catch (Exception e) {
+				// TODO: handle exception
+    			e.printStackTrace();
+			}
+    	}
     	
         try {
         	 // @RequestParam("file") MultipartFile file 是用来接收前端传递过来的文件
@@ -344,10 +437,19 @@ public class ExcelController {
             Workbook wb = WorkbookFactory.create(inputStream);
             // 不基于注解,将Excel内容读至List<List<String>>对象内
             Sheet sheet = wb.getSheetAt(0);
-            if(offsetLine==null)
-            	offsetLine=sheet.getLastRowNum();
+            if(offsetLine==null){
+            	end=sheet.getLastRowNum();
+            }else{
+            	try{
+            		end=Integer.parseInt(offsetLine);
+            	}catch (Exception e) {
+					// TODO: handle exception
+            		e.printStackTrace();
+            		end=sheet.getLastRowNum();
+				}
+            }
             System.out.println("limitLine="+limitLine+"   offsetLine="+offsetLine);
-            List<List<String>> lists = ExcelUtils.getInstance().readExcel2(wb, limitLine, offsetLine, 0);
+            List<List<String>> lists = ExcelUtils.getInstance().readExcel2(wb, start, end, 0);
 
             // 2)
             // 基于注解,将Excel内容读至List<Student2>对象内
@@ -359,7 +461,18 @@ public class ExcelController {
                 System.out.println(st);
             }*/
             
-            String s=excelDAO.insertTable(jsonMap, lists);
+            String s="";
+            if(database!=null&&userName!=null&&password!=null){
+            	System.out.println("insert1");
+            	Map connectMap=(Map) linkedMap.get("connectMap");
+         		
+         		Connection connection= DBUtils.getConnection((String) connectMap.get("ip"),userName,password);
+         		
+            	s=excelDAO.insertTable(connection,jsonMap, lists);
+            }else{
+            	System.out.println("insert2");
+            	s=excelDAO.insertTable(jsonMap, lists);
+            }
             
             map.put("result", s);
         } catch (Exception e) {
