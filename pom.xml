@@ -10,6 +10,18 @@
 
     <dependencies>
 
+        <!-- Mybatis的分页助手 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>1.4</version>
+        </dependency>
+
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper</artifactId>
@@ -344,6 +356,27 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.17</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.17</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -359,13 +392,35 @@
 
         <finalName>manager</finalName>
         <plugins>
+            <!-- jr热部署插件-->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>jrebel-maven-plugin</artifactId>
+                <version>1.1.5</version>
+                <configuration>
+                    <addResourcesDirToRebelXml>true</addResourcesDirToRebelXml>
+                    <alwaysGenerate>true</alwaysGenerate>
+                    <showGenerated>true</showGenerated>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-rebel-xml</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>

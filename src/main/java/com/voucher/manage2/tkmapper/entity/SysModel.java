@@ -10,6 +10,9 @@ public class SysModel {
     @Column(name = "[name]")
     private String name;
 
+    @Column(name = "[description]")
+    private String description;
+
     /**
      * @return guid
      */
@@ -36,5 +39,19 @@ public class SysModel {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description
+     */
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 }

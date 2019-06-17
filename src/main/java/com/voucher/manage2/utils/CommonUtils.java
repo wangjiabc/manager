@@ -1,6 +1,6 @@
 package com.voucher.manage2.utils;
 
-import com.voucher.manage2.dto.UserDTO;
+import com.voucher.manage2.dto.SysUserDTO;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -10,9 +10,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class CommonUtils {
-    private static final ThreadLocal<UserDTO> threadLocalUsers = new ThreadLocal();
+    private static final ThreadLocal<SysUserDTO> threadLocalUsers = new ThreadLocal();
 
-    public static UserDTO getCurrentUser() {
+    public static SysUserDTO getCurrentUser() {
         return threadLocalUsers.get();
     }
 
@@ -24,7 +24,7 @@ public class CommonUtils {
         return getCurrentUser().getName();
     }
 
-    public static void setUser(UserDTO user) {
+    public static void setUser(SysUserDTO user) {
         threadLocalUsers.set(user);
     }
 }

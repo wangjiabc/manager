@@ -1,5 +1,6 @@
 package com.voucher.manage.dao;
 
+import com.voucher.manage.daoModel.ChartInfo;
 import com.voucher.manage.daoModel.Room;
 
 import java.util.List;
@@ -11,5 +12,7 @@ public interface AssetsDAO {
 			String order,Map search);
 
 	public List getRoom(Room room);
+	
+	public List getChartInfo(ChartInfo chartInfo);
 
 }

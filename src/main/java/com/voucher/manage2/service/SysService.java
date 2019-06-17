@@ -1,5 +1,8 @@
 package com.voucher.manage2.service;
 
+import com.voucher.manage2.dto.SysModelDTO;
+import com.voucher.manage2.dto.SysRoleDTO;
+import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.tkmapper.entity.*;
 
 import java.util.List;
@@ -22,15 +25,17 @@ public interface SysService {
 
     Integer addUserConditions(List<SysUserCondition> userCondition);
 
-    List<SysUrl> getUrls(String urlCondition);
+    List<SysUrl> getUrlsLikeCondition(String urlCondition);
+
+    SysModelDTO getUrlsByModel(String modelGuid);
 
     List<SysModel> getModelsLikeModelName(String modelName);
 
-    List<SysModel> getModelsByRoleGuid(String RoleGuid);
+    SysRoleDTO getModelsByRoleGuid(String RoleGuid);
 
     List<SysRole> getRolesLikeRoleName(String roleName);
 
-    List<SysRole> getRolesByUserGuid(String userGuid);
+    SysUserDTO getRolesByUserGuid(String userGuid);
 
     List<SysUserCondition> getUserConditionsByUserGuid(String guid);
 }

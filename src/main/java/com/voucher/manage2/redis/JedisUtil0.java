@@ -327,7 +327,8 @@ public class JedisUtil0 {
         if (ObjectUtils.isNotEmpty(key, value)) {
             ShardedJedis shardedJedis = getShardedJedis();
             try {
-                shardedJedis.set(key.getBytes(), ObjectUtils.serialize(value));
+                //半小时过期
+                shardedJedis.setex(key.getBytes(), 60 * 30, ObjectUtils.serialize(value));
             } catch (Exception e) {
                 log.error("setObject to redis unsuccessfully!", e);
             } finally {
@@ -336,7 +337,7 @@ public class JedisUtil0 {
         }
     }
 
-    public static <T> T sgetObject(String key) {
+    public static <T> T getObject(String key) {
         if (ObjectUtils.isNotEmpty(key)) {
             ShardedJedis shardedJedis = getShardedJedis();
             try {

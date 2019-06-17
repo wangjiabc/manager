@@ -13,7 +13,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 ">
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:jdbc.properties"/>
-        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
     <!-- <task:annotation-driven /> -->
     <!-- jndi方式 -->
@@ -57,9 +57,21 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 
     <bean id="tk_sql_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="tk_sql_dataSource"/>
-        <!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
+        <!-- 自动扫描entity目录, 覆盖Configuration.xml里的手工配置 -->
         <property name="mapperLocations" value="classpath:com/voucher/manage2/tkmapper/mapper/*.xml"/>
         <property name="configLocation" value="classpath:/config.xml"/>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            params=value1
+                            reasonable=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>
 
     <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->

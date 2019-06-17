@@ -1,32 +1,24 @@
 package com.voucher.manage2.aop.interceptor;
 
-import com.voucher.manage2.dto.UserDTO;
+import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.UserService;
 import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.support.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
-import java.util.Map;
 
 /**
  * @author lz
@@ -56,12 +48,13 @@ public class LoginInterceptor {
     }
 
     @Pointcut("controllerPointcut()&&(!rootPointcut())&&(!registerPointcut())")
-    public void sessionTimeOutPointcut() {
+    public void projectPointcut() {
     }
 
-    @Around("sessionTimeOutPointcut()")
+    @Around("projectPointcut()")
     public Object sessionTimeOutAdvice(ProceedingJoinPoint pjp) throws Throwable {
         Object result;
+        SysUserDTO userDTO;
         Class<?> controller = pjp.getTarget().getClass();
         Method proxyMethod = ((MethodSignature) pjp.getSignature()).getMethod();
         log.debug("----------------执行方法-----------------");
@@ -82,7 +75,7 @@ public class LoginInterceptor {
             if (ObjectUtils.isNotEmpty(tokenId)) {
                 // 查看redis是否还有token
                 // 获取 user
-                UserDTO userDTO = JedisUtil0.sgetObject(tokenId);
+                userDTO = JedisUtil0.getObject(tokenId);
                 if (userDTO == null) {
                     log.warn("拦截会话超时请求,tokenId:{}, URL:", tokenId, url);
                     throw BaseException.getDefault("登录已过期,重新登录!");
@@ -103,6 +96,14 @@ public class LoginInterceptor {
             e.printStackTrace();
             throw BaseException.getDefault(e);
         }
+        Long lastFreshTime = userDTO.getLastFreshTime();
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - lastFreshTime > 1500000L) {
+            //距离上次刷新token超过25min(1000*60*25) 则刷新token时间
+            userDTO.setLastFreshTime(currentTimeMillis);
+            JedisUtil0.setObject(tokenId, userDTO);
+        }
+
         return result;
     }
 }

@@ -180,7 +180,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             selects = selectMapper.selectAll();
         } catch (Exception e) {
             // TODO: handle exception
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         Map<String, Map<Integer, String>> domains = new HashMap<>();
         for (Select select : selects) {
@@ -195,7 +195,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             dynLineInfoList = tableAliasMapper.getDynLineInfo();
         } catch (Exception e) {
             // TODO: handle exception
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         Map<String, Object> dynLineInfoMap = null;
         if (ObjectUtils.isNotEmpty(dynLineInfoList)) {
@@ -220,15 +220,20 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             if (!matcher.find()) {
                 fixedTitleList.add(dynTitleMap);
             } else {
-                Map<Integer, String> domain = domains.get(line_uuid);
-                Object text_length = dynLineInfoMap.get(line_uuid);
-                if (ObjectUtils.isNotEmpty(text_length)) {
-                    dynTitleMap.put("text_length", text_length);
-                }
-                if (ObjectUtils.isNotEmpty(domains)) {
-                    dynTitleMap.put("domains", domain);
-                }
-                dynTitleList.add(dynTitleMap);
+            	fixedTitleList.add(dynTitleMap);
+				Map<Integer, String> domain = domains.get(line_uuid);
+				try {
+					Object text_length = dynLineInfoMap.get(line_uuid);
+					if (ObjectUtils.isNotEmpty(text_length)) {
+						dynTitleMap.put("text_length", text_length);
+					}
+					if (ObjectUtils.isNotEmpty(domains)) {
+						dynTitleMap.put("domains", domain);
+					}
+					dynTitleList.add(dynTitleMap);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
             }
 
         }

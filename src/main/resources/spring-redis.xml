@@ -8,6 +8,9 @@
 
     <context:component-scan base-package="com.voucher.manage2.redis"></context:component-scan>
 
+    <context:property-placeholder location="classpath:spring-redis.properties" ignore-unresolvable="true"/>
+
+    <!--    reids工具类的配置 2019.5.30 配置-->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="minIdle" value="${redis.minIdle}"/>
         <property name="maxIdle" value="${redis.maxIdle}"/>
@@ -20,9 +23,6 @@
         <property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}"></property>
         <property name="testWhileIdle" value="${redis.testWhileIdle}"/>
     </bean>
-
-    <!--    reids工具类的配置 2019.5.30 配置-->
-    <context:property-placeholder location="classpath:spring-redis.properties" ignore-unresolvable="true"/>
 
     <bean id="shardedJedisPool40" class="redis.clients.jedis.ShardedJedisPool" scope="singleton">
         <constructor-arg index="0" ref="jedisPoolConfig"/>

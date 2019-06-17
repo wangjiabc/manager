@@ -1,12 +1,10 @@
 package com.voucher.manage.daoModel;
 
-import com.voucher.manage.daoSQL.annotations.*;
-import lombok.ToString;
-
 import java.io.Serializable;
 
+import com.voucher.manage.daoSQL.annotations.*;
+
 @DBTable(name="[room]")
-@ToString
 public class Room implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -52,6 +50,12 @@ public class Room implements Serializable{
 
     @SQLBoolean(name="del")
 	private Boolean del;
+
+    @SQLLong(name="in_date")
+	private Long in_date;
+
+    @SQLString(name="in_type")
+	private String in_type;
 
 	public void setId(Integer id){
 		this.id = id;
@@ -163,6 +167,22 @@ public class Room implements Serializable{
 
 	public Boolean getDel(){
 		return del;
+	}
+
+	public void setIn_date(Long in_date){
+		this.in_date = in_date;
+	}
+
+	public Long getIn_date(){
+		return in_date;
+	}
+
+	public void setIn_type(String in_type){
+		this.in_type = in_type;
+	}
+
+	public String getIn_type(){
+		return in_type;
 	}
 
 

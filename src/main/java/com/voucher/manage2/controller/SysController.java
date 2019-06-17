@@ -1,19 +1,25 @@
 package com.voucher.manage2.controller;
 
 import cn.hutool.core.util.IdUtil;
+import com.voucher.manage2.dto.SysModelDTO;
+import com.voucher.manage2.dto.SysRoleDTO;
+import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.*;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.MapUtils;
+import com.voucher.manage2.utils.ObjectUtils;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tk.mybatis.mapper.weekend.Weekend;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -26,7 +32,13 @@ import java.util.regex.Pattern;
 public class SysController {
     @Autowired
     private SysService sysService;
-    private final Pattern urlPattern = Pattern.compile("^/[a-z]+/[a-z]+\\.do$");
+    private final Pattern urlPattern = Pattern.compile("^/[a-zA-Z]+/[a-zA-Z]+\\.do$");
+
+    //url -> /room/insertResource.do
+    @Test
+    public void test1() {
+        System.out.println(urlPattern.matcher("/room/insertResource.do").find());
+    }
 
     @RequestMapping("addUrls")
     public Integer addUrls(@RequestBody Map<String, Object> jsonMap) {
@@ -37,6 +49,7 @@ public class SysController {
             if (urlPattern.matcher(urlStr).find()) {
                 SysUrl sysUrl = new SysUrl();
                 sysUrl.setName(MapUtils.getString("name", url));
+                sysUrl.setDescription(MapUtils.getString("description", url));
                 //^/[a-z]+/[a-z]+\.do$
                 sysUrl.setUrl(urlStr);
                 sysUrls.add(sysUrl);
@@ -49,7 +62,12 @@ public class SysController {
 
     @RequestMapping("getUrls")
     public List<SysUrl> getUrls(String urlCondition) {
-        return sysService.getUrls(urlCondition);
+        return sysService.getUrlsLikeCondition(urlCondition);
+    }
+
+    @RequestMapping("getUrlsByModel")
+    public SysModelDTO getUrlsByModel(String modelGuid) {
+        return sysService.getUrlsByModel(modelGuid);
     }
 
     @RequestMapping("addModel")
@@ -57,6 +75,7 @@ public class SysController {
         SysModel sysModel = new SysModel();
         sysModel.setGuid(IdUtil.simpleUUID());
         sysModel.setName(MapUtils.getString("name", jsonMap));
+        sysModel.setDescription(MapUtils.getString("description", jsonMap));
         return sysService.addModel(sysModel);
     }
 
@@ -79,7 +98,18 @@ public class SysController {
         SysRole sysRole = new SysRole();
         sysRole.setGuid(IdUtil.simpleUUID());
         sysRole.setName(MapUtils.getString("name", jsonMap));
+        sysRole.setDescription(MapUtils.getString("description", jsonMap));
         return sysService.addRole(sysRole);
+    }
+
+    @RequestMapping("getModelsByRoleGuid")
+    public SysRoleDTO getModelsByRoleGuid(String roleGuid) {
+        return sysService.getModelsByRoleGuid(roleGuid);
+    }
+
+    @RequestMapping("getModelsLikeModelName")
+    public List<SysModel> getModelsLikeModelName(String modelName) {
+        return sysService.getModelsLikeModelName(modelName);
     }
 
     @RequestMapping("addRoleModels")
@@ -124,6 +154,16 @@ public class SysController {
         return sysService.addUserRoles(sysUserRoles);
     }
 
+    @RequestMapping("getRolesByUserGuid")
+    public SysUserDTO getRolesByUserGuid() {
+        return sysService.getRolesByUserGuid(CommonUtils.getCurrentUserGuid());
+    }
+
+    @RequestMapping("getRolesLikeRoleName")
+    public List<SysRole> getRolesLikeRoleName(String roleName) {
+        return sysService.getRolesLikeRoleName(roleName);
+    }
+
     @RequestMapping("addUserConditions")
     public Integer addUserConditions(@RequestBody Map<String, Object> jsonMap) {
         List<Map<String, Object>> conditions = (List<Map<String, Object>>) MapUtils.get("conditions", jsonMap);
@@ -135,11 +175,8 @@ public class SysController {
             sysUserCondition.setUserGuid(userGuid);
             sysUserCondition.setLineUuid(MapUtils.getString("lineUuid", condition));
             sysUserConditionArrayList.add(sysUserCondition);
-            //sqlCondition.append("," + MapUtils.getString("lineUuid", condition) + "=" + MapUtils.getString("value", condition));
         }
-        //sysUserCondition.setSqlCondition(sqlCondition.delete(0, 1).toString());
         return sysService.addUserConditions(sysUserConditionArrayList);
     }
-
 
 }

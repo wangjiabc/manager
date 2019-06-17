@@ -66,15 +66,15 @@ public class RoomController {
         }
         searchList.add("del=");
         searchList.add("false");
-        List<String> userConditonList = new ArrayList<>();
-        List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
-        if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
-            for (SysUserCondition sysUserCondition : sysUserConditionList) {
-                userConditonList.add(sysUserCondition.getLineUuid() + "=");
-                userConditonList.add(sysUserCondition.getLineValue() + "");
-            }
-        }
-        searchList.addAll(userConditonList);
+        //List<String> userConditonList = new ArrayList<>();
+        //List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
+        //if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
+        //    for (SysUserCondition sysUserCondition : sysUserConditionList) {
+        //        userConditonList.add(sysUserCondition.getLineUuid() + "=");
+        //        userConditonList.add(sysUserCondition.getLineValue() + "");
+        //    }
+        //}
+        //searchList.addAll(userConditonList);
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
