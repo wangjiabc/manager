@@ -9,6 +9,7 @@ import com.voucher.manage2.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +27,20 @@ import java.lang.reflect.UndeclaredThrowableException;
  * @date 2019/6/11
  */
 @Slf4j
-//@Aspect
+@Aspect
 @Component
 public class LoginInterceptor {
     @Autowired
     private UserService userService;
 
     //验证controller
-    @Pointcut("execution(public * com.voucher.manage2.controller..*.*(..)) || execution(public * com.voucher.manage.controller..*.*(..))")
+    @Pointcut("execution(public * com.voucher.manage2.controller..*.*(..))")
     public void controllerPointcut() {
+        //|| execution(public * com.voucher.manage.controller..*.*(..))
     }
 
     // 登录登出功能不需要验证
-    @Pointcut("execution(public * com.voucher.manage2.controller.LoginController.*(..))")
+    @Pointcut("execution(public * com.voucher.manage2.controller.UserController.login(..))||execution(public * com.voucher.manage2.controller.UserController.logout(..))")
     public void rootPointcut() {
     }
 
@@ -73,11 +75,11 @@ public class LoginInterceptor {
         //String requestURI = request.getRequestURI();
         try {
             if (ObjectUtils.isNotEmpty(tokenId)) {
-                // 查看redis是否还有token
+                // 查看redis是否还有token1
                 // 获取 user
                 userDTO = JedisUtil0.getObject(tokenId);
                 if (userDTO == null) {
-                    log.warn("拦截会话超时请求,tokenId:{}, URL:", tokenId, url);
+                    log.warn("拦截会话超时请求,tokenId:{}, URL:{}", tokenId, url);
                     throw BaseException.getDefault("登录已过期,重新登录!");
                 }
                 CommonUtils.setUser(userDTO);
@@ -85,6 +87,7 @@ public class LoginInterceptor {
                 if (userService.hasPermission(userDTO, url)) {
                     result = pjp.proceed(obj);
                 } else {
+                    log.warn("拦截没有权限的用户:{}", userDTO);
                     throw BaseException.getDefault("没有权限");
                 }
 

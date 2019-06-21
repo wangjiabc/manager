@@ -1,12 +1,10 @@
 package com.voucher.manage2.tkmapper.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Table(name = "[sys_user_condition]")
-public class SysUserCondition {
-    @Column(name = "[guid]")
-    private String guid;
-
+public class SysUserCondition implements Serializable {
     @Column(name = "[user_guid]")
     private String userGuid;
 
@@ -16,19 +14,7 @@ public class SysUserCondition {
     @Column(name = "[line_value]")
     private Integer lineValue;
 
-    /**
-     * @return guid
-     */
-    public String getGuid() {
-        return guid;
-    }
-
-    /**
-     * @param guid
-     */
-    public void setGuid(String guid) {
-        this.guid = guid == null ? null : guid.trim();
-    }
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return user_guid

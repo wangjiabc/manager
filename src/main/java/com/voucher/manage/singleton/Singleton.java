@@ -63,9 +63,9 @@ public class Singleton {
 					}
 
 					/*
-					 * System.out.println("endDate=   "+endDate.getTime());
-					 * System.out.println("noeDate=   "+nowDate.getTime());
-					 * System.out.println("diff="+diff/1000);
+					 * SystemConstant.out.println("endDate=   "+endDate.getTime());
+					 * SystemConstant.out.println("noeDate=   "+nowDate.getTime());
+					 * SystemConstant.out.println("diff="+diff/1000);
 					 */
 					return diff / 1000 > 300;
 				}
@@ -98,9 +98,9 @@ public class Singleton {
 					}
 
 					/*
-					 * System.out.println("endDate=   "+endDate.getTime());
-					 * System.out.println("noeDate=   "+nowDate.getTime());
-					 * System.out.println("diff="+diff/1000);
+					 * SystemConstant.out.println("endDate=   "+endDate.getTime());
+					 * SystemConstant.out.println("noeDate=   "+nowDate.getTime());
+					 * SystemConstant.out.println("diff="+diff/1000);
 					 */
 					return diff / 1000 > 30000;
 				}
@@ -133,9 +133,9 @@ public class Singleton {
 					}
 
 					/*
-					 * System.out.println("endDate=   "+endDate.getTime());
-					 * System.out.println("noeDate=   "+nowDate.getTime());
-					 * System.out.println("diff="+diff/1000);
+					 * SystemConstant.out.println("endDate=   "+endDate.getTime());
+					 * SystemConstant.out.println("noeDate=   "+nowDate.getTime());
+					 * SystemConstant.out.println("diff="+diff/1000);
 					 */
 					return diff / 1000 > 300;
 				}

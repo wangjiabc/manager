@@ -13,15 +13,15 @@ public interface SysService {
 
     Integer addModel(SysModel model);
 
-    Integer addModelUrls(List<SysModelUrl> modelUrls);
+    Integer updateModelUrls(List<SysModelUrl> modelUrls, List<SysModelUrl> delModelUrls);
 
     Integer addRole(SysRole role);
 
-    Integer addRoleModels(List<SysRoleModel> roleModels);
+    Integer updateRoleModels(List<SysRoleModel> roleModels, List<SysRoleModel> delModelGuids);
 
     Integer addRoleMenus(List<SysRoleMenu> roleMenus);
 
-    Integer addUserRoles(List<SysUserRole> userRoles);
+    Integer updateUserRoles(List<SysUserRole> userRoles, List<SysUserRole> delUserRoles);
 
     Integer addUserConditions(List<SysUserCondition> userCondition);
 
@@ -35,7 +35,9 @@ public interface SysService {
 
     List<SysRole> getRolesLikeRoleName(String roleName);
 
-    SysUserDTO getRolesByUserGuid(String userGuid);
+    SysUserDTO setRolesByUserGuid(SysUserDTO sysUserDTO);
 
     List<SysUserCondition> getUserConditionsByUserGuid(String guid);
+
+    Integer updateUserConditions(SysUserCondition sysUserCondition);
 }

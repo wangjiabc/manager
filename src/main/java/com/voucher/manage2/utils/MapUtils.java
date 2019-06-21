@@ -31,32 +31,28 @@ public final class MapUtils {
     }
 
     public static final <K, V> Integer getInteger(K key, Map<K, V> map) {
-        return Integer.valueOf(getString(key, map));
+        return getString(key, map) == null ? null : Integer.valueOf(getString(key, map));
     }
 
     public static final <K, V> Long getLong(K key, Map<K, V> map) {
-        return Long.valueOf(getString(key, map));
+        return getString(key, map) == null ? null : Long.valueOf(getString(key, map));
     }
 
     public static final <K, V> Float getFloat(K key, Map<K, V> map) {
-        return Float.valueOf(getString(key, map));
+        return getString(key, map) == null ? null : Float.valueOf(getString(key, map));
     }
 
     public static final <K, V> Boolean getBoolean(K key, Map<K, V> map) {
-        return Boolean.valueOf(getString(key, map));
+        return getString(key, map) == null ? null : Boolean.valueOf(getString(key, map));
     }
 
     public static final <K, V> List<String> getStrList(K key, Map<K, V> map) {
-        Object object = getObject(key, map);
-        if (ObjectUtils.isEmpty(object)) {
-            return null;
-        }
-        return (List<String>) object;
+        return getObject(key, map) == null ? null : (List<String>) getObject(key, map);
     }
 
 
     public static Double getDouble(String key, Map<String, Object> map) {
-        return Double.valueOf(getString(key, map));
+        return getString(key, map) == null ? null :Double.valueOf(getString(key, map));
     }
 
     public static Map<String, Object> getStrMap(String key, Map<String, Object> map) {

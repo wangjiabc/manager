@@ -1,9 +1,10 @@
 package com.voucher.manage2.tkmapper.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Table(name = "[sys_role]")
-public class SysRole {
+public class SysRole implements Serializable {
     @Column(name = "[guid]")
     private String guid;
 
@@ -12,6 +13,8 @@ public class SysRole {
 
     @Column(name = "[description]")
     private String description;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return guid

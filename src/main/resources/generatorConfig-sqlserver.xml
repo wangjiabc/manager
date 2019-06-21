@@ -20,7 +20,8 @@
             <property name="useMapperCommentGenerator " value="false"/>
             <property name="generateColumnConsts  " value="true"/>
         </plugin>
-
+        <!--        生成序列化-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <!-- 是否去除自动生成的注释 true：是 ： false:否  -->
         <commentGenerator type="com.voucher.manage2.tkmapper.MyCommentGenerator">
             <!--<commentGenerator>-->
@@ -90,6 +91,9 @@
             <property name="useMapperCommentGenerator " value="false"/>
             <property name="generateColumnConsts  " value="true"/>
         </plugin>
+
+        <!--        生成序列化-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
 
         <!-- 是否去除自动生成的注释 true：是 ： false:否  -->
         <commentGenerator type="com.voucher.manage2.tkmapper.MyCommentGenerator">

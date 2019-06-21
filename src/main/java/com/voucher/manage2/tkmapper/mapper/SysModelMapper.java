@@ -10,7 +10,7 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 public interface SysModelMapper extends Mapper<SysModel>, InsertListMapper<SysModel> {
-    @Select("SELECT sm.guid,sm.name FROM sys_role_model srm LEFT JOIN sys_model sm ON srm.model_guid=sm.guid WHERE  srm.model_guid = '${roleGuid}'")
+    @Select("SELECT sm.guid,sm.name FROM sys_role_model srm LEFT JOIN sys_model sm ON srm.model_guid=sm.guid WHERE  srm.role_guid = '${roleGuid}'")
     List<SysModel> getModelsByRoleGuid(@Param("roleGuid") String roleGuid);
 
 }

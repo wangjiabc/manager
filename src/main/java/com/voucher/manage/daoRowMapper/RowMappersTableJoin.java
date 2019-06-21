@@ -116,7 +116,7 @@ public class RowMappersTableJoin implements RowMapper<Map> {
             try {
 
                 String aa = rs.getString(rsmd.getColumnName(i + 1));
-                //  	 System.out.println("aa="+aa);
+                //  	 SystemConstant.out.println("aa="+aa);
                 map.put(rsmd.getColumnName(i + 1), aa);
             } catch (SecurityException e) {
                 // TODO Auto-generated catch block
@@ -141,11 +141,11 @@ public class RowMappersTableJoin implements RowMapper<Map> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()
                 + filedName.substring(1);
-        //System.out.println("setMethodName="+setMethodName);
+        //SystemConstant.out.println("setMethodName="+setMethodName);
         try {
-            //  	 System.out.println("setmethod="+setMethod);
+            //  	 SystemConstant.out.println("setmethod="+setMethod);
             String aa = rs.getString(columnName);
-            //  	 System.out.println("aa="+aa);
+            //  	 SystemConstant.out.println("aa="+aa);
             map.put(columnName, aa);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
@@ -164,11 +164,11 @@ public class RowMappersTableJoin implements RowMapper<Map> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()
                 + filedName.substring(1);
-        //   System.out.println("setMethodName="+setMethodName);
+        //   SystemConstant.out.println("setMethodName="+setMethodName);
         try {
-            //  	 System.out.println("setmethod="+setMethod);
+            //  	 SystemConstant.out.println("setmethod="+setMethod);
             String aa = rs.getString(columnName);
-            //  	 System.out.println("aa="+aa);
+            //  	 SystemConstant.out.println("aa="+aa);
             map.put(columnName, aa);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
@@ -187,11 +187,11 @@ public class RowMappersTableJoin implements RowMapper<Map> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()
                 + filedName.substring(1);
-        //   System.out.println("setMethodName="+setMethodName);
+        //   SystemConstant.out.println("setMethodName="+setMethodName);
         try {
-            //  	 System.out.println("setmethod="+setMethod);
+            //  	 SystemConstant.out.println("setmethod="+setMethod);
             String aa = rs.getString(columnName);
-            //  	 System.out.println("aa="+aa);
+            //  	 SystemConstant.out.println("aa="+aa);
             map.put(columnName, aa);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
@@ -210,11 +210,11 @@ public class RowMappersTableJoin implements RowMapper<Map> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()
                 + filedName.substring(1);
-        //   System.out.println("setMethodName="+setMethodName);
+        //   SystemConstant.out.println("setMethodName="+setMethodName);
         try {
-            //  	 System.out.println("setmethod="+setMethod);
+            //  	 SystemConstant.out.println("setmethod="+setMethod);
             String aa = rs.getString(columnName);
-            //  	 System.out.println("aa="+aa);
+            //  	 SystemConstant.out.println("aa="+aa);
             map.put(columnName, aa);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
@@ -233,11 +233,11 @@ public class RowMappersTableJoin implements RowMapper<Map> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()
                 + filedName.substring(1);
-        //   System.out.println("setMethodName="+setMethodName);
+        //   SystemConstant.out.println("setMethodName="+setMethodName);
         try {
-            //  	 System.out.println("setmethod="+setMethod);
+            //  	 SystemConstant.out.println("setmethod="+setMethod);
             String aa = rs.getString(columnName);
-            //  	 System.out.println("aa="+aa);
+            //  	 SystemConstant.out.println("aa="+aa);
             map.put(columnName, aa);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
@@ -256,11 +256,11 @@ public class RowMappersTableJoin implements RowMapper<Map> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()
                 + filedName.substring(1);
-        //   System.out.println("setMethodName="+setMethodName);
+        //   SystemConstant.out.println("setMethodName="+setMethodName);
         try {
-            //  	 System.out.println("setmethod="+setMethod);
+            //  	 SystemConstant.out.println("setmethod="+setMethod);
             String aa = rs.getString(columnName);
-            //  	 System.out.println("aa="+aa);
+            //  	 SystemConstant.out.println("aa="+aa);
             map.put(columnName, aa);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block

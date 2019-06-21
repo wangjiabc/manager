@@ -1,9 +1,10 @@
 package com.voucher.manage2.tkmapper.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Table(name = "[sys_user]")
-public class SysUser {
+public class SysUser implements Serializable {
     @Column(name = "[guid]")
     private String guid;
 
@@ -21,6 +22,14 @@ public class SysUser {
 
     @Column(name = "[password]")
     private String password;
+
+    @Column(name = "[salt]")
+    private String salt;
+
+    @Column(name = "[del]")
+    private Boolean del;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return guid
@@ -104,5 +113,33 @@ public class SysUser {
      */
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    /**
+     * @return salt
+     */
+    public String getSalt() {
+        return salt;
+    }
+
+    /**
+     * @param salt
+     */
+    public void setSalt(String salt) {
+        this.salt = salt == null ? null : salt.trim();
+    }
+
+    /**
+     * @return del
+     */
+    public Boolean getDel() {
+        return del;
+    }
+
+    /**
+     * @param del
+     */
+    public void setDel(Boolean del) {
+        this.del = del;
     }
 }

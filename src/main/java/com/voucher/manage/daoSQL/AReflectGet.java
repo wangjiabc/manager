@@ -16,7 +16,7 @@ public class AReflectGet {
         //获取相应字段的getXXX()方法  
         String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-      //  System.out.println(getMethodName);
+      //  SystemConstant.out.println(getMethodName);
         Integer i=0;
        try {
        	Method getMethod =className.getMethod(getMethodName);
@@ -47,7 +47,7 @@ public class AReflectGet {
         //获取相应字段的getXXX()方法  
         String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-       // System.out.println(getMethodName);
+       // SystemConstant.out.println(getMethodName);
         String s="";
        try {
        	Method getMethod =className.getMethod(getMethodName);
@@ -77,7 +77,7 @@ public class AReflectGet {
         //获取相应字段的getXXX()方法  
         String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-       // System.out.println(getMethodName);
+       // SystemConstant.out.println(getMethodName);
         Float f=null;
        try {
        	Method getMethod =className.getMethod(getMethodName);
@@ -107,7 +107,7 @@ public class AReflectGet {
         //获取相应字段的getXXX()方法  
         String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-       // System.out.println(getMethodName);
+       // SystemConstant.out.println(getMethodName);
         Double f=null;
        try {
        	Method getMethod =className.getMethod(getMethodName);
@@ -137,7 +137,7 @@ public class AReflectGet {
         //获取相应字段的getXXX()方法  
         String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-       // System.out.println(getMethodName);
+       // SystemConstant.out.println(getMethodName);
         Long f=null;
        try {
        	Method getMethod =className.getMethod(getMethodName);
@@ -167,7 +167,7 @@ public class AReflectGet {
         //获取相应字段的getXXX()方法  
         String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-       // System.out.println(getMethodName);
+       // SystemConstant.out.println(getMethodName);
         Date d=null;
        try {
        	Method getMethod =className.getMethod(getMethodName);
@@ -197,7 +197,7 @@ public class AReflectGet {
         //获取相应字段的getXXX()方法  
         String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-       // System.out.println(getMethodName);
+       // SystemConstant.out.println(getMethodName);
         Boolean f=null;
        try {
        	Method getMethod =className.getMethod(getMethodName);
@@ -227,7 +227,7 @@ public class AReflectGet {
         //获取相应字段的getXXX()方法  
         String getMethodName = "get" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-     //   System.out.println(getMethodName);
+     //   SystemConstant.out.println(getMethodName);
         String[] s={};
        try {
        	Method getMethod =className.getMethod(getMethodName);

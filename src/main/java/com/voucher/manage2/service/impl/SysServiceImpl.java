@@ -9,6 +9,7 @@ import com.voucher.manage2.tkmapper.mapper.*;
 import com.voucher.manage2.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.weekend.Weekend;
 
 import java.util.List;
@@ -48,8 +49,17 @@ public class SysServiceImpl implements SysService {
     }
 
     @Override
-    public Integer addModelUrls(List<SysModelUrl> modelUrls) {
-        return sysModelUrlMapper.insertList(modelUrls);
+    public Integer updateModelUrls(List<SysModelUrl> modelUrls, List<SysModelUrl> delModelUrls) {
+        Integer success = 0;
+        if (ObjectUtils.isNotEmpty(delModelUrls)) {
+            for (SysModelUrl delModelUrl : delModelUrls) {
+                sysModelUrlMapper.delete(delModelUrl);
+            }
+        }
+        if (ObjectUtils.isNotEmpty(modelUrls)) {
+            success = sysModelUrlMapper.insertList(modelUrls);
+        }
+        return success;
     }
 
     @Override
@@ -58,8 +68,18 @@ public class SysServiceImpl implements SysService {
     }
 
     @Override
-    public Integer addRoleModels(List<SysRoleModel> roleModels) {
-        return sysRoleModelMapper.insertList(roleModels);
+    @Transactional(rollbackFor = Exception.class)
+    public Integer updateRoleModels(List<SysRoleModel> addModels, List<SysRoleModel> delModels) {
+        Integer success = 0;
+        if (ObjectUtils.isNotEmpty(delModels)) {
+            for (SysRoleModel delModel : delModels) {
+                sysRoleModelMapper.delete(delModel);
+            }
+        }
+        if (ObjectUtils.isNotEmpty(addModels)) {
+            success = sysRoleModelMapper.insertList(addModels);
+        }
+        return success;
     }
 
     @Override
@@ -68,8 +88,18 @@ public class SysServiceImpl implements SysService {
     }
 
     @Override
-    public Integer addUserRoles(List<SysUserRole> userRoles) {
-        return sysUserRoleMapper.insertList(userRoles);
+    @Transactional(rollbackFor = Exception.class)
+    public Integer updateUserRoles(List<SysUserRole> userRoles, List<SysUserRole> delUserRoles) {
+        Integer success = 0;
+        if (ObjectUtils.isNotEmpty(delUserRoles)) {
+            for (SysUserRole delModel : delUserRoles) {
+                sysUserRoleMapper.delete(delModel);
+            }
+        }
+        if (ObjectUtils.isNotEmpty(userRoles)) {
+            success = sysUserRoleMapper.insertList(userRoles);
+        }
+        return success;
     }
 
     @Override
@@ -123,9 +153,8 @@ public class SysServiceImpl implements SysService {
     }
 
     @Override
-    public SysUserDTO getRolesByUserGuid(String userGuid) {
-        SysUserDTO sysUserDTO = new SysUserDTO();
-        sysUserDTO.setGuid(userGuid);
+    public SysUserDTO setRolesByUserGuid(SysUserDTO sysUserDTO) {
+        String userGuid = sysUserDTO.getGuid();
         sysUserDTO.roles = sysRoleMapper.getRolesByUserGuid(userGuid);
         return sysUserDTO;
     }
@@ -135,5 +164,13 @@ public class SysServiceImpl implements SysService {
         Weekend<SysUserCondition> sysUserConditionWeekend = new Weekend<>(SysUserCondition.class);
         sysUserConditionWeekend.weekendCriteria().andEqualTo(SysUserCondition::getUserGuid, guid);
         return sysUserConditionMapper.selectByExample(sysUserConditionWeekend);
+    }
+
+    @Override
+    public Integer updateUserConditions(SysUserCondition sysUserCondition) {
+        Weekend<SysUserCondition> sysUserConditionWeekend = new Weekend<>(SysUserCondition.class);
+        sysUserConditionWeekend.weekendCriteria().andEqualTo(SysUserCondition::getUserGuid, sysUserCondition.getUserGuid());
+        sysUserCondition.setUserGuid(null);
+        return sysUserConditionMapper.updateByExampleSelective(sysUserCondition, sysUserConditionWeekend);
     }
 }

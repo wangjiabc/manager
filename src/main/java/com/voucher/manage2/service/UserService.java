@@ -1,5 +1,6 @@
 package com.voucher.manage2.service;
 
+import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.tkmapper.entity.SysUser;
 
 import java.util.List;
@@ -12,5 +13,11 @@ import java.util.List;
 public interface UserService {
     List<String> userAllPermission(SysUser sysUser);
 
-    boolean hasPermission(SysUser sysUser, String url);
+    boolean hasPermission(SysUserDTO sysUser, String url);
+
+    SysUser regist(SysUser sysUser);
+
+    SysUserDTO login(SysUser sysUser);
+
+    List<SysUser> getAllUser();
 }

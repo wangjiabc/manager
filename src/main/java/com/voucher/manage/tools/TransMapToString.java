@@ -13,16 +13,16 @@ public class TransMapToString {
 	public static String[] get(Map<String,String> map){  
 		Set  set=map.entrySet();   
 		int size=map.size();
-	//	System.out.print(size);
+	//	SystemConstant.out.print(size);
 		String[] value=new String[size*2];
 		Iterator iterator=set.iterator();     
 		int i=0;
 		while (iterator.hasNext()){       		    
 		    Map.Entry  mapentry = (Map.Entry) iterator.next();       		    
 		    value[i]=(String) mapentry.getKey();
-		  //  System.out.println(i+"  "+mapentry.getKey());
+		  //  SystemConstant.out.println(i+"  "+mapentry.getKey());
 		    value[i+1]=(String) mapentry.getValue(); 
-		  //  System.out.println(i+"  "+mapentry.getValue());
+		  //  SystemConstant.out.println(i+"  "+mapentry.getValue());
 		    i=i+2;
 		}   
 	  return value; 

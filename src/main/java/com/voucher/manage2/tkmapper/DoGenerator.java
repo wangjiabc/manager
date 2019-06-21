@@ -23,7 +23,7 @@ public class DoGenerator {
     private static Configuration config;
     private static List<String> warnings;
     private static List<Context> contexts;
-    private static String[] tableNames = {"sys_model","sys_role"};
+    private static String[] tableNames = {"table_alias"};
     private static Pattern linePattern = Pattern.compile("_(\\w)");
     //所有已生成实体的类名,全小写
     private static List<String> entityNames = new ArrayList<>();

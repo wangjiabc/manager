@@ -74,7 +74,7 @@ public class Sign {
             KeyGenerator keyGenerator=KeyGenerator.getInstance("DESede");
             keyGenerator.init(168); //选择DESede算法,密钥长度为112位或168位
             Key myKey = keyGenerator.generateKey(); //生成密钥
-            // System.out.println("得到单钥加密密钥"+myKey.getEncoded());
+            // SystemConstant.out.println("得到单钥加密密钥"+myKey.getEncoded());
             privateKey=myKey.getEncoded();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

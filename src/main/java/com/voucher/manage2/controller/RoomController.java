@@ -64,17 +64,18 @@ public class RoomController {
             searchList.add("neaten_flow =");
             searchList.add(neaten_flow.toString());
         }
+
+        List<String> userConditonList = new ArrayList<>();
+        List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
+        if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
+            for (SysUserCondition sysUserCondition : sysUserConditionList) {
+                userConditonList.add(sysUserCondition.getLineUuid() + "=");
+                userConditonList.add(sysUserCondition.getLineValue() + "");
+            }
+        }
+        searchList.addAll(userConditonList);
         searchList.add("del=");
-        searchList.add("false");
-        //List<String> userConditonList = new ArrayList<>();
-        //List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
-        //if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
-        //    for (SysUserCondition sysUserCondition : sysUserConditionList) {
-        //        userConditonList.add(sysUserCondition.getLineUuid() + "=");
-        //        userConditonList.add(sysUserCondition.getLineValue() + "");
-        //    }
-        //}
-        //searchList.addAll(userConditonList);
+        searchList.add("0");
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
