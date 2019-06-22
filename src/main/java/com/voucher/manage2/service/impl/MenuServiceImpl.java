@@ -61,7 +61,7 @@ public class MenuServiceImpl implements MenuService {
                 }
                 //fileGuid是文件guid+名字,即存的文件名
                 String fileGuid = roomFile.getFileGuid();
-                HashMap<String, String> map = new HashMap<>(4);
+                HashMap<String, String> map = new HashMap<>(8);
                 map.put("name", FileUtils.getDownLoadName(fileGuid));
                 map.put("url", FileUtils.getFileUrlPath(fileGuid));
                 roomFileList.add(map);

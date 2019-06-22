@@ -52,9 +52,9 @@ public class Excel2Module {
             // 验证读取转换函数Student2ExpelConverter
             // 注解 `@ExcelField(title = "是否开除", order = 5, readConverter =  Student2ExpelConverter.class)`
             /*List<Student1> students = ExcelUtils.getInstance().readExcel2Objects(path, Student1.class, 0, 0);
-            System.out.println("读取Excel至对象数组(支持类型转换)：");
+            SystemConstant.out.println("读取Excel至对象数组(支持类型转换)：");
             for (Student1 st : students) {
-                System.out.println(st);
+                SystemConstant.out.println(st);
             }*/
         } catch (Exception e) {
             e.printStackTrace();

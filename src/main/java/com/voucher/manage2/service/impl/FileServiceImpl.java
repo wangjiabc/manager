@@ -57,7 +57,7 @@ public class FileServiceImpl implements FileService {
             //保存
             //将保存的文件对象
             tarFile = FileUtils.getFileByFileName(fileName);
-            //System.out.println("+++++++++" + tarPath);
+            //SystemConstant.out.println("+++++++++" + tarPath);
             file.transferTo(tarFile);
             //TODO 类型是图片就压缩
             //if (FileUtils.isImage(type)) {

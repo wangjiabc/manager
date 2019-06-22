@@ -25,7 +25,7 @@ public class sqltest {
 		
 		//assetsDAO.alterTable(false,"test", "bbb","item_c6394475c5e3e7de6bbd51ef337f33c0");
 		
-		//System.out.println("i="+i);
+		//SystemConstant.out.println("i="+i);
 		
 		RoomInfo roomInfo=new RoomInfo();
 		

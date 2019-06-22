@@ -48,7 +48,7 @@ public class MenuController {
 
     @RequestMapping(value = "/insertFileMenu")
     public Integer insertMenu(@RequestBody Map<String, Object> jsonMap) {
-        //log.debug("insertMenu===" + jsonMap);
+        log.debug("insertMenu===" + jsonMap);
         MenuDTO menu = new MenuDTO();
         menu.setGuid(IdUtil.simpleUUID());
         menu.setLevel(MapUtils.getInteger("level", jsonMap));
@@ -84,7 +84,7 @@ public class MenuController {
 
     @RequestMapping(value = "/updateMenu")
     public Integer updateMenu(@RequestBody Map<String, Object> jsonMap) {
-        //log.debug("insertMenu===" + jsonMap);
+        log.debug("insertMenu===" + jsonMap);
         return menuService.updateMenu(jsonMap);
     }
 }

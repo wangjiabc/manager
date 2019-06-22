@@ -4,17 +4,21 @@ import cn.hutool.core.util.IdUtil;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage2.service.RoomService;
+import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.RoomIn;
 import com.voucher.manage2.tkmapper.entity.RoomOut;
+import com.voucher.manage2.tkmapper.entity.SysUserCondition;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.constant.ResultConstant;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.utils.MapUtils;
 
+import com.voucher.manage2.utils.RoomUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.aspectj.lang.annotation.Around;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-@CrossOrigin(origins = "http://192.168.10.100:9527")
 @RestController
 @RequestMapping("/room")
 public class RoomController {
@@ -32,6 +35,8 @@ public class RoomController {
     private CurrentDao currentDao;
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private SysService sysService;
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
@@ -41,10 +46,10 @@ public class RoomController {
         room.setLimit(limit);
         room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
-        Map<String, Object> query = (Map<String, Object>) jsonMap.get("query");
-        String searchContent = query.get("searchContent").toString();
-        String state = query.get("state").toString();
-        String neaten_flow = query.get("neaten_flow").toString();
+        Map<String, Object> query = MapUtils.getStrMap("query", jsonMap);
+        Object searchContent = query.get("searchContent");
+        Object state = query.get("state");
+        Object neaten_flow = query.get("neaten_flow");
 
         List<String> searchList = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(searchContent)) {
@@ -53,14 +58,24 @@ public class RoomController {
         }
         if (ObjectUtils.isNotEmpty(state)) {
             searchList.add("state =");
-            searchList.add(state);
+            searchList.add(state.toString());
         }
         if (ObjectUtils.isNotEmpty(neaten_flow)) {
             searchList.add("neaten_flow =");
-            searchList.add(neaten_flow);
+            searchList.add(neaten_flow.toString());
         }
+
+        List<String> userConditonList = new ArrayList<>();
+        List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
+        if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
+            for (SysUserCondition sysUserCondition : sysUserConditionList) {
+                userConditonList.add(sysUserCondition.getLineUuid() + "=");
+                userConditonList.add(sysUserCondition.getLineValue() + "");
+            }
+        }
+        searchList.addAll(userConditonList);
         searchList.add("del=");
-        searchList.add("false");
+        searchList.add("0");
         String[] where = new String[searchList.size()];
         room.setWhere(searchList.toArray(where));
         room.setWhereTerm("or");
@@ -169,20 +184,32 @@ public class RoomController {
     }
 
     @RequestMapping("roomOut")
-    public Integer roomOut(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
-        List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
-        if (ObjectUtils.isEmpty(roomGuids)) {
-            throw BaseException.getDefault();
+    public Object roomOut(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
+        //不可出租,空置的才可以出账
+        List<String> roomGuids = new ArrayList<>();
+        List<String> faildRoomGuids = new ArrayList<>();
+        List<Map<String, Object>> rooms = (List<Map<String, Object>>) jsonMap.get("rooms");
+        for (Map<String, Object> room : rooms) {
+            String guid = MapUtils.getString("guid", room);
+            if (RoomUtils.checkRoomOutByState(MapUtils.getInteger("state", room))) {
+                roomGuids.add(guid);
+            } else {
+                faildRoomGuids.add(guid);
+            }
         }
-        List<RoomOut> roomOuts = new ArrayList<>();
-        for (String roomGuid : roomGuids) {
-            RoomOut roomOut = new RoomOut();
-            BeanUtils.populate(roomOut, jsonMap);
-            roomOut.setGuid(IdUtil.simpleUUID());
-            roomOut.setRoomGuid(roomGuid);
-            roomOuts.add(roomOut);
+
+        if (ObjectUtils.isNotEmpty(roomGuids)) {
+            List<RoomOut> roomOuts = new ArrayList<>();
+            for (String roomGuid : roomGuids) {
+                RoomOut roomOut = new RoomOut();
+                BeanUtils.populate(roomOut, jsonMap);
+                roomOut.setGuid(IdUtil.simpleUUID());
+                roomOut.setRoomGuid(roomGuid);
+                roomOuts.add(roomOut);
+            }
+            roomService.roomOut(roomOuts);
         }
-        return roomService.roomOut(roomOuts);
+        return faildRoomGuids;
     }
 
     @RequestMapping("test")

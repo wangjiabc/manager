@@ -119,15 +119,15 @@ public class RowMappersJoin<T> implements RowMapper<T> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-    //   System.out.println("setMethodName="+setMethodName);
+    //   SystemConstant.out.println("setMethodName="+setMethodName);
  
        Class className=object.getClass();
-    //   System.out.println("classname="+className);
+    //   SystemConstant.out.println("classname="+className);
        try {
        	 Method setMethod =className.getDeclaredMethod(setMethodName,String.class);
-      //	 System.out.println("setmethod="+setMethod);
+      //	 SystemConstant.out.println("setmethod="+setMethod);
        	 String aa=rs.getString(columnName);
-      //	 System.out.println("aa="+aa+"        object="+object.getClass());
+      //	 SystemConstant.out.println("aa="+aa+"        object="+object.getClass());
 		 setMethod.invoke(object,aa);
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
@@ -155,14 +155,14 @@ public class RowMappersJoin<T> implements RowMapper<T> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-     //   System.out.println("setMethodName="+setMethodName);
+     //   SystemConstant.out.println("setMethodName="+setMethodName);
         Class className=object.getClass();
-     //   System.out.println("classname="+className);
+     //   SystemConstant.out.println("classname="+className);
        try {
        	 Method setMethod =className.getDeclaredMethod(setMethodName,Integer.class);
-      // 	 System.out.println("setmethod="+setMethod);
+      // 	 SystemConstant.out.println("setmethod="+setMethod);
        	     int aa=rs.getInt(columnName);
-      // 	 System.out.println("aa="+aa);
+      // 	 SystemConstant.out.println("aa="+aa);
 		     setMethod.invoke(object,aa);
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
@@ -190,14 +190,14 @@ public class RowMappersJoin<T> implements RowMapper<T> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-     //   System.out.println("setMethodName="+setMethodName);
+     //   SystemConstant.out.println("setMethodName="+setMethodName);
         Class className=object.getClass();
-    //    System.out.println("classname="+className);
+    //    SystemConstant.out.println("classname="+className);
        try {
        	 Method setMethod =className.getDeclaredMethod(setMethodName,Float.class);
-     //  	 System.out.println("setmethod="+setMethod);
+     //  	 SystemConstant.out.println("setmethod="+setMethod);
        	     float aa=rs.getFloat(columnName);
-      // 	 System.out.println("aa="+aa);
+      // 	 SystemConstant.out.println("aa="+aa);
 		     setMethod.invoke(object,aa);
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
@@ -226,13 +226,13 @@ public class RowMappersJoin<T> implements RowMapper<T> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-       // System.out.println("setMethodName="+setMethodName);
+       // SystemConstant.out.println("setMethodName="+setMethodName);
         Class className=object.getClass();
        try {
        	 Method setMethod =className.getDeclaredMethod(setMethodName,Double.class);
-      // 	 System.out.println("setmethod="+setMethod);
+      // 	 SystemConstant.out.println("setmethod="+setMethod);
        	     Double aa=rs.getDouble(columnName);
-      // 	  System.out.println("aa="+aa+"        object="+object.getClass());
+      // 	  SystemConstant.out.println("aa="+aa+"        object="+object.getClass());
 		     setMethod.invoke(object,aa);
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
@@ -260,17 +260,17 @@ public class RowMappersJoin<T> implements RowMapper<T> {
         //获取相应字段的getXXX()方法  
         String setMethodName = "set" + filedName.substring(0, 1).toUpperCase()  
                 + filedName.substring(1);
-     //   System.out.println("setMethodName="+setMethodName);
+     //   SystemConstant.out.println("setMethodName="+setMethodName);
         Class className=object.getClass();
-     //   System.out.println("classname="+className);
+     //   SystemConstant.out.println("classname="+className);
        try {
     	 	 Method setMethod =className.getDeclaredMethod(setMethodName,Date.class);
-    	//   System.out.println("setmethod="+setMethod);
+    	//   SystemConstant.out.println("setmethod="+setMethod);
     	     String aa=rs.getString(columnName);       	     
     	     SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
     	     if(aa!=null){
     	      Date date = sdf.parse(aa);
-    	   // System.out.println("Date="+date);
+    	   // SystemConstant.out.println("Date="+date);
     		  setMethod.invoke(object,date);
     	     }
 		} catch (NoSuchMethodException e) {

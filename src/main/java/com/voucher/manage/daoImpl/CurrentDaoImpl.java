@@ -12,8 +12,8 @@ import com.voucher.manage.daoSQL.annotations.DBTable;
 import com.voucher.manage.tools.Md5;
 import com.voucher.manage.tools.MyTestUtil;
 import com.voucher.manage2.exception.BaseException;
-import com.voucher.manage2.msg.ErrorMessageBean;
-import com.voucher.manage2.msg.ExceptionMessage;
+import com.voucher.manage2.tkmapper.entity.SysUserCondition;
+import com.voucher.manage2.tkmapper.mapper.SysUserConditionMapper;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.aop.interceptor.annotation.TimeConsume;
 import com.voucher.manage2.constant.ResultConstant;
@@ -27,10 +27,10 @@ import com.voucher.manage2.utils.SpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.weekend.Weekend;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -43,6 +43,10 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     private TableAliasMapper tableAliasMapper;
     @Autowired
     private SelectMapper selectMapper;
+    @Autowired
+    private CurrentDao currentDao;
+    @Autowired
+    private SysUserConditionMapper sysUserConditionMapper;
 
     @Override
     public void createTable(String tableName, String joinParameter) {
@@ -158,7 +162,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         table_alias.setLimit(1000);
         table_alias.setOffset(0);
         table_alias.setNotIn("id");
-        String[] where = {"del=", "false"};
+        String[] where = {"del=", "0"};
         table_alias.setWhere(where);
 
         tableName = tableName.substring(1, tableName.length() - 1);
@@ -174,22 +178,8 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         List<Map<String, Object>> fixedTitleList = new ArrayList<>();
         List<Map<String, Object>> dynTitleList = new ArrayList<>();
 
-        //下拉信息
-        List<Select> selects = new ArrayList<>();
-        try {
-            selects = selectMapper.selectAll();
-        } catch (Exception e) {
-            // TODO: handle exception
-            //e.printStackTrace();
-        }
-        Map<String, Map<Integer, String>> domains = new HashMap<>();
-        for (Select select : selects) {
-            Map<Integer, String> map = domains.get(select.getLineUuid());
-            if (map == null) {
-                domains.put(select.getLineUuid(), map = new HashMap<>());
-            }
-            map.put(select.getValue(), select.getName());
-        }
+        Map<String, Map<Integer, String>> domains = getSelectMap();
+
         List<Map<String, Object>> dynLineInfoList = null;
         try {
             dynLineInfoList = tableAliasMapper.getDynLineInfo();
@@ -220,20 +210,20 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             if (!matcher.find()) {
                 fixedTitleList.add(dynTitleMap);
             } else {
-            	fixedTitleList.add(dynTitleMap);
-				Map<Integer, String> domain = domains.get(line_uuid);
-				try {
-					Object text_length = dynLineInfoMap.get(line_uuid);
-					if (ObjectUtils.isNotEmpty(text_length)) {
-						dynTitleMap.put("text_length", text_length);
-					}
-					if (ObjectUtils.isNotEmpty(domains)) {
-						dynTitleMap.put("domains", domain);
-					}
-					dynTitleList.add(dynTitleMap);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
+                fixedTitleList.add(dynTitleMap);
+                Map<Integer, String> domain = domains.get(line_uuid);
+                try {
+                    Object text_length = dynLineInfoMap.get(line_uuid);
+                    if (ObjectUtils.isNotEmpty(text_length)) {
+                        dynTitleMap.put("text_length", text_length);
+                    }
+                    if (ObjectUtils.isNotEmpty(domains)) {
+                        dynTitleMap.put("domains", domain);
+                    }
+                    dynTitleList.add(dynTitleMap);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
             }
 
         }
@@ -247,6 +237,27 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         map.put("dynTitle", dynTitleList);
 
         return map;
+    }
+
+    @Override
+    public Map<String, Map<Integer, String>> getSelectMap() {
+        //下拉信息
+        List<Select> selects = new ArrayList<>();
+        try {
+            selects = selectMapper.selectAll();
+        } catch (Exception e) {
+            // TODO: handle exception
+            //e.printStackTrace();
+        }
+        Map<String, Map<Integer, String>> domains = new HashMap<>();
+        for (Select select : selects) {
+            Map<Integer, String> map = domains.get(select.getLineUuid());
+            if (map == null) {
+                domains.put(select.getLineUuid(), map = new HashMap<>());
+            }
+            map.put(select.getValue(), select.getName());
+        }
+        return domains;
     }
 
     @Override
@@ -320,20 +331,20 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             List<Table_alias> aliasList = SelectExe.get(this.getJdbcTemplate(), table_alias);
 
             // 下拉信息
-            List<Select> selects = new ArrayList<>();
-            try {
-                selects = selectMapper.selectAll();
-            } catch (Exception e) {
-                // TODO: handle exception
-                e.printStackTrace();
-            }
-            Map<String, Map<Integer, String>> domains = new HashMap<>();
-            for (Select select : selects) {
-                Map<Integer, String> map = domains.get(select.getLineUuid());
-                if (map == null)
-                    domains.put(select.getLineUuid(), map = new HashMap<>());
-                map.put(select.getValue(), select.getName());
-            }
+            //List<Select> selects = new ArrayList<>();
+            //try {
+            //    selects = selectMapper.selectAll();
+            //} catch (Exception e) {
+            //    // TODO: handle exception
+            //    e.printStackTrace();
+            //}
+            Map<String, Map<Integer, String>> domains = getSelectMap();
+            //for (Select select : selects) {
+            //    Map<Integer, String> map = domains.get(select.getLineUuid());
+            //    if (map == null)
+            //        domains.put(select.getLineUuid(), map = new HashMap<>());
+            //    map.put(select.getValue(), select.getName());
+            //}
             List<Map<String, Object>> dynLineInfoList = null;
             try {
                 dynLineInfoList = tableAliasMapper.getDynLineInfo();
@@ -621,7 +632,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         }
         //int i = 1 / 0;
         //update = this.getJdbcTemplate().update(sql);
-        //System.out.println(update);
+        //SystemConstant.out.println(update);
         return this.getJdbcTemplate().update(sql) == 0 ? ResultConstant.SUCCESS : ResultConstant.FAILED;
     }
 
@@ -655,6 +666,38 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             return ResultConstant.FAILED;
         }
         return tableAliasMapper.updateTextLength(item_room, line_uuid, text_length);
+    }
+
+    @Override
+    public List<Object> getSelectByUser(String userGuid) {
+        Map<String, Map<Integer, String>> selectMap = currentDao.getSelectMap();
+        Weekend<TableAlias> tableAliasWeekend = new Weekend<>(TableAlias.class);
+        //4代表下拉类型
+        tableAliasWeekend.weekendCriteria().andEqualTo(TableAlias::getRowType, 4);
+        List<TableAlias> tableAliases = tableAliasMapper.selectByExample(tableAliasWeekend);
+        List<Object> resultList = new ArrayList<>();
+
+        if (ObjectUtils.isNotEmpty(userGuid)) {
+            Weekend<SysUserCondition> sysUserConditionWeekend = new Weekend<>(SysUserCondition.class);
+            sysUserConditionWeekend.weekendCriteria().andEqualTo(SysUserCondition::getUserGuid, userGuid);
+            List<SysUserCondition> sysUserConditionList = sysUserConditionMapper.selectByExample(sysUserConditionWeekend);
+            HashMap<String, Integer> lineUuid_valueMap = new HashMap<>();
+            if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
+                for (SysUserCondition userCondition : sysUserConditionList) {
+                    lineUuid_valueMap.put(userCondition.getLineUuid(), userCondition.getLineValue());
+                }
+            }
+            for (TableAlias tableAlias : tableAliases) {
+                String lineUuid = tableAlias.getLineUuid();
+                Map<String, Object> selectedMap = new HashMap<>();
+                selectedMap.put("data", selectMap.get(lineUuid));
+                selectedMap.put("lineUuid", lineUuid);
+                selectedMap.put("lineName", tableAlias.getLineAlias());
+                selectedMap.put("selected", lineUuid_valueMap.get(lineUuid));
+                resultList.add(selectedMap);
+            }
+        }
+        return resultList;
     }
 
     //@PostConstruct

@@ -1,29 +1,56 @@
 package manage2;
 
+import cn.hutool.core.util.ClassUtil;
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.voucher.manage.daoModel.Room;
+import com.voucher.manage2.dto.MenuDTO;
+import com.voucher.manage2.dto.SysUserDTO;
+import com.voucher.manage2.redis.JedisUtil0;
+import com.voucher.manage2.service.UserService;
+import com.voucher.manage2.tkmapper.entity.Select;
+import com.voucher.manage2.tkmapper.entity.SysUser;
+import com.voucher.manage2.tkmapper.mapper.MenuMapper;
+import com.voucher.manage2.tkmapper.mapper.SelectMapper;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.weekend.Weekend;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = {"classpath:/*.xml"})
+//@ContextConfiguration(locations = {"classpath:/spring.xml", "classpath:/spring-mybatis.xml"})
 public class SomeTest {
-    //ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-sqlservers.xml");
-    //
-    //CurrentDao currentDao = (CurrentDao) applicationContext.getBean("currentDao");
+    @Autowired
+    private SelectMapper selectMapper;
+    @Autowired
+    private UserService userService;
 
-
+    @Test
     public void addField() {
-        String fieldName = "测试2显示名";
-        //currentDao.alterTable(true, "room", fieldName, null);
+        //SysUserDTO sysUser = JedisUtil0.getObject("9141daddcd109c945119de3ac11fa0a6");
+        //sysUser.setAccountName("lxh");
+        //sysUser.setPassword("lxh");
+        //System.out.println(sysUser);
+        String[] strs = {"1", "2"};
+
+        System.out.println(StringUtils.join(strs));
+        //userService.regist(sysUser);
     }
 
 
@@ -54,7 +81,7 @@ public class SomeTest {
         for (File file : files) {
             getEexcl(file.getAbsolutePath(), list);
         }
-        System.out.println(list.size());*/
+        SystemConstant.out.println(list.size());*/
     }
 
     private <T> void getEexcl(String fileName, List<T> list) throws IOException, BiffException {

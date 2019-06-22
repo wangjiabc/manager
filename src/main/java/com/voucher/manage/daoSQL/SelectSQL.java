@@ -103,12 +103,12 @@ public class SelectSQL {
                 QualifiSort sStr = (QualifiSort) anns[0];
                 columnName = (sStr.name().length() < 1) ? field.getName().toUpperCase() : sStr.name();
                 sort = AReflectGet.getStringMethods(object, className, field, columnName);
-                //  System.out.println("sort="+sort);
+                //  SystemConstant.out.println("sort="+sort);
             } else if (anns[0] instanceof QualifiOrder) {
                 QualifiOrder sStr = (QualifiOrder) anns[0];
                 columnName = (sStr.name().length() < 1) ? field.getName().toUpperCase() : sStr.name();
                 order = AReflectGet.getStringMethods(object, className, field, columnName);
-                //   System.out.println("order="+order);
+                //   SystemConstant.out.println("order="+order);
             }
         }
 
@@ -130,9 +130,9 @@ public class SelectSQL {
             int i = 1;
             for (String whereterm : columnWhere) {
                 if (i % 2 == 0) {
-                    //  System.out.println("偶数");
+                    //  SystemConstant.out.println("偶数");
                 } else {
-                    //  System.out.println("奇数");
+                    //  SystemConstant.out.println("奇数");
                     whereCommand.append(whereterm + "? \n  " + Term + " ");
                 }
                 i++;
@@ -161,10 +161,10 @@ public class SelectSQL {
             i = 1;
             for (String whereterm : columnWhere) {
                 if (i % 2 == 0) {
-                    //  System.out.println("偶数");
+                    //  SystemConstant.out.println("偶数");
                     params.add(whereterm);
                 } else {
-                    //  System.out.println("奇数");
+                    //  SystemConstant.out.println("奇数");
 
                 }
                 i++;
@@ -175,10 +175,10 @@ public class SelectSQL {
             i = 1;
             for (String whereterm : columnWhere) {
                 if (i % 2 == 0) {
-                    //  System.out.println("偶数");
+                    //  SystemConstant.out.println("偶数");
                     params.add(whereterm);
                 } else {
-                    //  System.out.println("奇数");
+                    //  SystemConstant.out.println("奇数");
 
                 }
                 i++;
@@ -271,9 +271,9 @@ public class SelectSQL {
             int i = 1;
             for (String whereterm : columnWhere) {
                 if (i % 2 == 0) {
-                    //  System.out.println("偶数");
+                    //  SystemConstant.out.println("偶数");
                 } else {
-                    //  System.out.println("奇数");
+                    //  SystemConstant.out.println("奇数");
                     whereCommand.append(whereterm + "? \n  " + Term + " ");
                 }
                 i++;
@@ -284,10 +284,10 @@ public class SelectSQL {
             i = 1;
             for (String whereterm : columnWhere) {
                 if (i % 2 == 0) {
-                    //  System.out.println("偶数");
+                    //  SystemConstant.out.println("偶数");
                     params.add(whereterm);
                 } else {
-                    //  System.out.println("奇数");
+                    //  SystemConstant.out.println("奇数");
 
                 }
                 i++;

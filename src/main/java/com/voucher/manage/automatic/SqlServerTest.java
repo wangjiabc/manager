@@ -48,7 +48,7 @@ public class SqlServerTest {
         List<String> names = t.getAllTables("mssql", "");  
         for (int i = 0; i < names.size(); i++) {  
             System.out.println(names.get(i));  
-          //  System.out.println(t.getTableStruct(names.get(i),"mssql"));  
+          //  SystemConstant.out.println(t.getTableStruct(names.get(i),"mssql"));
         }  
           
     }  
@@ -159,7 +159,7 @@ public class SqlServerTest {
                          sb.append("(").append(  
                                    ma.getColumnDisplaySize(i)).append(")");  
                      }  
-                     //System.out.println(keyColumn);  
+                     //SystemConstant.out.println(keyColumn);
                         //判断是否为主键  
                      if(ma.getColumnName(i).equals(keyColumn)){  
                          sb.append("  primary key");  

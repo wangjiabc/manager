@@ -144,7 +144,7 @@ public class NewSelectSqlJoin2 {
                 QualifiWhere sStr = (QualifiWhere) anns[0];
                 columnName = (sStr.name().length()<1)?field.getName().toUpperCase():sStr.name();
                 columnWhere = AReflectGet.getArrayMethods(object, className, field, columnName);
-             //   System.out.println("columnWhere="+columnWhere);
+             //   SystemConstant.out.println("columnWhere="+columnWhere);
                 if(columnWhere!=null){
                 	wheres.add(columnWhere);
                 	term=true;
@@ -155,7 +155,7 @@ public class NewSelectSqlJoin2 {
                 QualifiWhereTerm sStr = (QualifiWhereTerm) anns[0];
                 columnName = (sStr.name().length()<1)?field.getName().toUpperCase():sStr.name();
                 String current= AReflectGet.getStringMethods(object, className, field, columnName);
-              //  System.out.println("columnWhere="+columnWhere);
+              //  SystemConstant.out.println("columnWhere="+columnWhere);
                  if(current!=null){
                       Term=current;
                     }
@@ -245,16 +245,16 @@ public class NewSelectSqlJoin2 {
         	  /*
         	  for(String whereterm:columnWhere){
             	  if(k1%2==0){
-            		//  System.out.println("偶数");
+            		//  SystemConstant.out.println("偶数");
             		//  whereCommand.append(whereterm+"\n  AND ");
             	   }else{
-            		//  System.out.println("奇数");
+            		//  SystemConstant.out.println("奇数");
             		//  whereCommand.append("\n   "+whereterm);
             		   whereCommand.append(whereterm+"? \n  "+Term+" ");
             	   }
                k1++;
-               System.out.println("whereCommand="+whereCommand);
-               System.out.println("r="+r);
+               SystemConstant.out.println("whereCommand="+whereCommand);
+               SystemConstant.out.println("r="+r);
                r++;
               }
 		  */
@@ -370,7 +370,7 @@ public class NewSelectSqlJoin2 {
            
            select=select+")";
            
-       //   System.out.println("select="+select);
+       //   SystemConstant.out.println("select="+select);
           i=1;
           int length=2;
           if(length>2){
@@ -385,10 +385,10 @@ public class NewSelectSqlJoin2 {
             for(k2=1;k2<length;k2++){
              for(String whereterm:columnWhere){
         	   if(i%2==0){
-        		//  System.out.println("偶数");
+        		//  SystemConstant.out.println("偶数");
         		  params.add(whereterm);
         	    }else{
-        		//  System.out.println("奇数");
+        		//  SystemConstant.out.println("奇数");
         		 
         	    }
               i++;
@@ -397,7 +397,7 @@ public class NewSelectSqlJoin2 {
          
           
           select=select+"\n  AND ("+serach+")";
-       //   System.out.println("select="+select);
+       //   SystemConstant.out.println("select="+select);
           i=1;
           iterator=wheres.iterator();
           System.out.println("wheres2="+wheres);
@@ -409,10 +409,10 @@ public class NewSelectSqlJoin2 {
           for(k3=1;k3<length;k3++){
             for(String whereterm:columnWhere){
         	  if(i%2==0){
-        		//  System.out.println("偶数");
+        		//  SystemConstant.out.println("偶数");
         		  params.add(whereterm);
         	   }else{
-        		//  System.out.println("奇数");
+        		//  SystemConstant.out.println("奇数");
         		 
         	   }
               i++;
@@ -536,7 +536,7 @@ public class NewSelectSqlJoin2 {
 		             QualifiWhereTerm sStr = (QualifiWhereTerm) anns[0];
 		             columnName = (sStr.name().length()<1)?field.getName().toUpperCase():sStr.name();
 		             String current= AReflectGet.getStringMethods(object, className, field, columnName);
-		         //    System.out.println("columnWhere="+columnWhere);
+		         //    SystemConstant.out.println("columnWhere="+columnWhere);
 		              if(current!=null){
 		                    Term=current;
 		               }
@@ -567,15 +567,15 @@ public class NewSelectSqlJoin2 {
 	        	  int k1=1;
 	        	  for(String whereterm:columnWhere){
 	            	  if(k1%2==0){
-	            		//  System.out.println("偶数");
+	            		//  SystemConstant.out.println("偶数");
 	            		//  whereCommand.append(whereterm+"\n  AND ");
 	            	   }else{
-	            		//  System.out.println("奇数");
+	            		//  SystemConstant.out.println("奇数");
 	            		//  whereCommand.append("\n   "+whereterm);
 	            		   whereCommand.append(whereterm+"? \n  "+Term+" ");
 	            	   }
 	               k1++;
-	               System.out.println("whereCommand="+whereCommand);
+	               SystemConstant.out.println("whereCommand="+whereCommand);
 	              }
 	              */
 
@@ -680,10 +680,10 @@ public class NewSelectSqlJoin2 {
 	        	  int k2=1;
 	        	  for(String whereterm:columnWhere){
 	            	  if(k2%2==0){
-	            		//  System.out.println("偶数");
+	            		//  SystemConstant.out.println("偶数");
 	            		  params.add(whereterm);
 	            	   }else{
-	            		//  System.out.println("奇数");
+	            		//  SystemConstant.out.println("奇数");
 	            		//  whereCommand.append("\n   "+whereterm);
 	            	   }
 	               k2++;

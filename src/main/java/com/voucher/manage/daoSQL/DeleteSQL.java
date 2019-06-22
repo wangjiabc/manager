@@ -70,9 +70,9 @@ public class DeleteSQL {
         int i=1;
         for(String whereterm:columnWhere){
       	  if(i%2==0){
-      		//  System.out.println("偶数");
+      		//  SystemConstant.out.println("偶数");
       	   }else{
-      		//  System.out.println("奇数");
+      		//  SystemConstant.out.println("奇数");
       		   whereCommand.append(whereterm+"? \n  "+Term+" ");
       	   }
          i++;
@@ -83,10 +83,10 @@ public class DeleteSQL {
         i=1;
         for(String whereterm:columnWhere){
       	  if(i%2==0){
-      		//  System.out.println("偶数");
+      		//  SystemConstant.out.println("偶数");
       		  params.add(whereterm);
       	   }else{
-      		//  System.out.println("奇数");
+      		//  SystemConstant.out.println("奇数");
       		 
       	   }
             i++;

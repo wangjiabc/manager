@@ -8,16 +8,18 @@ import java.util.Map;
 
 public interface CurrentDao {
 
-    void createTable(String tableName,String joinParameter);
+    void createTable(String tableName, String joinParameter);
 
-    int alterTable(Boolean addOrDel, String tableName,String joinParameter, String lineName, String lineUuid);
+    int alterTable(Boolean addOrDel, String tableName, String joinParameter, String lineName, String lineUuid);
 
     Integer existTable(String tableName);
 
-    Map selectTable(Object object,String joinParameter) throws ClassNotFoundException;
+    Map selectTable(Object object, String joinParameter) throws ClassNotFoundException;
 
-    Map selectTable(Object[] objects,String[][] joinParameters,String[] itemjoinParameters) throws ClassNotFoundException;
-    
+    Map<String, Map<Integer, String>> getSelectMap();
+
+    Map selectTable(Object[] objects, String[][] joinParameters, String[] itemjoinParameters) throws ClassNotFoundException;
+
     Integer insertTable(Object object, String val) throws ClassNotFoundException;
 
     Integer updateTable(String tableName, String line_uuid, String value);
@@ -32,9 +34,11 @@ public interface CurrentDao {
 
     Integer recycleField(String line_uuid);
 
-    Integer addField(String tableName, String fieldName, Integer filedType, Map<Integer,String> selectValue,Integer roomType);
+    Integer addField(String tableName, String fieldName, Integer filedType, Map<Integer, String> selectValue, Integer roomType);
 
     Integer updateSelect(List<Select> selects);
 
     Integer updateTextLength(String item_room, String line_uuid, Integer text_length);
+
+    List<Object> getSelectByUser(String userGuid);
 }

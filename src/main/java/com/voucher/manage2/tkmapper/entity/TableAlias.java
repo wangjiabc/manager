@@ -1,9 +1,10 @@
 package com.voucher.manage2.tkmapper.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Table(name = "[table_alias]")
-public class TableAlias {
+public class TableAlias implements Serializable {
     @Column(name = "[table_name]")
     private String tableName;
 
@@ -24,6 +25,8 @@ public class TableAlias {
 
     @Column(name = "[room_type]")
     private Integer roomType;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return table_name

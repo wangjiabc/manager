@@ -12,9 +12,10 @@ public class RoomConstant {
             put("3", "土地");
         }
     };
-    //1:已出租.2:可出租,3:不可出租,4已划拨,5自用,6已出售,7已拆迁,8已拆除,9已灭失
+    //0,空置,1:已出租.2:可出租,3:不可出租,4已划拨,5自用,6已出售,7已拆迁,8已拆除,9已灭失
     public static final Map<Integer, String> STATE_MAP = new HashMap<Integer, String>() {
         {
+            put(0, "空置");
             put(1, "已出租");
             put(2, "可出租");
             put(3, "不可出租");

@@ -1,5 +1,7 @@
 package com.voucher.manage2.utils;
 
+import cn.hutool.core.util.ObjectUtil;
+
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -45,6 +47,14 @@ public class ObjectUtils extends org.springframework.util.ObjectUtils {
 
     public static boolean isNotEmpty(Object... objs) {
         return !isEmpty(objs);
+    }
+
+    public static <T> byte[] serialize(T obj) {
+        return ObjectUtil.serialize(obj);
+    }
+
+    public static <T> T unserialize(byte[] bytes) {
+        return ObjectUtil.unserialize(bytes);
     }
 
     public static void main(String[] args) {

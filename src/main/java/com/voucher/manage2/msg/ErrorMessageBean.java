@@ -21,11 +21,11 @@ public class ErrorMessageBean extends MessageBean {
     }
 
     public static ErrorMessageBean getMessageBean(ExceptionMessage msg) {
-        return new ErrorMessageBean(msg.code, msg.msg);
+        return new ErrorMessageBean(msg.getCode(), msg.getMsg());
     }
 
     public static ErrorMessageBean getMessageBean(ExceptionMessage msg, Object body) {
-        return new ErrorMessageBean(msg.code, msg.msg, body);
+        return new ErrorMessageBean(msg.getCode(), msg.getMsg(), body);
     }
 
     public static ErrorMessageBean getMessageBean(Integer code, String msg) {

@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.FileService;
-import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -111,7 +110,7 @@ public class FileController {
                         //TODO
                         JedisUtil0.lpushString(hireGuid, fileName);
                     } catch (IOException e) {
-                        //log.error("文件存入失败", new FileUploadException(fileName, e));
+                        log.error("文件存入失败", new FileUploadException(fileName, e));
                     }
                 }
             }

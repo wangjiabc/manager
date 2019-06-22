@@ -1,16 +1,7 @@
 package com.voucher.manage2.utils;
 
-import com.voucher.manage2.exception.BaseException;
+import com.voucher.manage2.dto.SysUserDTO;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-import javax.management.Query;
-import java.lang.management.ManagementFactory;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Set;
 
 /**
  * @author lz
@@ -19,23 +10,21 @@ import java.util.Set;
  */
 @Slf4j
 public class CommonUtils {
-    public static String getCurrentToken() {
-        //TODO
-        return null;
-    }
+    private static final ThreadLocal<SysUserDTO> threadLocalUsers = new ThreadLocal();
 
-    public static Object getCurrentUser() {
-        //TODO
-        return null;
+    public static SysUserDTO getCurrentUser() {
+        return threadLocalUsers.get();
     }
 
     public static String getCurrentUserGuid() {
-        //TODO
-        return null;
+        return getCurrentUser().getGuid();
     }
 
     public static String getCurrentUserName() {
-        //TODO
-        return null;
+        return getCurrentUser().getName();
+    }
+
+    public static void setUser(SysUserDTO user) {
+        threadLocalUsers.set(user);
     }
 }
