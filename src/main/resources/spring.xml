@@ -42,5 +42,5 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
     <import resource="sping-aop.xml"/>
     <import resource="spring-tkmybatis.xml"/>
     <import resource="spring-sqlservers.xml"/>
-    <import resource="spring-redis.xml"/>
+    
 </beans>

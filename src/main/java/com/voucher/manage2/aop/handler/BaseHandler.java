@@ -37,7 +37,8 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
     @ResponseBody
     public ErrorMessageBean handleException(Exception e) {
         // 打印异常堆栈信息
-        log.error(e.getMessage(), e);
+    	System.out.println(e);
+        //log.error(e.getMessage(), e);
         return ErrorMessageBean.getMessageBean(ExceptionMessage.EXCEPTION);
     }
 
@@ -45,7 +46,7 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
     @ResponseBody
     public ErrorMessageBean handleBaseException(BaseException e) {
         // 打印异常堆栈信息
-        log.error(e.getMessage(), e);
+        //log.error(e.getMessage(), e);
         if (ObjectUtils.isEmpty(e.getMsg())) {
             return ErrorMessageBean.getMessageBean(999, e.getMessage());
         } else {
@@ -84,7 +85,7 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
             return body;
         }
         //parameterType.
-        log.debug("++++++++++" + parameterType);
+        //log.debug("++++++++++" + parameterType);
         //if (returnType.getParameterType() instanceof ErrorMessageBean)
         // TODO Auto-generated method stub
         return MessageBean.getMessageBean(ExceptionMessage.SUCCESS, body);

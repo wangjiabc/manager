@@ -19,7 +19,7 @@ import com.voucher.manage.daoModel.HirePay;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.sqlserver.context.Connect;
-//@CrossOrigin
+@CrossOrigin
 @RestController
 @RequestMapping("/hireList")
 public class HireListController {
@@ -50,13 +50,6 @@ public class HireListController {
         if (chartGUID != null) {
             searchList.add("[ChartInfo].ChartGUID=");
             searchList.add(chartGUID);
-        }
-
-        String guid=MapUtils.getString("guid", jsonMap);
-        
-        if (guid != null) {
-            searchList.add("[ChartRoom].guid=");
-            searchList.add(guid);
         }
         
         String[] where = new String[searchList.size()];

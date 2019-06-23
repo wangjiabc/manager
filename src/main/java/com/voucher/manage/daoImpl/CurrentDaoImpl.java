@@ -162,7 +162,9 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         table_alias.setLimit(1000);
         table_alias.setOffset(0);
         table_alias.setNotIn("id");
-        String[] where = {"del=", "0"};
+        table_alias.setWhereTerm("or");
+        String[] where = {"table_name=",tableName.substring(1, tableName.length() - 1),
+        		"table_name=","item_" +tableName.substring(1, tableName.length() - 1)};
         table_alias.setWhere(where);
 
         tableName = tableName.substring(1, tableName.length() - 1);
@@ -317,7 +319,8 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             table_alias.setLimit(1000);
             table_alias.setOffset(0);
             table_alias.setNotIn("id");
-            String[] where = {"del=", "false"};
+            String[] where = {"table_name=",tableName.substring(1, tableName.length() - 1),
+            		"table_name=","item_" +tableName.substring(1, tableName.length() - 1)};
             table_alias.setWhere(where);
 
             tableName = tableName.substring(1, tableName.length() - 1);

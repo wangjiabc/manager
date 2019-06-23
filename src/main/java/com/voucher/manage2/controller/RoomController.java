@@ -19,13 +19,14 @@ import com.voucher.manage2.utils.RoomUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.aspectj.lang.annotation.Around;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/room")
 public class RoomController {
@@ -40,31 +41,39 @@ public class RoomController {
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
-
+    	System.out.println(jsonMap);
         Room room = new Room();
         Integer limit = MapUtils.getInteger("limit", jsonMap);
+        System.out.println(limit);
         room.setLimit(limit);
         room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
-        Map<String, Object> query = MapUtils.getStrMap("query", jsonMap);
-        Object searchContent = query.get("searchContent");
-        Object state = query.get("state");
-        Object neaten_flow = query.get("neaten_flow");
-
+        System.out.println(MapUtils.getInteger("page",jsonMap));
         List<String> searchList = new ArrayList<>();
-        if (ObjectUtils.isNotEmpty(searchContent)) {
-            searchList.add("address like");
-            searchList.add("%" + searchContent + "%");
-        }
-        if (ObjectUtils.isNotEmpty(state)) {
-            searchList.add("state =");
-            searchList.add(state.toString());
-        }
-        if (ObjectUtils.isNotEmpty(neaten_flow)) {
-            searchList.add("neaten_flow =");
-            searchList.add(neaten_flow.toString());
-        }
-
+        
+		try {
+			Map<String, Object> query = MapUtils.getStrMap("query", jsonMap);
+			Object searchContent = query.get("searchContent");
+			Object state = query.get("state");
+			Object neaten_flow = query.get("neaten_flow");
+			
+			if (ObjectUtils.isNotEmpty(searchContent)) {
+				searchList.add("address like");
+				searchList.add("%" + searchContent + "%");
+			}
+			if (ObjectUtils.isNotEmpty(state)) {
+				searchList.add("state =");
+				searchList.add(state.toString());
+			}
+			if (ObjectUtils.isNotEmpty(neaten_flow)) {
+				searchList.add("neaten_flow =");
+				searchList.add(neaten_flow.toString());
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+        
+/*
         List<String> userConditonList = new ArrayList<>();
         List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
         if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
@@ -73,7 +82,7 @@ public class RoomController {
                 userConditonList.add(sysUserCondition.getLineValue() + "");
             }
         }
-        searchList.addAll(userConditonList);
+        searchList.addAll(userConditonList);*/
         searchList.add("del=");
         searchList.add("0");
         String[] where = new String[searchList.size()];
