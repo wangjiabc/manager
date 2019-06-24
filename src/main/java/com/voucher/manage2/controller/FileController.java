@@ -2,6 +2,7 @@ package com.voucher.manage2.controller;
 
 import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Lists;
+import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.FileService;
@@ -42,7 +43,7 @@ public class FileController {
     public void springUpload(HttpServletRequest request, String[] roomGuids, String menuGuid) {
         //检查form中是否有enctype="multipart/form-data"
         if (ObjectUtils.isEmpty(menuGuid, roomGuids)) {
-            return;
+            throw BaseException.getDefault("请选择资产和菜单");
         }
         if (multipartResolver.isMultipart(request)) {
             //将request变成多部分request

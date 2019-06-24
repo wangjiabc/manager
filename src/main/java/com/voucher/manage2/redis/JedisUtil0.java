@@ -323,14 +323,14 @@ public class JedisUtil0 {
         }
     }
 
-    public static <T> void setObject(String key, T value) {
+    public static <T> void setUserDTO(String key, T value) {
         if (ObjectUtils.isNotEmpty(key, value)) {
             ShardedJedis shardedJedis = getShardedJedis();
             try {
                 //半小时过期
                 shardedJedis.setex(key.getBytes(), 60 * 30, ObjectUtils.serialize(value));
             } catch (Exception e) {
-                log.error("setObject to redis unsuccessfully!", e);
+                log.error("setUserDTO to redis unsuccessfully!", e);
             } finally {
                 releaseResource(shardedJedis);
             }
@@ -343,7 +343,7 @@ public class JedisUtil0 {
             try {
                 return ObjectUtils.unserialize(shardedJedis.get(key.getBytes()));
             } catch (Exception e) {
-                log.error("setObject to redis unsuccessfully!", e);
+                log.error("setUserDTO to redis unsuccessfully!", e);
             } finally {
                 releaseResource(shardedJedis);
             }

@@ -10,6 +10,7 @@ import com.voucher.manage2.service.UserService;
 import com.voucher.manage2.tkmapper.entity.SysRole;
 import com.voucher.manage2.tkmapper.entity.SysUser;
 import com.voucher.manage2.tkmapper.mapper.SysUserMapper;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean hasPermission(SysUserDTO sysUser, String url) {
-        List<SysRole> roles = sysUser.roles;
-        for (SysRole role : roles) {
-            if (role.getGuid().equals(SystemConstant.SYSTEM_ROLE_GUID)) {
-                return true;
-            }
+        if (CommonUtils.isSuperAdmin()) {
+            return true;
         }
         return userService.userAllPermission(sysUser).contains(url);
     }
@@ -56,11 +54,13 @@ public class UserServiceImpl implements UserService {
         if (ObjectUtils.isNotEmpty(userByAccountName)) {
             throw BaseException.getDefault("用户名已存在!");
         }
-
         String userUuid = IdUtil.simpleUUID();
         sysUser.setGuid(userUuid);
         String salt = SecureUtil.md5(userUuid);
         sysUser.setSalt(salt);
+        if (ObjectUtils.isEmpty(sysUser.getPassword())) {
+            sysUser.setPassword("123456");
+        }
         sysUser.setPassword(SecureUtil.md5(sysUser.getPassword() + salt));
         sysUserMapper.insertSelective(sysUser);
         return sysUser;
@@ -102,5 +102,29 @@ public class UserServiceImpl implements UserService {
             });
         }
         return sysUsers;
+    }
+
+    @Override
+    public Integer updateUser(SysUser sysUser) {
+        String userGuid = sysUser.getGuid();
+        sysUser.setPassword(null);
+        sysUser.setAccountName(null);
+        sysUser.setSalt(null);
+        sysUser.setGuid(null);
+        Weekend<SysUser> sysUserWeekend = new Weekend<>(SysUser.class);
+        sysUserWeekend.weekendCriteria().andEqualTo(SysUser::getGuid, userGuid);
+        return sysUserMapper.updateByExampleSelective(sysUser, sysUserWeekend);
+    }
+
+    @Override
+    public Integer updatePassWord(SysUser sysUser, String newPassword) {
+        String userGuid = CommonUtils.getCurrentUserGuid();
+        String salt = SecureUtil.md5(userGuid);
+        String oldPassword = SecureUtil.md5(sysUser.getPassword() + salt);
+        SysUser conditionUser = new SysUser();
+        conditionUser.setPassword(SecureUtil.md5(newPassword + salt));
+        Weekend<SysUser> sysUserWeekend = new Weekend<>(SysUser.class);
+        sysUserWeekend.weekendCriteria().andEqualTo(SysUser::getGuid, userGuid).andEqualTo(SysUser::getPassword, oldPassword);
+        return sysUserMapper.updateByExampleSelective(conditionUser, sysUserWeekend);
     }
 }

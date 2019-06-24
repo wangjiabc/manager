@@ -32,17 +32,17 @@ public class MenuController {
     private MenuService menuService;
 
     @RequestMapping(value = "/selectFileMenu")
-    public Object selectMenu(String[] roomGuids, String rootGuid) {
+    public Object selectMenuByRootGuid(String[] roomGuids, String rootGuid) {
         if (ObjectUtils.isEmpty(rootGuid)) {
             return ResultConstant.FAILED;
         }
         MenuDTO menuDTO = new MenuDTO();
         menuDTO.setGuid(rootGuid);
-        return menuService.selectMenu(menuDTO, roomGuids);
+        return menuService.selectMenuByRootGuid(menuDTO, roomGuids);
     }
 
     @RequestMapping(value = "/selectAllRootMenu")
-    public List<MenuDTO> selectMenu() {
+    public List<MenuDTO> selectAllRootMenu() {
         return menuService.selectAllRootMenu();
     }
 

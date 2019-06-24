@@ -72,21 +72,14 @@ public class BaseHandler implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
         //body是返回值
-        //HttpServletRequest req = ((ServletServerHttpRequest) request).getServletRequest();
         Class<?> parameterType = returnType.getParameterType();
-        //if ("com.voucher.manage2.msg.ErrorMessageBean".equals(parameterType.getName())) {
-        //    return body;
-        //}
         if (body instanceof ErrorMessageBean) {
             return body;
         }
         if (body instanceof byte[]) {
             return body;
         }
-        //parameterType.
         log.debug("++++++++++" + parameterType);
-        //if (returnType.getParameterType() instanceof ErrorMessageBean)
-        // TODO Auto-generated method stub
         return MessageBean.getMessageBean(ExceptionMessage.SUCCESS, body);
     }
 }

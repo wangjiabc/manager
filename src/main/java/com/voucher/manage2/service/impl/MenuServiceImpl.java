@@ -2,10 +2,10 @@ package com.voucher.manage2.service.impl;
 
 import com.voucher.manage2.dto.MenuDTO;
 import com.voucher.manage2.service.MenuService;
-import com.voucher.manage2.tkmapper.entity.Menu;
 import com.voucher.manage2.tkmapper.entity.RoomFile;
 import com.voucher.manage2.tkmapper.mapper.MenuMapper;
 import com.voucher.manage2.tkmapper.mapper.RoomFileMapper;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.FileUtils;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,14 +27,19 @@ public class MenuServiceImpl implements MenuService {
     private RoomFileMapper roomFileMapper;
 
     @Override
-    public MenuDTO selectMenu(MenuDTO rootMenu, String[] roomGuids) {
+    public MenuDTO selectMenuByRootGuid(MenuDTO rootMenu, String[] roomGuids) {
         //总共有几级菜单
         //将菜单按parentGuid分类
         Map<String, List<MenuDTO>> levelMap = new HashMap(32);
+        List<MenuDTO> menus = null;
+        //if (CommonUtils.isSuperAdmin()) { TODO
         MenuDTO menuCondition = new MenuDTO();
         menuCondition.setRootGuid(rootMenu.getGuid());
         menuCondition.setDel(false);
-        List<MenuDTO> menus = menuMapper.select(menuCondition);
+        menus = menuMapper.select(menuCondition);
+        //}else {
+        //}
+
         for (MenuDTO menu : menus) {
             List<MenuDTO> menuList = levelMap.get(menu.getParentGuid());
             if (menuList == null) {
@@ -98,6 +102,7 @@ public class MenuServiceImpl implements MenuService {
     public Integer updateMenu(Map<String, Object> jsonMap) {
         MenuDTO menu = new MenuDTO();
         menu.setName(MapUtils.getString("name", jsonMap));
+        menu.setRequired(MapUtils.getBoolean("required", jsonMap));
         Example example = new Example(MenuDTO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("guid", MapUtils.getString("guid", jsonMap));
@@ -112,7 +117,7 @@ public class MenuServiceImpl implements MenuService {
         menuCondition.setDel(false);
         List<MenuDTO> rootMenus = menuMapper.select(menuCondition);
         for (MenuDTO rootMenu : rootMenus) {
-            result.add(menuService.selectMenu(rootMenu, null));
+            result.add(menuService.selectMenuByRootGuid(rootMenu, null));
         }
         return result;
     }

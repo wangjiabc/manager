@@ -37,12 +37,6 @@ public class SysController {
 
     private static final Pattern urlPattern = Pattern.compile("^/[a-zA-Z]+/[a-zA-Z]+\\.do$");
 
-    //url -> /room/insertResource.do
-    @Test
-    public void test1() {
-        System.out.println(urlPattern.matcher("/room/insertResource.do").find());
-    }
-
     @RequestMapping("addUrls")
     public Integer addUrls(@RequestBody Map<String, Object> jsonMap) {
         List<Map<String, Object>> urls = (List<Map<String, Object>>) jsonMap.get("urls");

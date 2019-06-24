@@ -83,11 +83,11 @@ public class LoginInterceptor {
                     throw BaseException.getDefault("登录已过期,重新登录!");
                 }
                 CommonUtils.setUser(userDTO);
-                //TODO 判断是否有权限访问接口
+                //T 判断是否有权限访问接口
                 if (userService.hasPermission(userDTO, url)) {
                     result = pjp.proceed(obj);
                 } else {
-                    log.warn("拦截没有权限的用户:{}", userDTO);
+                    log.warn("拦截没有权限的用户:{}访问URL:{}", userDTO, url);
                     throw BaseException.getDefault("没有权限");
                 }
 
@@ -96,15 +96,14 @@ public class LoginInterceptor {
                 throw BaseException.getDefault("非法访问");
             }
         } catch (UndeclaredThrowableException e) {
-            e.printStackTrace();
             throw BaseException.getDefault(e);
         }
         Long lastFreshTime = userDTO.getLastFreshTime();
         long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis - lastFreshTime > 1500000L) {
-            //距离上次刷新token超过25min(1000*60*25) 则刷新token时间
+        if (currentTimeMillis - lastFreshTime > 600000L) {
+            //距离上次刷新token超过10min(1000*60*10) 则刷新token时间
             userDTO.setLastFreshTime(currentTimeMillis);
-            JedisUtil0.setObject(tokenId, userDTO);
+            JedisUtil0.setUserDTO(tokenId, userDTO);
         }
 
         return result;

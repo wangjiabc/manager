@@ -1,9 +1,11 @@
 package manage2;
 
 import cn.hutool.core.util.ClassUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage2.dto.MenuDTO;
 import com.voucher.manage2.dto.SysUserDTO;
@@ -31,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
@@ -46,10 +49,7 @@ public class SomeTest {
         //SysUserDTO sysUser = JedisUtil0.getObject("9141daddcd109c945119de3ac11fa0a6");
         //sysUser.setAccountName("lxh");
         //sysUser.setPassword("lxh");
-        //System.out.println(sysUser);
-        String[] strs = {"1", "2"};
-
-        System.out.println(StringUtils.join(strs));
+        System.out.println(SecureUtil.md5("123456" + "96ebc4ff608c186ba6ffe17bd48b9e6f"));
         //userService.regist(sysUser);
     }
 
