@@ -336,12 +336,21 @@ public class HireDAOImpl extends JdbcDaoSupport implements HireDAO{
 			String[] where={"HireGUID=",hireList.getHireGUID()};
 			
 			hireList.setWhere(where);
-			
+
+			HireList hireList2=new HireList();
+			hireList.setLimit(1);
+			hireList.setOffset(0);
+			hireList.setNotIn("id");
+			MyTestUtil.print(hireList);
+			List list=SelectExe.get(this.getJdbcTemplate(), hireList);
+
+			hireList2= (HireList) list.get(0);
+
 			i=UpdateExe.get(this.getJdbcTemplate(), hireList);
 			
-			amount=amount+hireList.getHire();
+			amount=amount+hireList2.getHire();
 			
-			chartGUID=hireList.getChartGUID();
+			chartGUID=hireList2.getChartGUID();
 			
 			if (i < 1) {
 	            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

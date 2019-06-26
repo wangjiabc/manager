@@ -4,10 +4,14 @@ import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.dao.HireDAO;
 import com.voucher.manage.daoModel.ChartInfo;
 import com.voucher.manage.daoModel.ChartRoom;
+import com.voucher.manage.daoModel.HireList;
 import com.voucher.manage.tools.MonthDiff;
+import com.voucher.manage.tools.MyTestUtil;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/hire")
 public class HireController {
@@ -165,4 +170,17 @@ public class HireController {
 
     }
 
+    @RequestMapping("/insertHirePay")
+    public Integer insertHirePay(@RequestBody List<String> guid) {
+        List<HireList> hireLists= new ArrayList<>();
+        for (String hireGuid : guid) {
+            System.out.println("hireGuidhireGuid"+ hireGuid);
+            HireList hireList = new HireList();
+            hireList.setHireGUID(hireGuid);
+            hireLists.add(hireList);
+        }
+
+        MyTestUtil.print(hireLists);
+        return hireDao.insertHirePay(hireLists);
+    }
 }

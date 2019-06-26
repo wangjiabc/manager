@@ -6,16 +6,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.voucher.manage.daoModel.*;
 import com.voucher.manage2.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 
 import com.voucher.manage.dao.CurrentDao;
-import com.voucher.manage.daoModel.ChartInfo;
-import com.voucher.manage.daoModel.ChartRoom;
-import com.voucher.manage.daoModel.HireList;
-import com.voucher.manage.daoModel.HirePay;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.sqlserver.context.Connect;
@@ -82,9 +79,14 @@ public class HireListController {
         chartRoom.setOffset(offset);
         chartRoom.setNotIn("id");
 
+        Room room=new Room();
+        room.setLimit(limit);
+        room.setOffset(offset);
+        room.setNotIn("id");
+
         List<String> searchList = new ArrayList<>();
 
-        searchList.add("del=");
+        searchList.add("[ChartInfo].del=");
         searchList.add("0");
         
         String chartGUID = MapUtils.getString("chartGUID", jsonMap);
@@ -106,13 +108,14 @@ public class HireListController {
         if (where.length > 0) {
             chartInfo.setWhere(searchList.toArray(where));
             chartRoom.setWhere(searchList.toArray(where));
+            room.setWhere(searchList.toArray(where));
         }
 
-        Object[] objects = {chartInfo, chartRoom};
+        Object[] objects = { chartRoom,chartInfo,room};
 
-        String[][] joinParameters = {{"ChartGUID", "ChartGUID"}};
+        String[][] joinParameters = {{"ChartGUID", "ChartGUID"},{"guid", "guid"},{"guid","guid"}};
 
-        String[] itemjoinParameters = {"ChartGUID", "ChartGUID"};
+        String[] itemjoinParameters = {"ChartGUID", "guid","guid"};
 
         Map map = null;
         try {
@@ -127,7 +130,8 @@ public class HireListController {
     @RequestMapping("getHireList")
     public Object getHireList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
         Integer limit = MapUtils.getInteger("limit", jsonMap);
-        Integer offset = MapUtils.getInteger("offset", jsonMap);
+        Integer offset = (MapUtils.getInteger("offset", jsonMap) -1) * limit;
+        String state = MapUtils.getString("state", jsonMap);
         HireList hireList = new HireList();
         hireList.setLimit(limit);
         hireList.setOffset(offset);
@@ -135,9 +139,11 @@ public class HireListController {
 
         List<String> searchList = new ArrayList<>();
 
+        searchList.add("state=");
+        searchList.add(state);
         searchList.add("del=");
         searchList.add("0");
-        
+
         String chartGUID = MapUtils.getString("chartGUID", jsonMap);
 
         if (chartGUID != null) {
