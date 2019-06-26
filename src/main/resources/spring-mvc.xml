@@ -20,7 +20,9 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springfr
     <!--<context:component-scan base-package="com.voucher.inswept.controller"></context:component-scan> -->
     <context:component-scan base-package="com.voucher.manage2.controller"></context:component-scan>
 
-
+    <mvc:interceptors>
+        <bean class="com.voucher.manage2.aop.interceptor.ProcessInterceptor"></bean>
+    </mvc:interceptors>
     <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
     <bean id="mappingJackson2HttpMessageConverter"
           class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">

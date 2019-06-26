@@ -173,4 +173,14 @@ public class SysServiceImpl implements SysService {
         sysUserCondition.setUserGuid(null);
         return sysUserConditionMapper.updateByExampleSelective(sysUserCondition, sysUserConditionWeekend);
     }
+
+    @Override
+    public List<Router> getAllRouter() {
+        return null;
+    }
+
+    @Override
+    public List<Router> getRouterByUser(String userGuid) {
+        return null;
+    }
 }

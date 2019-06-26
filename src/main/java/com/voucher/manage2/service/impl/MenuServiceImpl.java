@@ -27,19 +27,31 @@ public class MenuServiceImpl implements MenuService {
     private RoomFileMapper roomFileMapper;
 
     @Override
-    public MenuDTO selectMenuByRootGuid(MenuDTO rootMenu, String[] roomGuids) {
-        //总共有几级菜单
-        //将菜单按parentGuid分类
+    public MenuDTO selectFileMenu(MenuDTO rootMenu, String[] roomGuids) {
+        //将用户的菜单按级别分类
+        Map<String, List<MenuDTO>> levelMap = getLevelMap(rootMenu);
+        //所有分类下的文件
+        Map<String, List<Map<String, String>>> menuFileMap = null;
+        //当有roomGuids时将文件查出挂在叶子节点上
+        if (ObjectUtils.isNotEmpty(roomGuids)) {
+            menuFileMap = getRoomFileList(roomGuids);
+        }
+        //构造树形菜单
+        putMenuAndFileList(rootMenu, rootMenu.getGuid(), levelMap, menuFileMap);
+        return rootMenu;
+    }
+
+    private Map<String, List<MenuDTO>> getLevelMap(MenuDTO rootMenu) {
+        List<MenuDTO> menus;
         Map<String, List<MenuDTO>> levelMap = new HashMap(32);
-        List<MenuDTO> menus = null;
-        //if (CommonUtils.isSuperAdmin()) { TODO
         MenuDTO menuCondition = new MenuDTO();
         menuCondition.setRootGuid(rootMenu.getGuid());
         menuCondition.setDel(false);
+        //if (CommonUtils.isSuperAdmin()) {
         menus = menuMapper.select(menuCondition);
-        //}else {
+        //} else {
+        //    menus = menuMapper.selectFileMenu(CommonUtils.getCurrentUserGuid(), rootMenu.getGuid());
         //}
-
         for (MenuDTO menu : menus) {
             List<MenuDTO> menuList = levelMap.get(menu.getParentGuid());
             if (menuList == null) {
@@ -48,32 +60,32 @@ public class MenuServiceImpl implements MenuService {
             }
             menuList.add(menu);
         }
-        Map<String, List<Map<String, String>>> menuFileMap = null;
-        //当有roomGuids时将文件查出挂在叶子节点上
-        if (ObjectUtils.isNotEmpty(roomGuids)) {
-            Example example = new Example(RoomFile.class);
-            example.createCriteria().andIn("roomGuid", Arrays.asList(roomGuids));
-            List<RoomFile> roomFiles = roomFileMapper.selectByExample(example);
-            //文件按菜单分类
-            //所有分类下的文件
-            menuFileMap = new HashMap<>(16);
-            for (RoomFile roomFile : roomFiles) {
-                List<Map<String, String>> roomFileList = menuFileMap.get(roomFile.getMenuGuid());
-                if (roomFileList == null) {
-                    roomFileList = new ArrayList<>();
-                    menuFileMap.put(roomFile.getMenuGuid(), roomFileList);
-                }
-                //fileGuid是文件guid+名字,即存的文件名
-                String fileGuid = roomFile.getFileGuid();
-                HashMap<String, String> map = new HashMap<>(8);
-                map.put("name", FileUtils.getDownLoadName(fileGuid));
-                map.put("url", FileUtils.getFileUrlPath(fileGuid));
-                roomFileList.add(map);
-            }
-        }
+        return levelMap;
+    }
 
-        putMenuAndFileList(rootMenu, rootMenu.getGuid(), levelMap, menuFileMap);
-        return rootMenu;
+    private Map<String, List<Map<String, String>>> getRoomFileList(String[] roomGuids) {
+        //获取room下的所有文件列表
+        Map<String, List<Map<String, String>>> menuFileMap;
+        Example example = new Example(RoomFile.class);
+        example.createCriteria().andIn("roomGuid", Arrays.asList(roomGuids));
+        List<RoomFile> roomFiles = roomFileMapper.selectByExample(example);
+        //文件按菜单分类
+
+        menuFileMap = new HashMap<>(16);
+        for (RoomFile roomFile : roomFiles) {
+            List<Map<String, String>> roomFileList = menuFileMap.get(roomFile.getMenuGuid());
+            if (roomFileList == null) {
+                roomFileList = new ArrayList<>();
+                menuFileMap.put(roomFile.getMenuGuid(), roomFileList);
+            }
+            //fileGuid是文件guid+名字,即存的文件名
+            String fileGuid = roomFile.getFileGuid();
+            HashMap<String, String> map = new HashMap<>(8);
+            map.put("name", FileUtils.getDownLoadName(fileGuid));
+            map.put("url", FileUtils.getFileUrlPath(fileGuid));
+            roomFileList.add(map);
+        }
+        return menuFileMap;
     }
 
     private void putMenuAndFileList(MenuDTO menuDTO, String parentGuid, Map<String, List<MenuDTO>> levelMap, Map<String, List<Map<String, String>>> menuFileMap) {
@@ -82,6 +94,7 @@ public class MenuServiceImpl implements MenuService {
         if (menus == null) {
             //menus为空代表是叶子节点
             if (ObjectUtils.isNotEmpty(menuFileMap)) {
+                //挂载文件
                 menuDTO.setFiles(menuFileMap.get(menuDTO.getGuid()));
             }
             return;
@@ -117,7 +130,7 @@ public class MenuServiceImpl implements MenuService {
         menuCondition.setDel(false);
         List<MenuDTO> rootMenus = menuMapper.select(menuCondition);
         for (MenuDTO rootMenu : rootMenus) {
-            result.add(menuService.selectMenuByRootGuid(rootMenu, null));
+            result.add(menuService.selectFileMenu(rootMenu, null));
         }
         return result;
     }

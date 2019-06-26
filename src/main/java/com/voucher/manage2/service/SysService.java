@@ -40,4 +40,8 @@ public interface SysService {
     List<SysUserCondition> getUserConditionsByUserGuid(String guid);
 
     Integer updateUserConditions(SysUserCondition sysUserCondition);
+
+    List<Router> getAllRouter();
+
+    List<Router> getRouterByUser(String userGuid);
 }

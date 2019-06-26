@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MenuService {
-    MenuDTO selectMenuByRootGuid(MenuDTO rootMenu, String[] roomGuids);
+    MenuDTO selectFileMenu(MenuDTO rootMenu, String[] roomGuids);
 
     Integer insertMenu(MenuDTO menu);
 
