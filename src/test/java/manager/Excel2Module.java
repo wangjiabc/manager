@@ -16,9 +16,9 @@ public class Excel2Module {
 
 	static String pathRoot = System.getProperty("user.home");
 	
-	public final static String filePath=pathRoot+"\\Desktop\\pasoft";
+	public final static String filePath=pathRoot+"/Desktop/pasoft";
 	
-	public final static String path = filePath+"\\零售户信息\\白沙中队.xlsx";
+	public final static String path = filePath+"/零售户信息/白沙中队.xlsx";
 
     public void excel2Object() throws Exception {
 

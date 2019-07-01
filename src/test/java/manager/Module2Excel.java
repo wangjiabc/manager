@@ -32,7 +32,7 @@ public class Module2Excel {
 
 	static String pathRoot = System.getProperty("user.home");
 	
-	public final static String filePath=pathRoot+"\\Desktop\\pasoft\\零售户信息\\";
+	public final static String filePath=pathRoot+"/Desktop/pasoft/零售户信息/";
 	
     ApplicationContext applicationContext = new Connect().get();
     
