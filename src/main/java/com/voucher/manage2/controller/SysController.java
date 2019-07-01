@@ -12,10 +12,7 @@ import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +44,6 @@ public class SysController {
                 SysUrl sysUrl = new SysUrl();
                 sysUrl.setName(MapUtils.getString("name", url));
                 sysUrl.setDescription(MapUtils.getString("description", url));
-                //^/[a-z]+/[a-z]+\.do$
                 sysUrl.setUrl(urlStr);
                 sysUrls.add(sysUrl);
             } else {
@@ -209,25 +205,6 @@ public class SysController {
         sysUserCondition.setLineValue(MapUtils.getInteger("lineValue", jsonMap));
         sysUserConditionArrayList.add(sysUserCondition);
         return sysService.addUserConditions(sysUserConditionArrayList);
-        //List<Map<String, Object>> conditions = (List<Map<String, Object>>) MapUtils.get("conditions", jsonMap);
-        //String userGuid = MapUtils.getString("userGuid", jsonMap);
-        //List<SysUserCondition> sysUserConditionArrayList = new ArrayList<>();
-        //for (Map<String, Object> condition : conditions) {
-        //    Integer selected = MapUtils.getInteger("selected", condition);
-        //    if (ObjectUtils.isNotEmpty(selected)) {
-        //        Map<String, Object> data = MapUtils.getStrMap("data", condition);
-        //        String lineUuid = null;
-        //        for (String s : data.keySet()) {
-        //            lineUuid = s;
-        //        }
-        //        SysUserCondition sysUserCondition = new SysUserCondition();
-        //        sysUserCondition.setUserGuid(userGuid);
-        //        sysUserCondition.setLineUuid(lineUuid);
-        //        sysUserCondition.setLineValue(selected);
-        //        sysUserConditionArrayList.add(sysUserCondition);
-        //    }
-        //
-        //}
     }
 
     @RequestMapping("updateUserConditions")
@@ -238,15 +215,17 @@ public class SysController {
         sysUserCondition.setLineValue(MapUtils.getInteger("lineValue", jsonMap));
         return sysService.updateUserConditions(sysUserCondition);
     }
-
-
-    //@RequestMapping("getAllSelect")
-    //public Object getAllSelect() {
-    //    return currentDao.getSelectMap();
+    //
+    //
+    //@GetMapping("getGuid")
+    //public Object getGuid() {
+    //    return IdUtil.simpleUUID();
     //}
 
     @RequestMapping("getSelectByUser")
     public Object getSelectByUser(@RequestBody Map<String, Object> jsonMap) {
+        //获取用户的下拉
         return currentDao.getSelectByUser(MapUtils.getString("userGuid", jsonMap));
     }
+
 }

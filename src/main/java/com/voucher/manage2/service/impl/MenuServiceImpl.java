@@ -37,21 +37,16 @@ public class MenuServiceImpl implements MenuService {
             menuFileMap = getRoomFileList(roomGuids);
         }
         //构造树形菜单
-        putMenuAndFileList(rootMenu, rootMenu.getGuid(), levelMap, menuFileMap);
+        putMenuAndFileList(rootMenu, levelMap, menuFileMap);
         return rootMenu;
     }
 
     private Map<String, List<MenuDTO>> getLevelMap(MenuDTO rootMenu) {
-        List<MenuDTO> menus;
         Map<String, List<MenuDTO>> levelMap = new HashMap(32);
         MenuDTO menuCondition = new MenuDTO();
         menuCondition.setRootGuid(rootMenu.getGuid());
         menuCondition.setDel(false);
-        //if (CommonUtils.isSuperAdmin()) {
-        menus = menuMapper.select(menuCondition);
-        //} else {
-        //    menus = menuMapper.selectFileMenu(CommonUtils.getCurrentUserGuid(), rootMenu.getGuid());
-        //}
+        List<MenuDTO> menus = menuMapper.select(menuCondition);
         for (MenuDTO menu : menus) {
             List<MenuDTO> menuList = levelMap.get(menu.getParentGuid());
             if (menuList == null) {
@@ -88,9 +83,9 @@ public class MenuServiceImpl implements MenuService {
         return menuFileMap;
     }
 
-    private void putMenuAndFileList(MenuDTO menuDTO, String parentGuid, Map<String, List<MenuDTO>> levelMap, Map<String, List<Map<String, String>>> menuFileMap) {
+    private void putMenuAndFileList(MenuDTO menuDTO, Map<String, List<MenuDTO>> levelMap, Map<String, List<Map<String, String>>> menuFileMap) {
         //当前菜单
-        List<MenuDTO> menus = levelMap.get(parentGuid);
+        List<MenuDTO> menus = levelMap.get(menuDTO.getGuid());
         if (menus == null) {
             //menus为空代表是叶子节点
             if (ObjectUtils.isNotEmpty(menuFileMap)) {
@@ -101,7 +96,7 @@ public class MenuServiceImpl implements MenuService {
         } else {
             menuDTO.setChildList(menus);
             for (MenuDTO menu : menus) {
-                putMenuAndFileList(menu, menu.getGuid(), levelMap, menuFileMap);
+                putMenuAndFileList(menu, levelMap, menuFileMap);
             }
         }
     }

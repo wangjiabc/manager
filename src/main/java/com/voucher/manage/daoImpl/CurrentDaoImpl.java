@@ -202,6 +202,10 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             Map<String, Object> dynTitleMap = new HashMap<>(8);
             String line_uuid = table_alias1.getLine_uuid();
             String table_name = table_alias1.getTable_name();
+            Map<Integer, String> domain = domains.get(line_uuid);
+            if (ObjectUtils.isNotEmpty(domains)) {
+                dynTitleMap.put("domains", domain);
+            }
             dynTitleMap.put("field", line_uuid);
             dynTitleMap.put("title", table_alias1.getLine_alias());
             dynTitleMap.put("rowType", table_alias1.getRow_type());
@@ -210,16 +214,13 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             if (!matcher.find()) {
                 fixedTitleList.add(dynTitleMap);
             } else {
-                fixedTitleList.add(dynTitleMap);
-                Map<Integer, String> domain = domains.get(line_uuid);
+                //动态列
                 try {
                     Object text_length = dynLineInfoMap.get(line_uuid);
                     if (ObjectUtils.isNotEmpty(text_length)) {
                         dynTitleMap.put("text_length", text_length);
                     }
-                    if (ObjectUtils.isNotEmpty(domains)) {
-                        dynTitleMap.put("domains", domain);
-                    }
+
                     dynTitleList.add(dynTitleMap);
                 } catch (Exception e) {
                     // TODO: handle exception

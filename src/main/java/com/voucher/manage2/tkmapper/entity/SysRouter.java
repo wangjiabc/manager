@@ -3,8 +3,8 @@ package com.voucher.manage2.tkmapper.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
-@Table(name = "[router]")
-public class Router implements Serializable {
+@Table(name = "[sys_router]")
+public class SysRouter implements Serializable {
     @Column(name = "[path]")
     private String path;
 

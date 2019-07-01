@@ -31,14 +31,15 @@ import tk.mybatis.mapper.weekend.Weekend;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = {"classpath:/spring.xml", "classpath:/spring-mybatis.xml"})
 public class SomeTest {
+    String REGEX = "item_";
+    Pattern pattern = Pattern.compile(REGEX);
     @Autowired
     private SelectMapper selectMapper;
     @Autowired
@@ -46,11 +47,19 @@ public class SomeTest {
 
     @Test
     public void addField() {
-        //SysUserDTO sysUser = JedisUtil0.getObject("9141daddcd109c945119de3ac11fa0a6");
-        //sysUser.setAccountName("lxh");
-        //sysUser.setPassword("lxh");
-        System.out.println(SecureUtil.md5("123456" + "96ebc4ff608c186ba6ffe17bd48b9e6f"));
-        //userService.regist(sysUser);
+        String tableName = "88888888888888";
+        long l1 = System.currentTimeMillis();
+        Matcher matcher = pattern.matcher(tableName);
+        for (int i = 0; i < 100000000; i++) {
+            matcher.find();
+        }
+        long l2 = System.currentTimeMillis();
+        for (int i = 0; i < 100000000; i++) {
+            tableName.startsWith(REGEX);
+        }
+        long l3 = System.currentTimeMillis();
+        System.out.println("+++++++++++++++" + (l2 - l1));
+        System.out.println("+++++++++++++++" + (l3 - l2));
     }
 
 

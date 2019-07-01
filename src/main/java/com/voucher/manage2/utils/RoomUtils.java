@@ -52,7 +52,16 @@ public class RoomUtils {
      * 根据资产状态检测资产是否可出账
      */
     public static boolean checkRoomOutByState(Integer state) {
-        //0,空置,1:已出租.2:可出租,3:不可出租,4已划拨,5自用,6已出售,7已拆迁,8已拆除,9已灭失
-        return Lists.newArrayList(0, 3).contains(state);
+        //空置	    1
+        //已出租	2
+        //可出租	3
+        //不可出租	4
+        //已划拨	5
+        //已出售	7
+        //自用	    6
+        //已拆迁    8
+        //已拆除    9
+        //已灭失    10
+        return Lists.newArrayList(1, 4).contains(state);
     }
 }

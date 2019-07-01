@@ -7,7 +7,12 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>manager Maven Webapp</name>
     <url>http://maven.apache.org</url>
-
+    <repositories>
+        <repository>
+            <id>jacob</id>
+            <url>https://mvnrepository.com/artifact/</url>
+        </repository>
+    </repositories>
     <dependencies>
 
         <!-- Mybatis的分页助手 -->
@@ -375,6 +380,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.jacob/jacob -->
+        <dependency>
+            <groupId>com.jacob</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.10</version>
         </dependency>
 
     </dependencies>
