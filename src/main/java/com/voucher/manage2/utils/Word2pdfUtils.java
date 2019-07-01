@@ -6,7 +6,7 @@ import com.jacob.com.Dispatch;
 import java.io.File;
 
 public class Word2pdfUtils {
-    public static void wToPdfChange(String wordFile, String pdfFile) {//wordFile word 的路径  //pdfFile pdf 的路径
+    public static void wToPdfChange(String wordFile,String pdfFile){//wordFile word 的路径  //pdfFile pdf 的路径
 
         ActiveXComponent app = null;
         System.out.println("开始转换...");
@@ -29,18 +29,17 @@ public class Word2pdfUtils {
             Dispatch.call(document, "SaveAs", pdfFile, 17);
             // 关闭文档
             Dispatch.call(document, "Close", false);
-        } catch (Exception e) {
-            System.out.println("转换失败" + e.getMessage());
-        } finally {
+        }catch(Exception e) {
+            System.out.println("转换失败"+e.getMessage());
+        }finally {
             // 关闭office
             app.invoke("Quit", 0);
         }
     }
-
     public static void main(String[] args) {
         String word = "src\\main\\java\\com\\voucher\\docx\\01.docx";
         String name = "02".concat(".pdf");
-        String pdf = "src\\main\\java\\com\\voucher\\docx\\" + name;
-        wToPdfChange(word, pdf);
-    }
+        String pdf = "src\\main\\java\\com\\voucher\\docx\\"+name;
+    wToPdfChange(word, pdf);
+}
 }

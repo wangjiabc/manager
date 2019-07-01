@@ -1,9 +1,12 @@
 package com.voucher.manage2.service;
 
 
+import org.springframework.stereotype.Service;
+
 /**
- * wordתPDF�ӿ�
+ * word to PDF
  */
+
 public interface Word2PdfService {
     void convert(String wordFile, String pdfFile);
 }

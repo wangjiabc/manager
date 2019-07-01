@@ -3,6 +3,7 @@ package com.voucher.manage2.service.impl;
 import com.voucher.manage2.service.ReplaceKeywordsService;
 import com.voucher.manage2.utils.WordTemplateUtils;
 import org.junit.Test;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class ReplaceKeywordsServiceImpl implements ReplaceKeywordsService {
     @Test
     @Override
