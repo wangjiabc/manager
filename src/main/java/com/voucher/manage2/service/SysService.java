@@ -47,4 +47,6 @@ public interface SysService {
     SysRouterDTO getRoutersByRootGuid(String rootGuid, String roleGuid);
 
     Integer addRoleRouters(List<SysRoleRouter> sysRouters);
+
+    SysRouterDTO getRoutersByUserGuid(String rootGuid);
 }

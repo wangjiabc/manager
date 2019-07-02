@@ -1,6 +1,7 @@
 package com.voucher.manage2.controller;
 
 import cn.hutool.crypto.SecureUtil;
+import com.voucher.manage2.aop.interceptor.annotation.TimeConsume;
 import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.UserService;
@@ -56,6 +57,7 @@ public class UserController {
     }
 
     @PostMapping("login")
+    @TimeConsume
     public Object login(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         //登录
         SysUserDTO sysUser = new SysUserDTO();

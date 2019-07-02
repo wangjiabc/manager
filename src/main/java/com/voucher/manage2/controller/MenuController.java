@@ -7,7 +7,6 @@ import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.service.MenuService;
 import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.SysRoleRouter;
-import com.voucher.manage2.tkmapper.entity.SysRouter;
 import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;
@@ -95,14 +94,19 @@ public class MenuController {
         return menuService.updateMenu(jsonMap);
     }
 
-    @RequestMapping("getRoutersByRootGuid")
+    @RequestMapping("getRoleRouters")
     public Object getRoutersByRootGuid(String rootGuid, String roleGuid) {
         return sysService.getRoutersByRootGuid(rootGuid, roleGuid);
     }
-    //@RequestMapping("getRoutersByRootGuidAndRoleGuid")
-    //public Object getRoutersByRootGuid(String rootGuid, String roleGuid) {
-    //    return sysService.getRoutersByRootGuid(rootGuid, roleGuid);
-    //}
+
+    @RequestMapping("getUserRouters")
+    public Object getRoutersByRootGuidAndRoleGuid(String rootGuid) {
+        if (CommonUtils.isSuperAdmin()) {
+            //管理员返回所有的菜单
+            return sysService.getRoutersByRootGuid(rootGuid, null);
+        }
+        return sysService.getRoutersByUserGuid(rootGuid);
+    }
 
     @RequestMapping("addRoleRouters")
     public Integer addRoleRouters(@RequestBody Map<String, Object> jsonMap) {

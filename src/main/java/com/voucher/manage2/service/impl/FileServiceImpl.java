@@ -35,6 +35,7 @@ import java.util.UUID;
  * @description
  * @date 2019/5/20
  */
+@SuppressWarnings("ALL")
 @Service
 @Slf4j
 public class FileServiceImpl implements FileService {
