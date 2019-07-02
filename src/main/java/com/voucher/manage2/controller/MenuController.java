@@ -7,7 +7,6 @@ import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.service.MenuService;
 import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.SysRoleRouter;
-import com.voucher.manage2.tkmapper.entity.SysRouter;
 import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;

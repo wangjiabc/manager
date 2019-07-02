@@ -13,36 +13,36 @@ import java.util.Map;
 public class ReplaceKeywordsServiceImpl implements com.voucher.manage2.service.ReplaceKeywordsService {
     @Override
     public void printWord(ChartInfo chartInfo) throws IOException {
-        Map<String, Object> wordDataMap = new HashMap<String, Object>();// ´æ´¢È«²¿Êı¾İ
-        Map<String, Object> parametersMap = new HashMap<String, Object>();// ´æ´¢²»Ñ­»·µÄÊı¾İ
+        Map<String, Object> wordDataMap = new HashMap<String, Object>();// å­˜å‚¨å…¨éƒ¨æ•°æ®
+        Map<String, Object> parametersMap = new HashMap<String, Object>();// å­˜å‚¨ä¸å¾ªç¯çš„æ•°æ®
 
 /*
         parametersMap.put("ContractNo", "0000001");
         parametersMap.put("ConcludeDate", "626");
         parametersMap.put("Charter", "jack");
         */
-        //»ñÈ¡Êı¾İ
+        //è·å–æ•°æ®
         String contractNo = chartInfo.getContractNo();
         Date concludeDate = chartInfo.getConcludeDate();
-        //·â×°µ½map
+        //å°è£…åˆ°map
         parametersMap.put("ContractNo", contractNo);
         parametersMap.put("ConcludeDate", concludeDate);
 
         wordDataMap.put("parametersMap", parametersMap);
-        File file = new File("src\\main\\java\\com\\voucher\\docx\\00.docx");//¸Ä³ÉÄã±¾µØÎÄ¼şËùÔÚÄ¿Â¼
+        File file = new File("src\\main\\java\\com\\voucher\\docx\\00.docx");//æ”¹æˆä½ æœ¬åœ°æ–‡ä»¶æ‰€åœ¨ç›®å½•
 
 
-        // ¶ÁÈ¡wordÄ£°å
+        // è¯»å–wordæ¨¡æ¿
         FileInputStream fileInputStream = new FileInputStream(file);
         WordTemplateUtils template = new WordTemplateUtils(fileInputStream);
 
-        // Ìæ»»Êı¾İ
+        // æ›¿æ¢æ•°æ®
         template.replaceDocument(wordDataMap);
 
 
-        //Éú³ÉÎÄ¼ş
+        //ç”Ÿæˆæ–‡ä»¶
 
-        File file1 = new File("src\\main\\java\\com\\voucher\\docx\\01.docx");//¸Ä³ÉÄã±¾µØÎÄ¼şËùÔÚÄ¿Â¼
+        File file1 = new File("src\\main\\java\\com\\voucher\\docx\\01.docx");//æ”¹æˆä½ æœ¬åœ°æ–‡ä»¶æ‰€åœ¨ç›®å½•
         //OutputStreamWriter outputFile = new OutputStreamWriter(new FileOutputStream(file1),"GB2312");
         FileOutputStream fos  = new FileOutputStream(file1);
         template.getDocument().write(fos);
