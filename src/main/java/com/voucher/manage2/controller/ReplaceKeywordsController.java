@@ -1,12 +1,12 @@
 package com.voucher.manage2.controller;
 
+import com.voucher.manage.daoModel.ChartInfo;
 import com.voucher.manage2.service.ReplaceKeywordsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -26,8 +26,11 @@ public class ReplaceKeywordsController {
      * @throws IOException
      */
     @RequestMapping("/acquireData")
-    public void acquireData() throws IOException {
-        service.printWord();
+    public void acquireData(@RequestBody ChartInfo chartInfo) throws IOException {
+        service.printWord(chartInfo);
     }
+    /*public void acquireData(@RequestBody ChartInfo chartInfo,@RequestBody ChartRoom chartRoom) throws IOException {
+        service.printWord(chartInfo,chartRoom);
+    }*/
 
 }

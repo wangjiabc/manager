@@ -1,13 +1,12 @@
 package com.voucher.manage2.controller;
 
 
-import com.voucher.manage2.service.PdfAddressRuturnService;
+import com.voucher.manage2.constant.SystemConstant;
 import com.voucher.manage2.service.Word2PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 
 
 /**
@@ -18,8 +17,6 @@ import javax.annotation.Resource;
 @RequestMapping("/convert")
 public class Word2PdfController {
 
-    @Autowired
-    private PdfAddressRuturnService  ruturnService;
 
     @Autowired
     private Word2PdfService word2PdfService;
@@ -42,6 +39,6 @@ public class Word2PdfController {
      */
     @RequestMapping("/return")
     public String returnAddress(){
-        return ruturnService.ruturnAddress();
+        return SystemConstant.PDF_ADDRESS;
     }
 }

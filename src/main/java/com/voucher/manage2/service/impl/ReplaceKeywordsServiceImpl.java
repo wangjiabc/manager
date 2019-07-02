@@ -1,45 +1,48 @@
 package com.voucher.manage2.service.impl;
 
-import com.voucher.manage2.service.ReplaceKeywordsService;
+import com.voucher.manage.daoModel.ChartInfo;
 import com.voucher.manage2.utils.WordTemplateUtils;
-import org.junit.Test;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class ReplaceKeywordsServiceImpl implements ReplaceKeywordsService {
-    @Test
+public class ReplaceKeywordsServiceImpl implements com.voucher.manage2.service.ReplaceKeywordsService {
     @Override
-    public void printWord() throws IOException {
-        Map<String, Object> wordDataMap = new HashMap<String, Object>();// ï¿½æ´¢È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-        Map<String, Object> parametersMap = new HashMap<String, Object>();// ï¿½æ´¢ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public void printWord(ChartInfo chartInfo) throws IOException {
+        Map<String, Object> wordDataMap = new HashMap<String, Object>();// ´æ´¢È«²¿Êý¾Ý
+        Map<String, Object> parametersMap = new HashMap<String, Object>();// ´æ´¢²»Ñ­»·µÄÊý¾Ý
 
+/*
         parametersMap.put("ContractNo", "0000001");
         parametersMap.put("ConcludeDate", "626");
         parametersMap.put("Charter", "jack");
-
-
+        */
+        //»ñÈ¡Êý¾Ý
+        String contractNo = chartInfo.getContractNo();
+        Date concludeDate = chartInfo.getConcludeDate();
+        //·â×°µ½map
+        parametersMap.put("ContractNo", contractNo);
+        parametersMap.put("ConcludeDate", concludeDate);
 
         wordDataMap.put("parametersMap", parametersMap);
-        File file = new File("src\\main\\java\\com\\voucher\\docx\\00.docx");//ï¿½Ä³ï¿½ï¿½ã±¾ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼
+        File file = new File("src\\main\\java\\com\\voucher\\docx\\00.docx");//¸Ä³ÉÄã±¾µØÎÄ¼þËùÔÚÄ¿Â¼
 
 
-        // ï¿½ï¿½È¡wordÄ£ï¿½ï¿½
+        // ¶ÁÈ¡wordÄ£°å
         FileInputStream fileInputStream = new FileInputStream(file);
         WordTemplateUtils template = new WordTemplateUtils(fileInputStream);
 
-        // ï¿½æ»»ï¿½ï¿½ï¿½ï¿½
+        // Ìæ»»Êý¾Ý
         template.replaceDocument(wordDataMap);
 
 
-        //ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+        //Éú³ÉÎÄ¼þ
 
-        File file1 = new File("src\\main\\java\\com\\voucher\\docx\\01.docx");//ï¿½Ä³ï¿½ï¿½ã±¾ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼
+        File file1 = new File("src\\main\\java\\com\\voucher\\docx\\01.docx");//¸Ä³ÉÄã±¾µØÎÄ¼þËùÔÚÄ¿Â¼
         //OutputStreamWriter outputFile = new OutputStreamWriter(new FileOutputStream(file1),"GB2312");
         FileOutputStream fos  = new FileOutputStream(file1);
         template.getDocument().write(fos);
