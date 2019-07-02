@@ -45,7 +45,7 @@ public class LoginInterceptor {
     }
 
     // 注册,获取权限功能不需要验证
-    @Pointcut("execution(public * com.voucher.manage2.controller.UserController.insertUserInfo(..))||execution(public * com.voucher.manage2.controller.MenuController.getRoutersByRootGuid(..))")
+    @Pointcut("execution(public * com.voucher.manage2.controller.UserController.insertUserInfo(..))||execution(public * com.voucher.manage2.controller.MenuController.getRoutersByRootGuidAndRoleGuid(..))")
     public void registerPointcut() {
     }
 

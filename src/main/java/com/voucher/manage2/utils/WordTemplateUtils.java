@@ -23,15 +23,15 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 /**
  *
- * ¶ÔdocxÎÄ¼şÖĞµÄÎÄ±¾¼°±í¸ñÖĞµÄÄÚÈİ½øĞĞÌæ»» --Ä£°å½öÖ§³Ö¶Ô {key} ±êÇ©µÄÌæ»»
+ * å¯¹docxæ–‡ä»¶ä¸­çš„æ–‡æœ¬åŠè¡¨æ ¼ä¸­çš„å†…å®¹è¿›è¡Œæ›¿æ¢ --æ¨¡æ¿ä»…æ”¯æŒå¯¹ {key} æ ‡ç­¾çš„æ›¿æ¢
  *
  * @ClassName: WordTemplate
- * @Description: TODO(!!!Ê¹ÓÃword2013 docxÎÄ¼ş)
+ * @Description: TODO(!!!ä½¿ç”¨word2013 docxæ–‡ä»¶)
  * @author Juveniless
- * <br>(1)wordÄ£°å×¢ÒâÒ³±ß¾àµÄÎÊÌâ£¬´æÔÚÎÊÌâ£º±ÈÈçÒ³±ß¾àÄ¬ÈÏÎª3cm£¬»­±í¸ñÊ±£¬ÈÔÈ»¿ÉÒÔÍ¨¹ı
- * ÍÏ×§£¬°Ñ±í¸ñ±ß¿òÍÏ¶¯µ½¿´ÆğÀ´¾ÍÏñÒ³±ß¾àÖ»ÓĞ1cmµÄÑù×Ó£¬µ«ÊÇÊµ¼ÊÉÏ´ËÊ±Ò³±ß¾à»¹ÊÇ3cm£¬Éú³ÉµÄ
- * word±¨±íµÄÒ³±ß¾à»¹ÊÇ»á°´ÕÕ3cmÀ´Éú³É¡£½â¾ö°ì·¨£¬ÔÚwordÎÄ¼şÀï£¬ÉèÖÃºÃÒ³±ß¾à£¬Èç¹ûĞèÒª±í¸ñ
- * Á½±ßÒ³±ß¾àºÜÕ­£¬ĞèÒªÔÚwordÀïÉèÖÃÒ³±ß¾àÕ­Ò»µã£¬¶ø²»ÊÇÖ±½ÓÍÏ¶¯±í¸ñ±ß¿òÀ´ÊµÏÖ¡£
+ * <br>(1)wordæ¨¡æ¿æ³¨æ„é¡µè¾¹è·çš„é—®é¢˜ï¼Œå­˜åœ¨é—®é¢˜ï¼šæ¯”å¦‚é¡µè¾¹è·é»˜è®¤ä¸º3cmï¼Œç”»è¡¨æ ¼æ—¶ï¼Œä»ç„¶å¯ä»¥é€šè¿‡
+ * æ‹–æ‹½ï¼ŒæŠŠè¡¨æ ¼è¾¹æ¡†æ‹–åŠ¨åˆ°çœ‹èµ·æ¥å°±åƒé¡µè¾¹è·åªæœ‰1cmçš„æ ·å­ï¼Œä½†æ˜¯å®é™…ä¸Šæ­¤æ—¶é¡µè¾¹è·è¿˜æ˜¯3cmï¼Œç”Ÿæˆçš„
+ * wordæŠ¥è¡¨çš„é¡µè¾¹è·è¿˜æ˜¯ä¼šæŒ‰ç…§3cmæ¥ç”Ÿæˆã€‚è§£å†³åŠæ³•ï¼Œåœ¨wordæ–‡ä»¶é‡Œï¼Œè®¾ç½®å¥½é¡µè¾¹è·ï¼Œå¦‚æœéœ€è¦è¡¨æ ¼
+ * ä¸¤è¾¹é¡µè¾¹è·å¾ˆçª„ï¼Œéœ€è¦åœ¨wordé‡Œè®¾ç½®é¡µè¾¹è·çª„ä¸€ç‚¹ï¼Œè€Œä¸æ˜¯ç›´æ¥æ‹–åŠ¨è¡¨æ ¼è¾¹æ¡†æ¥å®ç°ã€‚
  *
  */
 
@@ -48,11 +48,11 @@ public class WordTemplateUtils {
     }
 
     /**
-     * ³õÊ¼»¯Ä£°åÄÚÈİ
+     * åˆå§‹åŒ–æ¨¡æ¿å†…å®¹
      *
      * @author Juveniless
      * @param inputStream
-     * Ä£°åµÄ¶ÁÈ¡Á÷(docxÎÄ¼ş)
+     * æ¨¡æ¿çš„è¯»å–æµ(docxæ–‡ä»¶)
      * @throws IOException
      *
      */
@@ -61,7 +61,7 @@ public class WordTemplateUtils {
     }
 
     /**
-     * ½«´¦ÀíºóµÄÄÚÈİĞ´Èëµ½Êä³öÁ÷ÖĞ
+     * å°†å¤„ç†åçš„å†…å®¹å†™å…¥åˆ°è¾“å‡ºæµä¸­
      *
      * @param outputStream
      * @throws IOException
@@ -75,11 +75,11 @@ public class WordTemplateUtils {
 
 
     /**
-     * ¸ù¾İdataMap¶ÔwordÎÄ¼şÖĞµÄ±êÇ©½øĞĞÌæ»»; <br><br>
-     * £¡£¡£¡£¡***ĞèÒª×¢ÒâdataMapµÄÊı¾İ¸ñÊ½***£¡£¡£¡£¡ <br><br>
-     * ¶ÔÓÚĞèÒªÌæ»»µÄÆÕÍ¨±êÇ©Êı¾İ±êÇ©£¨²»ĞèÒªÑ­»·£©-----±ØĞëÔÚdataMapÖĞ´æ´¢Ò»¸ökeyÎªparametersMapµÄmap£¬
-     * À´´æ´¢ÕâĞ©²»ĞèÒªÑ­»·Éú³ÉµÄÊı¾İ£¬±ÈÈç£º±íÍ·ĞÅÏ¢£¬ÈÕÆÚ£¬ÖÆ±íÈËµÈ¡£ <br><br>
-     * ¶ÔÓÚĞèÒªÑ­»·Éú³ÉµÄ±í¸ñÊı¾İ------key×Ô¶¨Òå£¬valueÎª --ArrayList&lt;Map&lt;String, String>>
+     * æ ¹æ®dataMapå¯¹wordæ–‡ä»¶ä¸­çš„æ ‡ç­¾è¿›è¡Œæ›¿æ¢; <br><br>
+     * ï¼ï¼ï¼ï¼***éœ€è¦æ³¨æ„dataMapçš„æ•°æ®æ ¼å¼***ï¼ï¼ï¼ï¼ <br><br>
+     * å¯¹äºéœ€è¦æ›¿æ¢çš„æ™®é€šæ ‡ç­¾æ•°æ®æ ‡ç­¾ï¼ˆä¸éœ€è¦å¾ªç¯ï¼‰-----å¿…é¡»åœ¨dataMapä¸­å­˜å‚¨ä¸€ä¸ªkeyä¸ºparametersMapçš„mapï¼Œ
+     * æ¥å­˜å‚¨è¿™äº›ä¸éœ€è¦å¾ªç¯ç”Ÿæˆçš„æ•°æ®ï¼Œæ¯”å¦‚ï¼šè¡¨å¤´ä¿¡æ¯ï¼Œæ—¥æœŸï¼Œåˆ¶è¡¨äººç­‰ã€‚ <br><br>
+     * å¯¹äºéœ€è¦å¾ªç¯ç”Ÿæˆçš„è¡¨æ ¼æ•°æ®------keyè‡ªå®šä¹‰ï¼Œvalueä¸º --ArrayList&lt;Map&lt;String, String>>
      * @author Juveniless
      * @param dataMap
      *
@@ -87,75 +87,75 @@ public class WordTemplateUtils {
     public void replaceDocument(Map<String, Object> dataMap) {
 
         if (!dataMap.containsKey("parametersMap")) {
-            System.out.println("Êı¾İÔ´´íÎó--Êı¾İÔ´(parametersMap)È±Ê§");
+            System.out.println("æ•°æ®æºé”™è¯¯--æ•°æ®æº(parametersMap)ç¼ºå¤±");
             return;
         }
         @SuppressWarnings("unchecked")
         Map<String, Object> parametersMap = (Map<String, Object>) dataMap
                 .get("parametersMap");
 
-        List<IBodyElement> bodyElements = document.getBodyElements();// ËùÓĞ¶ÔÏó£¨¶ÎÂä+±í¸ñ£©
-        int templateBodySize = bodyElements.size();// ±ê¼ÇÄ£°åÎÄ¼ş£¨¶ÎÂä+±í¸ñ£©×Ü¸öÊı
+        List<IBodyElement> bodyElements = document.getBodyElements();// æ‰€æœ‰å¯¹è±¡ï¼ˆæ®µè½+è¡¨æ ¼ï¼‰
+        int templateBodySize = bodyElements.size();// æ ‡è®°æ¨¡æ¿æ–‡ä»¶ï¼ˆæ®µè½+è¡¨æ ¼ï¼‰æ€»ä¸ªæ•°
 
-        int curT = 0;// µ±Ç°²Ù×÷±í¸ñ¶ÔÏóµÄË÷Òı
-        int curP = 0;// µ±Ç°²Ù×÷¶ÎÂä¶ÔÏóµÄË÷Òı
+        int curT = 0;// å½“å‰æ“ä½œè¡¨æ ¼å¯¹è±¡çš„ç´¢å¼•
+        int curP = 0;// å½“å‰æ“ä½œæ®µè½å¯¹è±¡çš„ç´¢å¼•
         for (int a = 0; a < templateBodySize; a++) {
             IBodyElement body = bodyElements.get(a);
-            if (BodyElementType.TABLE.equals(body.getElementType())) {// ´¦Àí±í¸ñ
+            if (BodyElementType.TABLE.equals(body.getElementType())) {// å¤„ç†è¡¨æ ¼
                 XWPFTable table = body.getBody().getTableArray(curT);
 
                 List<XWPFTable> tables = body.getBody().getTables();
                 table = tables.get(curT);
                 if (table != null) {
 
-                    // ´¦Àí±í¸ñ
-                    List<XWPFTableCell> tableCells = table.getRows().get(0).getTableCells();// »ñÈ¡µ½Ä£°å±í¸ñµÚÒ»ĞĞ£¬ÓÃÀ´ÅĞ¶Ï±í¸ñÀàĞÍ
-                    String tableText = table.getText();// ±í¸ñÖĞµÄËùÓĞÎÄ±¾
+                    // å¤„ç†è¡¨æ ¼
+                    List<XWPFTableCell> tableCells = table.getRows().get(0).getTableCells();// è·å–åˆ°æ¨¡æ¿è¡¨æ ¼ç¬¬ä¸€è¡Œï¼Œç”¨æ¥åˆ¤æ–­è¡¨æ ¼ç±»å‹
+                    String tableText = table.getText();// è¡¨æ ¼ä¸­çš„æ‰€æœ‰æ–‡æœ¬
 
                     if (tableText.indexOf("##{foreach") > -1) {
-                        // ²éÕÒµ½##{foreach±êÇ©£¬¸Ã±í¸ñĞèÒª´¦ÀíÑ­»·
+                        // æŸ¥æ‰¾åˆ°##{foreachæ ‡ç­¾ï¼Œè¯¥è¡¨æ ¼éœ€è¦å¤„ç†å¾ªç¯
                         if (tableCells.size() != 2
                                 || tableCells.get(0).getText().indexOf("##{foreach") < 0
                                 || tableCells.get(0).getText().trim().length() == 0) {
                             System.out
-                                    .println("ÎÄµµÖĞµÚ"
+                                    .println("æ–‡æ¡£ä¸­ç¬¬"
                                             + (curT + 1)
-                                            + "¸ö±í¸ñÄ£°å´íÎó,Ä£°å±í¸ñµÚÒ»ĞĞĞèÒªÉèÖÃ2¸öµ¥Ôª¸ñ£¬"
-                                            + "µÚÒ»¸öµ¥Ôª¸ñ´æ´¢±í¸ñÀàĞÍ(##{foreachTable}## »òÕß ##{foreachTableRow}##)£¬µÚ¶ş¸öµ¥Ôª¸ñ¶¨ÒåÊı¾İÔ´¡£");
+                                            + "ä¸ªè¡¨æ ¼æ¨¡æ¿é”™è¯¯,æ¨¡æ¿è¡¨æ ¼ç¬¬ä¸€è¡Œéœ€è¦è®¾ç½®2ä¸ªå•å…ƒæ ¼ï¼Œ"
+                                            + "ç¬¬ä¸€ä¸ªå•å…ƒæ ¼å­˜å‚¨è¡¨æ ¼ç±»å‹(##{foreachTable}## æˆ–è€… ##{foreachTableRow}##)ï¼Œç¬¬äºŒä¸ªå•å…ƒæ ¼å®šä¹‰æ•°æ®æºã€‚");
                             return;
                         }
 
                         String tableType = tableCells.get(0).getText();
                         String dataSource = tableCells.get(1).getText();
-                        System.out.println("¶ÁÈ¡µ½Êı¾İÔ´£º"+dataSource);
+                        System.out.println("è¯»å–åˆ°æ•°æ®æºï¼š"+dataSource);
                         if (!dataMap.containsKey(dataSource)) {
-                            System.out.println("ÎÄµµÖĞµÚ" + (curT + 1) + "¸ö±í¸ñÄ£°åÊı¾İÔ´È±Ê§");
+                            System.out.println("æ–‡æ¡£ä¸­ç¬¬" + (curT + 1) + "ä¸ªè¡¨æ ¼æ¨¡æ¿æ•°æ®æºç¼ºå¤±");
                             return;
                         }
                         @SuppressWarnings("unchecked")
                         List<Map<String, Object>> tableDataList = (List<Map<String, Object>>) dataMap
                                 .get(dataSource);
                         if ("##{foreachTable}##".equals(tableType)) {
-                            // System.out.println("Ñ­»·Éú³É±í¸ñ");
+                            // System.out.println("å¾ªç¯ç”Ÿæˆè¡¨æ ¼");
                             addTableInDocFooter(table, tableDataList, parametersMap, 1);
 
                         } else if ("##{foreachTableRow}##".equals(tableType)) {
-                            // System.out.println("Ñ­»·Éú³É±í¸ñÄÚ²¿µÄĞĞ");
+                            // System.out.println("å¾ªç¯ç”Ÿæˆè¡¨æ ¼å†…éƒ¨çš„è¡Œ");
                             addTableInDocFooter(table, tableDataList, parametersMap, 2);
                         }
 
                     } else if (tableText.indexOf("{") > -1) {
-                        // Ã»ÓĞ²éÕÒµ½##{foreach±êÇ©£¬²éÕÒµ½ÁËÆÕÍ¨Ìæ»»Êı¾İµÄ{}±êÇ©£¬¸Ã±í¸ñÖ»ĞèÒª¼òµ¥Ìæ»»
+                        // æ²¡æœ‰æŸ¥æ‰¾åˆ°##{foreachæ ‡ç­¾ï¼ŒæŸ¥æ‰¾åˆ°äº†æ™®é€šæ›¿æ¢æ•°æ®çš„{}æ ‡ç­¾ï¼Œè¯¥è¡¨æ ¼åªéœ€è¦ç®€å•æ›¿æ¢
                         addTableInDocFooter(table, null, parametersMap, 3);
                     } else {
-                        // Ã»ÓĞ²éÕÒµ½ÈÎºÎ±êÇ©£¬¸Ã±í¸ñÊÇÒ»¸ö¾²Ì¬±í¸ñ£¬½öĞèÒª¸´ÖÆÒ»¸ö¼´¿É¡£
+                        // æ²¡æœ‰æŸ¥æ‰¾åˆ°ä»»ä½•æ ‡ç­¾ï¼Œè¯¥è¡¨æ ¼æ˜¯ä¸€ä¸ªé™æ€è¡¨æ ¼ï¼Œä»…éœ€è¦å¤åˆ¶ä¸€ä¸ªå³å¯ã€‚
                         addTableInDocFooter(table, null, null, 0);
                     }
                     curT++;
 
                 }
-            } else if (BodyElementType.PARAGRAPH.equals(body.getElementType())) {// ´¦Àí¶ÎÂä
-                // System.out.println("»ñÈ¡µ½¶ÎÂä");
+            } else if (BodyElementType.PARAGRAPH.equals(body.getElementType())) {// å¤„ç†æ®µè½
+                // System.out.println("è·å–åˆ°æ®µè½");
                 XWPFParagraph ph = body.getBody().getParagraphArray(curP);
                 if (ph != null) {
                     // htmlText = htmlText+readParagraphX(ph);
@@ -166,7 +166,7 @@ public class WordTemplateUtils {
             }
 
         }
-        // ´¦ÀíÍê±ÏÄ£°å£¬É¾³ıÎÄ±¾ÖĞµÄÄ£°åÄÚÈİ
+        // å¤„ç†å®Œæ¯•æ¨¡æ¿ï¼Œåˆ é™¤æ–‡æœ¬ä¸­çš„æ¨¡æ¿å†…å®¹
         for (int a = 0; a < templateBodySize; a++) {
             document.removeBodyElement(0);
         }
@@ -181,87 +181,87 @@ public class WordTemplateUtils {
 
 
     /**
-     * ¸ù¾İ Ä£°å±í¸ñ ºÍ Êı¾İlist ÔÚwordÎÄµµÄ©Î²Éú³É±í¸ñ
+     * æ ¹æ® æ¨¡æ¿è¡¨æ ¼ å’Œ æ•°æ®list åœ¨wordæ–‡æ¡£æœ«å°¾ç”Ÿæˆè¡¨æ ¼
      * @author Juveniless
-     * @param templateTable Ä£°å±í¸ñ
-     * @param list   Ñ­»·Êı¾İ¼¯
-     * @param parametersMap  ²»Ñ­»·Êı¾İ¼¯
-     * @param flag   (0Îª¾²Ì¬±í¸ñ£¬1Îª±í¸ñÕûÌåÑ­»·£¬2Îª±í¸ñÄÚ²¿ĞĞÑ­»·£¬3Îª±í¸ñ²»Ñ­»·½ö¼òµ¥Ìæ»»±êÇ©¼´¿É)
+     * @param templateTable æ¨¡æ¿è¡¨æ ¼
+     * @param list   å¾ªç¯æ•°æ®é›†
+     * @param parametersMap  ä¸å¾ªç¯æ•°æ®é›†
+     * @param flag   (0ä¸ºé™æ€è¡¨æ ¼ï¼Œ1ä¸ºè¡¨æ ¼æ•´ä½“å¾ªç¯ï¼Œ2ä¸ºè¡¨æ ¼å†…éƒ¨è¡Œå¾ªç¯ï¼Œ3ä¸ºè¡¨æ ¼ä¸å¾ªç¯ä»…ç®€å•æ›¿æ¢æ ‡ç­¾å³å¯)
      *
      */
     public void addTableInDocFooter(XWPFTable templateTable, List<Map<String, Object>> list,
                                     Map<String, Object> parametersMap, int flag) {
 
-        if (flag == 1) {// ±í¸ñÕûÌåÑ­»·
+        if (flag == 1) {// è¡¨æ ¼æ•´ä½“å¾ªç¯
             for (Map<String, Object> map : list) {
-                List<XWPFTableRow> templateTableRows = templateTable.getRows();// »ñÈ¡Ä£°å±í¸ñËùÓĞĞĞ
-                XWPFTable newCreateTable = document.createTable();// ´´½¨ĞÂ±í¸ñ,Ä¬ÈÏÒ»ĞĞÒ»ÁĞ
+                List<XWPFTableRow> templateTableRows = templateTable.getRows();// è·å–æ¨¡æ¿è¡¨æ ¼æ‰€æœ‰è¡Œ
+                XWPFTable newCreateTable = document.createTable();// åˆ›å»ºæ–°è¡¨æ ¼,é»˜è®¤ä¸€è¡Œä¸€åˆ—
                 for (int i = 1; i < templateTableRows.size(); i++) {
                     XWPFTableRow newCreateRow = newCreateTable.createRow();
-                    CopyTableRow(newCreateRow, templateTableRows.get(i));// ¸´ÖÆÄ£°åĞĞÎÄ±¾ºÍÑùÊ½µ½ĞÂĞĞ
+                    CopyTableRow(newCreateRow, templateTableRows.get(i));// å¤åˆ¶æ¨¡æ¿è¡Œæ–‡æœ¬å’Œæ ·å¼åˆ°æ–°è¡Œ
                 }
-                newCreateTable.removeRow(0);// ÒÆ³ı¶à³öÀ´µÄµÚÒ»ĞĞ
-                document.createParagraph();// Ìí¼Ó»Ø³µ»»ĞĞ
-                replaceTable(newCreateTable, map);//Ìæ»»±êÇ©
+                newCreateTable.removeRow(0);// ç§»é™¤å¤šå‡ºæ¥çš„ç¬¬ä¸€è¡Œ
+                document.createParagraph();// æ·»åŠ å›è½¦æ¢è¡Œ
+                replaceTable(newCreateTable, map);//æ›¿æ¢æ ‡ç­¾
             }
 
-        } else if (flag == 2) {// ±í¸ñ±í¸ñÄÚ²¿ĞĞÑ­»·
-            XWPFTable newCreateTable = document.createTable();// ´´½¨ĞÂ±í¸ñ,Ä¬ÈÏÒ»ĞĞÒ»ÁĞ
-            List<XWPFTableRow> TempTableRows = templateTable.getRows();// »ñÈ¡Ä£°å±í¸ñËùÓĞĞĞ
-            int tagRowsIndex = 0;// ±êÇ©ĞĞindexs
+        } else if (flag == 2) {// è¡¨æ ¼è¡¨æ ¼å†…éƒ¨è¡Œå¾ªç¯
+            XWPFTable newCreateTable = document.createTable();// åˆ›å»ºæ–°è¡¨æ ¼,é»˜è®¤ä¸€è¡Œä¸€åˆ—
+            List<XWPFTableRow> TempTableRows = templateTable.getRows();// è·å–æ¨¡æ¿è¡¨æ ¼æ‰€æœ‰è¡Œ
+            int tagRowsIndex = 0;// æ ‡ç­¾è¡Œindexs
             for (int i = 0, size = TempTableRows.size(); i < size; i++) {
-                String rowText = TempTableRows.get(i).getCell(0).getText();// »ñÈ¡µ½±í¸ñĞĞµÄµÚÒ»¸öµ¥Ôª¸ñ
+                String rowText = TempTableRows.get(i).getCell(0).getText();// è·å–åˆ°è¡¨æ ¼è¡Œçš„ç¬¬ä¸€ä¸ªå•å…ƒæ ¼
                 if (rowText.indexOf("##{foreachRows}##") > -1) {
                     tagRowsIndex = i;
                     break;
                 }
             }
 
-            /* ¸´ÖÆÄ£°åĞĞºÍ±êÇ©ĞĞÖ®Ç°µÄĞĞ */
+            /* å¤åˆ¶æ¨¡æ¿è¡Œå’Œæ ‡ç­¾è¡Œä¹‹å‰çš„è¡Œ */
             for (int i = 1; i < tagRowsIndex; i++) {
                 XWPFTableRow newCreateRow = newCreateTable.createRow();
-                CopyTableRow(newCreateRow, TempTableRows.get(i));// ¸´ÖÆĞĞ
-                replaceTableRow(newCreateRow, parametersMap);// ´¦Àí²»Ñ­»·±êÇ©µÄÌæ»»
+                CopyTableRow(newCreateRow, TempTableRows.get(i));// å¤åˆ¶è¡Œ
+                replaceTableRow(newCreateRow, parametersMap);// å¤„ç†ä¸å¾ªç¯æ ‡ç­¾çš„æ›¿æ¢
             }
 
-            /* Ñ­»·Éú³ÉÄ£°åĞĞ */
-            XWPFTableRow tempRow = TempTableRows.get(tagRowsIndex + 1);// »ñÈ¡µ½Ä£°åĞĞ
+            /* å¾ªç¯ç”Ÿæˆæ¨¡æ¿è¡Œ */
+            XWPFTableRow tempRow = TempTableRows.get(tagRowsIndex + 1);// è·å–åˆ°æ¨¡æ¿è¡Œ
             for (int i = 0; i < list.size(); i++) {
                 XWPFTableRow newCreateRow = newCreateTable.createRow();
-                CopyTableRow(newCreateRow, tempRow);// ¸´ÖÆÄ£°åĞĞ
-                replaceTableRow(newCreateRow, list.get(i));// ´¦Àí±êÇ©Ìæ»»
+                CopyTableRow(newCreateRow, tempRow);// å¤åˆ¶æ¨¡æ¿è¡Œ
+                replaceTableRow(newCreateRow, list.get(i));// å¤„ç†æ ‡ç­¾æ›¿æ¢
             }
 
-            /* ¸´ÖÆÄ£°åĞĞºÍ±êÇ©ĞĞÖ®ºóµÄĞĞ */
+            /* å¤åˆ¶æ¨¡æ¿è¡Œå’Œæ ‡ç­¾è¡Œä¹‹åçš„è¡Œ */
             for (int i = tagRowsIndex + 2; i < TempTableRows.size(); i++) {
                 XWPFTableRow newCreateRow = newCreateTable.createRow();
-                CopyTableRow(newCreateRow, TempTableRows.get(i));// ¸´ÖÆĞĞ
-                replaceTableRow(newCreateRow, parametersMap);// ´¦Àí²»Ñ­»·±êÇ©µÄÌæ»»
+                CopyTableRow(newCreateRow, TempTableRows.get(i));// å¤åˆ¶è¡Œ
+                replaceTableRow(newCreateRow, parametersMap);// å¤„ç†ä¸å¾ªç¯æ ‡ç­¾çš„æ›¿æ¢
             }
-            newCreateTable.removeRow(0);// ÒÆ³ı¶à³öÀ´µÄµÚÒ»ĞĞ
-            document.createParagraph();// Ìí¼Ó»Ø³µ»»ĞĞ
+            newCreateTable.removeRow(0);// ç§»é™¤å¤šå‡ºæ¥çš„ç¬¬ä¸€è¡Œ
+            document.createParagraph();// æ·»åŠ å›è½¦æ¢è¡Œ
 
         } else if (flag == 3) {
-            //±í¸ñ²»Ñ­»·½ö¼òµ¥Ìæ»»±êÇ©
-            List<XWPFTableRow> templateTableRows = templateTable.getRows();// »ñÈ¡Ä£°å±í¸ñËùÓĞĞĞ
-            XWPFTable newCreateTable = document.createTable();// ´´½¨ĞÂ±í¸ñ,Ä¬ÈÏÒ»ĞĞÒ»ÁĞ
+            //è¡¨æ ¼ä¸å¾ªç¯ä»…ç®€å•æ›¿æ¢æ ‡ç­¾
+            List<XWPFTableRow> templateTableRows = templateTable.getRows();// è·å–æ¨¡æ¿è¡¨æ ¼æ‰€æœ‰è¡Œ
+            XWPFTable newCreateTable = document.createTable();// åˆ›å»ºæ–°è¡¨æ ¼,é»˜è®¤ä¸€è¡Œä¸€åˆ—
             for (int i = 0; i < templateTableRows.size(); i++) {
                 XWPFTableRow newCreateRow = newCreateTable.createRow();
-                CopyTableRow(newCreateRow, templateTableRows.get(i));// ¸´ÖÆÄ£°åĞĞÎÄ±¾ºÍÑùÊ½µ½ĞÂĞĞ
+                CopyTableRow(newCreateRow, templateTableRows.get(i));// å¤åˆ¶æ¨¡æ¿è¡Œæ–‡æœ¬å’Œæ ·å¼åˆ°æ–°è¡Œ
             }
-            newCreateTable.removeRow(0);// ÒÆ³ı¶à³öÀ´µÄµÚÒ»ĞĞ
-            document.createParagraph();// Ìí¼Ó»Ø³µ»»ĞĞ
+            newCreateTable.removeRow(0);// ç§»é™¤å¤šå‡ºæ¥çš„ç¬¬ä¸€è¡Œ
+            document.createParagraph();// æ·»åŠ å›è½¦æ¢è¡Œ
             replaceTable(newCreateTable, parametersMap);
 
         } else if (flag == 0) {
-            List<XWPFTableRow> templateTableRows = templateTable.getRows();// »ñÈ¡Ä£°å±í¸ñËùÓĞĞĞ
-            XWPFTable newCreateTable = document.createTable();// ´´½¨ĞÂ±í¸ñ,Ä¬ÈÏÒ»ĞĞÒ»ÁĞ
+            List<XWPFTableRow> templateTableRows = templateTable.getRows();// è·å–æ¨¡æ¿è¡¨æ ¼æ‰€æœ‰è¡Œ
+            XWPFTable newCreateTable = document.createTable();// åˆ›å»ºæ–°è¡¨æ ¼,é»˜è®¤ä¸€è¡Œä¸€åˆ—
             for (int i = 0; i < templateTableRows.size(); i++) {
                 XWPFTableRow newCreateRow = newCreateTable.createRow();
-                CopyTableRow(newCreateRow, templateTableRows.get(i));// ¸´ÖÆÄ£°åĞĞÎÄ±¾ºÍÑùÊ½µ½ĞÂĞĞ
+                CopyTableRow(newCreateRow, templateTableRows.get(i));// å¤åˆ¶æ¨¡æ¿è¡Œæ–‡æœ¬å’Œæ ·å¼åˆ°æ–°è¡Œ
             }
-            newCreateTable.removeRow(0);// ÒÆ³ı¶à³öÀ´µÄµÚÒ»ĞĞ
-            document.createParagraph();// Ìí¼Ó»Ø³µ»»ĞĞ
+            newCreateTable.removeRow(0);// ç§»é™¤å¤šå‡ºæ¥çš„ç¬¬ä¸€è¡Œ
+            document.createParagraph();// æ·»åŠ å›è½¦æ¢è¡Œ
         }
 
     }
@@ -272,17 +272,17 @@ public class WordTemplateUtils {
 
 
     /**
-     * ¸ù¾İ Ä£°å¶ÎÂä ºÍ Êı¾İ ÔÚÎÄµµÄ©Î²Éú³É¶ÎÂä
+     * æ ¹æ® æ¨¡æ¿æ®µè½ å’Œ æ•°æ® åœ¨æ–‡æ¡£æœ«å°¾ç”Ÿæˆæ®µè½
      *
      * @author Juveniless
      * @param templateParagraph
-     *            Ä£°å¶ÎÂä
+     *            æ¨¡æ¿æ®µè½
      * @param list
-     *            Ñ­»·Êı¾İ¼¯
+     *            å¾ªç¯æ•°æ®é›†
      * @param parametersMap
-     *            ²»Ñ­»·Êı¾İ¼¯
+     *            ä¸å¾ªç¯æ•°æ®é›†
      * @param flag
-     *            (0Îª²»Ñ­»·Ìæ»»£¬1ÎªÑ­»·Ìæ»»)
+     *            (0ä¸ºä¸å¾ªç¯æ›¿æ¢ï¼Œ1ä¸ºå¾ªç¯æ›¿æ¢)
      *
      */
     public void addParagraphInDocFooter(XWPFParagraph templateParagraph,
@@ -290,13 +290,13 @@ public class WordTemplateUtils {
 
         if (flag == 0) {
             XWPFParagraph createParagraph = document.createParagraph();
-            // ÉèÖÃ¶ÎÂäÑùÊ½
+            // è®¾ç½®æ®µè½æ ·å¼
             createParagraph.getCTP().setPPr(templateParagraph.getCTP().getPPr());
-            // ÒÆ³ıÔ­Ê¼ÄÚÈİ
+            // ç§»é™¤åŸå§‹å†…å®¹
             for (int pos = 0; pos < createParagraph.getRuns().size(); pos++) {
                 createParagraph.removeRun(pos);
             }
-            // Ìí¼ÓRun±êÇ©
+            // æ·»åŠ Runæ ‡ç­¾
             for (XWPFRun s : templateParagraph.getRuns()) {
                 XWPFRun targetrun = createParagraph.createRun();
                 CopyRun(targetrun, s);
@@ -305,7 +305,7 @@ public class WordTemplateUtils {
             replaceParagraph(createParagraph, parametersMap);
 
         } else if (flag == 1) {
-            // ÔİÎŞÊµÏÖ
+            // æš‚æ— å®ç°
         }
 
     }
@@ -314,7 +314,7 @@ public class WordTemplateUtils {
 
 
     /**
-     * ¸ù¾İmapÌæ»»¶ÎÂäÔªËØÄÚµÄ{**}±êÇ©
+     * æ ¹æ®mapæ›¿æ¢æ®µè½å…ƒç´ å†…çš„{**}æ ‡ç­¾
      * @author Juveniless
      * @param xWPFParagraph
      * @param parametersMap
@@ -325,16 +325,16 @@ public class WordTemplateUtils {
         String xWPFParagraphText = xWPFParagraph.getText();
         String regEx = "\\{.+?\\}";
         Pattern pattern = Pattern.compile(regEx);
-        Matcher matcher = pattern.matcher(xWPFParagraphText);//ÕıÔòÆ¥Åä×Ö·û´®{****}
+        Matcher matcher = pattern.matcher(xWPFParagraphText);//æ­£åˆ™åŒ¹é…å­—ç¬¦ä¸²{****}
 
         if (matcher.find()) {
-            // ²éÕÒµ½ÓĞ±êÇ©²ÅÖ´ĞĞÌæ»»
-            int beginRunIndex = xWPFParagraph.searchText("{", new PositionInParagraph()).getBeginRun();// ±êÇ©¿ªÊ¼runÎ»ÖÃ
-            int endRunIndex = xWPFParagraph.searchText("}", new PositionInParagraph()).getEndRun();// ½áÊø±êÇ©
+            // æŸ¥æ‰¾åˆ°æœ‰æ ‡ç­¾æ‰æ‰§è¡Œæ›¿æ¢
+            int beginRunIndex = xWPFParagraph.searchText("{", new PositionInParagraph()).getBeginRun();// æ ‡ç­¾å¼€å§‹runä½ç½®
+            int endRunIndex = xWPFParagraph.searchText("}", new PositionInParagraph()).getEndRun();// ç»“æŸæ ‡ç­¾
             StringBuffer key = new StringBuffer();
 
             if (beginRunIndex == endRunIndex) {
-                // {**}ÔÚÒ»¸örun±êÇ©ÄÚ
+                // {**}åœ¨ä¸€ä¸ªrunæ ‡ç­¾å†…
                 XWPFRun beginRun = runs.get(beginRunIndex);
                 String beginRunText = beginRun.text();
 
@@ -343,18 +343,18 @@ public class WordTemplateUtils {
                 int length = beginRunText.length();
 
                 if (beginIndex == 0 && endIndex == length - 1) {
-                    // ¸Ãrun±êÇ©Ö»ÓĞ{**}
+                    // è¯¥runæ ‡ç­¾åªæœ‰{**}
                     XWPFRun insertNewRun = xWPFParagraph.insertNewRun(beginRunIndex);
                     insertNewRun.getCTR().setRPr(beginRun.getCTR().getRPr());
-                    // ÉèÖÃÎÄ±¾
+                    // è®¾ç½®æ–‡æœ¬
                     key.append(beginRunText.substring(1, endIndex));
                     insertNewRun.setText(getValueBykey(key.toString(),parametersMap));
                     xWPFParagraph.removeRun(beginRunIndex + 1);
                 } else {
-                    // ¸Ãrun±êÇ©Îª**{**}** »òÕß **{**} »òÕß{**}**£¬Ìæ»»keyºó£¬»¹ĞèÒª¼ÓÉÏÔ­Ê¼keyÇ°ºóµÄÎÄ±¾
+                    // è¯¥runæ ‡ç­¾ä¸º**{**}** æˆ–è€… **{**} æˆ–è€…{**}**ï¼Œæ›¿æ¢keyåï¼Œè¿˜éœ€è¦åŠ ä¸ŠåŸå§‹keyå‰åçš„æ–‡æœ¬
                     XWPFRun insertNewRun = xWPFParagraph.insertNewRun(beginRunIndex);
                     insertNewRun.getCTR().setRPr(beginRun.getCTR().getRPr());
-                    // ÉèÖÃÎÄ±¾
+                    // è®¾ç½®æ–‡æœ¬
                     key.append(beginRunText.substring(beginRunText.indexOf("{")+1, beginRunText.indexOf("}")));
                     String textString=beginRunText.substring(0, beginIndex) + getValueBykey(key.toString(),parametersMap)
                             + beginRunText.substring(endIndex + 1);
@@ -363,17 +363,17 @@ public class WordTemplateUtils {
                 }
 
             }else {
-                // {**}±»·Ö³É¶à¸örun
+                // {**}è¢«åˆ†æˆå¤šä¸ªrun
 
-                //ÏÈ´¦ÀíÆğÊ¼run±êÇ©,È¡µÃµÚÒ»¸ö{key}Öµ
+                //å…ˆå¤„ç†èµ·å§‹runæ ‡ç­¾,å–å¾—ç¬¬ä¸€ä¸ª{key}å€¼
                 XWPFRun beginRun = runs.get(beginRunIndex);
                 String beginRunText = beginRun.text();
                 int beginIndex = beginRunText.indexOf("{");
                 if (beginRunText.length()>1  ) {
                     key.append(beginRunText.substring(beginIndex+1));
                 }
-                ArrayList<Integer> removeRunList = new ArrayList<Integer>();//ĞèÒªÒÆ³ıµÄrun
-                //´¦ÀíÖĞ¼äµÄrun
+                ArrayList<Integer> removeRunList = new ArrayList<Integer>();//éœ€è¦ç§»é™¤çš„run
+                //å¤„ç†ä¸­é—´çš„run
                 for (int i = beginRunIndex + 1; i < endRunIndex; i++) {
                     XWPFRun run = runs.get(i);
                     String runText = run.text();
@@ -381,11 +381,11 @@ public class WordTemplateUtils {
                     removeRunList.add(i);
                 }
 
-                // »ñÈ¡endRunÖĞµÄkeyÖµ
+                // è·å–endRunä¸­çš„keyå€¼
                 XWPFRun endRun = runs.get(endRunIndex);
                 String endRunText = endRun.text();
                 int endIndex = endRunText.indexOf("}");
-                //runÖĞ**}»òÕß**}**
+                //runä¸­**}æˆ–è€…**}**
                 if (endRunText.length()>1 && endIndex!=0) {
                     key.append(endRunText.substring(0,endIndex));
                 }
@@ -393,59 +393,59 @@ public class WordTemplateUtils {
 
 
                 //*******************************************************************
-                //È¡µÃkeyÖµºóÌæ»»±êÇ©
+                //å–å¾—keyå€¼åæ›¿æ¢æ ‡ç­¾
 
-                //ÏÈ´¦Àí¿ªÊ¼±êÇ©
+                //å…ˆå¤„ç†å¼€å§‹æ ‡ç­¾
                 if (beginRunText.length()==2 ) {
-                    // run±êÇ©ÄÚÎÄ±¾{
+                    // runæ ‡ç­¾å†…æ–‡æœ¬{
                     XWPFRun insertNewRun = xWPFParagraph.insertNewRun(beginRunIndex);
                     insertNewRun.getCTR().setRPr(beginRun.getCTR().getRPr());
-                    // ÉèÖÃÎÄ±¾
+                    // è®¾ç½®æ–‡æœ¬
                     insertNewRun.setText(getValueBykey(key.toString(),parametersMap));
-                    xWPFParagraph.removeRun(beginRunIndex + 1);//ÒÆ³ıÔ­Ê¼µÄrun
+                    xWPFParagraph.removeRun(beginRunIndex + 1);//ç§»é™¤åŸå§‹çš„run
                 }else {
-                    // ¸Ãrun±êÇ©Îª**{**»òÕß {** £¬Ìæ»»keyºó£¬»¹ĞèÒª¼ÓÉÏÔ­Ê¼keyÇ°µÄÎÄ±¾
+                    // è¯¥runæ ‡ç­¾ä¸º**{**æˆ–è€… {** ï¼Œæ›¿æ¢keyåï¼Œè¿˜éœ€è¦åŠ ä¸ŠåŸå§‹keyå‰çš„æ–‡æœ¬
                     XWPFRun insertNewRun = xWPFParagraph.insertNewRun(beginRunIndex);
                     insertNewRun.getCTR().setRPr(beginRun.getCTR().getRPr());
-                    // ÉèÖÃÎÄ±¾
+                    // è®¾ç½®æ–‡æœ¬
                     String textString=beginRunText.substring(0,beginRunText.indexOf("{"))+getValueBykey(key.toString(),parametersMap);
                     insertNewRun.setText(textString);
-                    xWPFParagraph.removeRun(beginRunIndex + 1);//ÒÆ³ıÔ­Ê¼µÄrun
+                    xWPFParagraph.removeRun(beginRunIndex + 1);//ç§»é™¤åŸå§‹çš„run
                 }
 
-                //´¦Àí½áÊø±êÇ©
+                //å¤„ç†ç»“æŸæ ‡ç­¾
                 if (endRunText.length()==1 ) {
-                    // run±êÇ©ÄÚÎÄ±¾Ö»ÓĞ}
+                    // runæ ‡ç­¾å†…æ–‡æœ¬åªæœ‰}
                     XWPFRun insertNewRun = xWPFParagraph.insertNewRun(endRunIndex);
                     insertNewRun.getCTR().setRPr(endRun.getCTR().getRPr());
-                    // ÉèÖÃÎÄ±¾
+                    // è®¾ç½®æ–‡æœ¬
                     insertNewRun.setText("");
-                    xWPFParagraph.removeRun(endRunIndex + 1);//ÒÆ³ıÔ­Ê¼µÄrun
+                    xWPFParagraph.removeRun(endRunIndex + 1);//ç§»é™¤åŸå§‹çš„run
 
                 }else {
-                    // ¸Ãrun±êÇ©Îª**}**»òÕß }** »òÕß**}£¬Ìæ»»keyºó£¬»¹ĞèÒª¼ÓÉÏÔ­Ê¼keyºóµÄÎÄ±¾
+                    // è¯¥runæ ‡ç­¾ä¸º**}**æˆ–è€… }** æˆ–è€…**}ï¼Œæ›¿æ¢keyåï¼Œè¿˜éœ€è¦åŠ ä¸ŠåŸå§‹keyåçš„æ–‡æœ¬
                     XWPFRun insertNewRun = xWPFParagraph.insertNewRun(endRunIndex);
                     insertNewRun.getCTR().setRPr(endRun.getCTR().getRPr());
-                    // ÉèÖÃÎÄ±¾
+                    // è®¾ç½®æ–‡æœ¬
                     String textString=endRunText.substring(endRunText.indexOf("}")+1);
                     insertNewRun.setText(textString);
-                    xWPFParagraph.removeRun(endRunIndex + 1);//ÒÆ³ıÔ­Ê¼µÄrun
+                    xWPFParagraph.removeRun(endRunIndex + 1);//ç§»é™¤åŸå§‹çš„run
                 }
 
-                //´¦ÀíÖĞ¼äµÄrun±êÇ©
+                //å¤„ç†ä¸­é—´çš„runæ ‡ç­¾
                 for (int i = 0; i < removeRunList.size(); i++) {
-                    XWPFRun xWPFRun = runs.get(removeRunList.get(i));//Ô­Ê¼run
+                    XWPFRun xWPFRun = runs.get(removeRunList.get(i));//åŸå§‹run
                     XWPFRun insertNewRun = xWPFParagraph.insertNewRun(removeRunList.get(i));
                     insertNewRun.getCTR().setRPr(xWPFRun.getCTR().getRPr());
                     insertNewRun.setText("");
-                    xWPFParagraph.removeRun(removeRunList.get(i) + 1);//ÒÆ³ıÔ­Ê¼µÄrun
+                    xWPFParagraph.removeRun(removeRunList.get(i) + 1);//ç§»é™¤åŸå§‹çš„run
                 }
 
-            }// ´¦Àí${**}±»·Ö³É¶à¸örun
+            }// å¤„ç†${**}è¢«åˆ†æˆå¤šä¸ªrun
 
             replaceParagraph( xWPFParagraph, parametersMap);
 
-        }//if ÓĞ±êÇ©
+        }//if æœ‰æ ‡ç­¾
 
     }
 
@@ -453,22 +453,22 @@ public class WordTemplateUtils {
 
 
     /**
-     * ¸´ÖÆ±í¸ñĞĞXWPFTableRow¸ñÊ½
+     * å¤åˆ¶è¡¨æ ¼è¡ŒXWPFTableRowæ ¼å¼
      *
      * @param target
-     *            ´ıĞŞ¸Ä¸ñÊ½µÄXWPFTableRow
+     *            å¾…ä¿®æ”¹æ ¼å¼çš„XWPFTableRow
      * @param source
-     *            Ä£°åXWPFTableRow
+     *            æ¨¡æ¿XWPFTableRow
      */
     private void CopyTableRow(XWPFTableRow target, XWPFTableRow source) {
 
-        int tempRowCellsize = source.getTableCells().size();// Ä£°åĞĞµÄÁĞÊı
+        int tempRowCellsize = source.getTableCells().size();// æ¨¡æ¿è¡Œçš„åˆ—æ•°
         for (int i = 0; i < tempRowCellsize - 1; i++) {
-            target.addNewTableCell();// ÎªĞÂÌí¼ÓµÄĞĞÌí¼ÓÓëÄ£°å±í¸ñ¶ÔÓ¦ĞĞĞĞÏàÍ¬¸öÊıµÄµ¥Ôª¸ñ
+            target.addNewTableCell();// ä¸ºæ–°æ·»åŠ çš„è¡Œæ·»åŠ ä¸æ¨¡æ¿è¡¨æ ¼å¯¹åº”è¡Œè¡Œç›¸åŒä¸ªæ•°çš„å•å…ƒæ ¼
         }
-        // ¸´ÖÆÑùÊ½
+        // å¤åˆ¶æ ·å¼
         target.getCtRow().setTrPr(source.getCtRow().getTrPr());
-        // ¸´ÖÆµ¥Ôª¸ñ
+        // å¤åˆ¶å•å…ƒæ ¼
         for (int i = 0; i < target.getTableCells().size(); i++) {
             copyTableCell(target.getCell(i), source.getCell(i));
         }
@@ -479,23 +479,23 @@ public class WordTemplateUtils {
 
 
     /**
-     * ¸´ÖÆµ¥Ôª¸ñXWPFTableCell¸ñÊ½
+     * å¤åˆ¶å•å…ƒæ ¼XWPFTableCellæ ¼å¼
      *
      * @author Juveniless
      * @param newTableCell
-     *            ĞÂ´´½¨µÄµÄµ¥Ôª¸ñ
+     *            æ–°åˆ›å»ºçš„çš„å•å…ƒæ ¼
      * @param templateTableCell
-     *            Ä£°åµ¥Ôª¸ñ
+     *            æ¨¡æ¿å•å…ƒæ ¼
      *
      */
     private void copyTableCell(XWPFTableCell newTableCell, XWPFTableCell templateTableCell) {
-        // ÁĞÊôĞÔ
+        // åˆ—å±æ€§
         newTableCell.getCTTc().setTcPr(templateTableCell.getCTTc().getTcPr());
-        // É¾³ıÄ¿±ê targetCell ËùÓĞÎÄ±¾¶ÎÂä
+        // åˆ é™¤ç›®æ ‡ targetCell æ‰€æœ‰æ–‡æœ¬æ®µè½
         for (int pos = 0; pos < newTableCell.getParagraphs().size(); pos++) {
             newTableCell.removeParagraph(pos);
         }
-        // Ìí¼ÓĞÂÎÄ±¾¶ÎÂä
+        // æ·»åŠ æ–°æ–‡æœ¬æ®µè½
         for (XWPFParagraph sp : templateTableCell.getParagraphs()) {
             XWPFParagraph targetP = newTableCell.addParagraph();
             copyParagraph(targetP, sp);
@@ -503,19 +503,19 @@ public class WordTemplateUtils {
     }
 
     /**
-     * ¸´ÖÆÎÄ±¾¶ÎÂäXWPFParagraph¸ñÊ½
+     * å¤åˆ¶æ–‡æœ¬æ®µè½XWPFParagraphæ ¼å¼
      *
      * @author Juveniless
      * @param newParagraph
-     *            ĞÂ´´½¨µÄµÄ¶ÎÂä
+     *            æ–°åˆ›å»ºçš„çš„æ®µè½
      * @param templateParagraph
-     *            Ä£°å¶ÎÂä
+     *            æ¨¡æ¿æ®µè½
      *
      */
     private void copyParagraph(XWPFParagraph newParagraph, XWPFParagraph templateParagraph) {
-        // ÉèÖÃ¶ÎÂäÑùÊ½
+        // è®¾ç½®æ®µè½æ ·å¼
         newParagraph.getCTP().setPPr(templateParagraph.getCTP().getPPr());
-        // Ìí¼ÓRun±êÇ©
+        // æ·»åŠ Runæ ‡ç­¾
         for (int pos = 0; pos < newParagraph.getRuns().size(); pos++) {
             newParagraph.removeRun(pos);
 
@@ -528,17 +528,17 @@ public class WordTemplateUtils {
     }
 
     /**
-     * ¸´ÖÆÎÄ±¾½Úµãrun
+     * å¤åˆ¶æ–‡æœ¬èŠ‚ç‚¹run
      * @author Juveniless
      * @param newRun
-     *            ĞÂ´´½¨µÄµÄÎÄ±¾½Úµã
+     *            æ–°åˆ›å»ºçš„çš„æ–‡æœ¬èŠ‚ç‚¹
      * @param templateRun
-     *            Ä£°åÎÄ±¾½Úµã
+     *            æ¨¡æ¿æ–‡æœ¬èŠ‚ç‚¹
      *
      */
     private void CopyRun(XWPFRun newRun, XWPFRun templateRun) {
         newRun.getCTR().setRPr(templateRun.getCTR().getRPr());
-        // ÉèÖÃÎÄ±¾
+        // è®¾ç½®æ–‡æœ¬
         newRun.setText(templateRun.text());
 
 
@@ -548,13 +548,13 @@ public class WordTemplateUtils {
 
 
     /**
-     * ¸ù¾İ²ÎÊıparametersMap¶Ô±í¸ñµÄÒ»ĞĞ½øĞĞ±êÇ©µÄÌæ»»
+     * æ ¹æ®å‚æ•°parametersMapå¯¹è¡¨æ ¼çš„ä¸€è¡Œè¿›è¡Œæ ‡ç­¾çš„æ›¿æ¢
      *
      * @author Juveniless
      * @param tableRow
-     *            ±í¸ñĞĞ
+     *            è¡¨æ ¼è¡Œ
      * @param parametersMap
-     *            ²ÎÊımap
+     *            å‚æ•°map
      *
      */
     public void replaceTableRow(XWPFTableRow tableRow, Map<String, Object> parametersMap) {
@@ -575,7 +575,7 @@ public class WordTemplateUtils {
 
 
     /**
-     * ¸ù¾İmapÌæ»»±í¸ñÖĞµÄ{key}±êÇ©
+     * æ ¹æ®mapæ›¿æ¢è¡¨æ ¼ä¸­çš„{key}æ ‡ç­¾
      * @author Juveniless
      * @param xwpfTable
      * @param parametersMap

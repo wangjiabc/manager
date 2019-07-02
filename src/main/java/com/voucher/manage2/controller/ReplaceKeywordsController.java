@@ -11,7 +11,7 @@ import java.io.IOException;
 
 /**
  * @author z
- * @description ´òÓ¡word¿ØÖÆÆ÷
+ * @description æ‰“å°wordæ§åˆ¶å™¨
  * @date 2019/6/26
  */
 @RestController
@@ -22,7 +22,7 @@ public class ReplaceKeywordsController {
     private ReplaceKeywordsService service;
 
     /**
-     * Ìæ»»¹Ø¼ü×Ö
+     * æ›¿æ¢å…³é”®å­—
      * @throws IOException
      */
     @RequestMapping("/acquireData")

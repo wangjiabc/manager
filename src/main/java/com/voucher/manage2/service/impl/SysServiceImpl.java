@@ -5,6 +5,7 @@ import com.voucher.manage2.dto.*;
 import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.*;
 import com.voucher.manage2.tkmapper.mapper.*;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -183,6 +184,18 @@ public class SysServiceImpl implements SysService {
         return null;
     }
 
+
+    @Override
+    public Integer addRoleRouters(List<SysRoleRouter> sysRouters) {
+        if (ObjectUtils.isNotEmpty(sysRouters)) {
+            Weekend<SysRoleRouter> sysRoleRouterWeekend = new Weekend<>(SysRoleRouter.class);
+            sysRoleRouterWeekend.weekendCriteria().andEqualTo(SysRoleRouter::getRoleGuid, sysRouters.get(0).getRoleGuid());
+            sysRoleRouterMapper.deleteByExample(sysRoleRouterWeekend);
+            return sysRoleRouterMapper.insertList(sysRouters);
+        }
+        return ResultConstant.FAILED;
+    }
+
     @Override
     public SysRouterDTO getRoutersByRootGuid(String rootGuid, String roleGuid) {
         SysRouterDTO sysRouterDTO = new SysRouterDTO();
@@ -194,14 +207,27 @@ public class SysServiceImpl implements SysService {
     }
 
     @Override
-    public Integer addRoleRouters(List<SysRoleRouter> sysRouters) {
-        if (ObjectUtils.isNotEmpty(sysRouters)) {
-            Weekend<SysRoleRouter> sysRoleRouterWeekend = new Weekend<>(SysRoleRouter.class);
-            sysRoleRouterWeekend.weekendCriteria().andEqualTo(SysRoleRouter::getRoleGuid, sysRouters.get(0).getRoleGuid());
-            sysRoleRouterMapper.deleteByExample(sysRoleRouterWeekend);
-            return sysRoleRouterMapper.insertList(sysRouters);
+    public SysRouterDTO getRoutersByUserGuid(String rootGuid) {
+        SysRouterDTO sysRouterDTO = new SysRouterDTO();
+        sysRouterDTO.setGuid(rootGuid);
+        Map<String, List<SysRouterDTO>> levelMap = getLevelMap(rootGuid);
+        putRouter(sysRouterDTO, levelMap);
+        return sysRouterDTO;
+    }
+
+    private Map<String, List<SysRouterDTO>> getLevelMap(String rootGuid) {
+        String currentUserGuid = CommonUtils.getCurrentUserGuid();
+        Map<String, List<SysRouterDTO>> levelMap = new HashMap<>();
+        List<SysRouterDTO> sysRouterDTOS = sysRouterMapper.selectRouter(currentUserGuid, rootGuid);
+        for (SysRouterDTO router : sysRouterDTOS) {
+            List<SysRouterDTO> routerList = levelMap.get(router.getParentGuid());
+            if (routerList == null) {
+                routerList = new ArrayList<>();
+                levelMap.put(router.getParentGuid(), routerList);
+            }
+            routerList.add(router);
         }
-        return ResultConstant.FAILED;
+        return levelMap;
     }
 
     private void putRouter(SysRouterDTO sysRouterDTO, Map<String, List<SysRouterDTO>> levelMap) {
@@ -236,8 +262,8 @@ public class SysServiceImpl implements SysService {
                 routerList = new ArrayList<>();
                 levelMap.put(router.getParentGuid(), routerList);
             }
-            if (routerGuidSet.contains(sysRouterDTO.getGuid())) {
-                sysRouterDTO.setSeleced(true);
+            if (routerGuidSet.contains(router.getGuid())) {
+                router.setSelected(true);
             }
             routerList.add(router);
         }

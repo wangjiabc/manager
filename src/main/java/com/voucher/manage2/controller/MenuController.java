@@ -95,14 +95,19 @@ public class MenuController {
         return menuService.updateMenu(jsonMap);
     }
 
-    @RequestMapping("getRoutersByRootGuid")
+    @RequestMapping("getRoleRouters")
     public Object getRoutersByRootGuid(String rootGuid, String roleGuid) {
         return sysService.getRoutersByRootGuid(rootGuid, roleGuid);
     }
-    //@RequestMapping("getRoutersByRootGuidAndRoleGuid")
-    //public Object getRoutersByRootGuid(String rootGuid, String roleGuid) {
-    //    return sysService.getRoutersByRootGuid(rootGuid, roleGuid);
-    //}
+
+    @RequestMapping("getUserRouters")
+    public Object getRoutersByRootGuidAndRoleGuid(String rootGuid) {
+        if (CommonUtils.isSuperAdmin()) {
+            //管理员返回所有的菜单
+            return sysService.getRoutersByRootGuid(rootGuid, null);
+        }
+        return sysService.getRoutersByUserGuid(rootGuid);
+    }
 
     @RequestMapping("addRoleRouters")
     public Integer addRoleRouters(@RequestBody Map<String, Object> jsonMap) {

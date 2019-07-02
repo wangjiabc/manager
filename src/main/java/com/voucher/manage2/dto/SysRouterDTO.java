@@ -17,14 +17,14 @@ public class SysRouterDTO extends SysRouter {
     private Map<String, String> meta = new HashMap<>(4);
     private List<SysRouterDTO> children;
 
-    private boolean seleced = false;
+    private boolean selected = false;
 
-    public boolean isSeleced() {
-        return seleced;
+    public boolean isSelected() {
+        return selected;
     }
 
-    public void setSeleced(boolean seleced) {
-        this.seleced = seleced;
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public Map<String, String> getMeta() {

@@ -11,8 +11,8 @@ import javax.annotation.Resource;
 
 
 /**
- * word转PDF文档
- * 返回PDF文档地址
+ * word杞琍DF鏂囨。
+ * 杩斿洖PDF鏂囨。鍦板潃
  */
 @Controller
 @RequestMapping("/convert")
@@ -26,7 +26,7 @@ public class Word2PdfController {
 
 
     /**
-     * word转PDF方法
+     * word杞琍DF鏂规硶
      */
     @RequestMapping("/w2p")
     public void word2Pdf(){
@@ -37,7 +37,7 @@ public class Word2PdfController {
     }
 
     /**
-     * 返回PDF地址
+     * 杩斿洖PDF鍦板潃
      * @return
      */
     @RequestMapping("/return")

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 public interface PdfAddressRuturnService {
     /**
-     * 返回PDF文档的地址
+     * 杩斿洖PDF鏂囨。鐨勫湴鍧�
      * @return
      */
-     String ruturnAddress();
+    String ruturnAddress();
 }
