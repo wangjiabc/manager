@@ -1,7 +1,7 @@
 package com.voucher.manage2.controller;
 
 
-import com.voucher.manage2.service.PdfAddressRuturnService;
+import com.voucher.manage2.constant.SystemConstant;
 import com.voucher.manage2.service.Word2PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,21 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 /**
- * word转PDF文档
- * 返回PDF文档地址
+ * word杞琍DF鏂囨。
+ * 杩斿洖PDF鏂囨。鍦板潃
  */
 @Controller
 @RequestMapping("/convert")
 public class Word2PdfController {
-    @Autowired
-    private PdfAddressRuturnService  ruturnService;
+
 
     @Autowired
     private Word2PdfService word2PdfService;
 
 
     /**
-     * word转PDF方法
+     * word杞琍DF鏂规硶
      */
     @RequestMapping("/w2p")
     public void word2Pdf(){
@@ -35,11 +34,11 @@ public class Word2PdfController {
     }
 
     /**
-     * 返回PDF地址
+     * 杩斿洖PDF鍦板潃
      * @return
      */
     @RequestMapping("/return")
     public String returnAddress(){
-        return ruturnService.ruturnAddress();
+        return SystemConstant.PDF_ADDRESS;
     }
 }

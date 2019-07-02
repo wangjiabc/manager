@@ -10,7 +10,7 @@ import java.util.Map;
 public interface ReplaceKeywordsService {
 
     /**
-     * ¶ÔdocxÎÄ¼şÖĞµÄÎÄ±¾¼°±í¸ñÖĞµÄÄÚÈİ½øĞĞÌæ»»
+     * å¯¹docxæ–‡ä»¶ä¸­çš„æ–‡æœ¬åŠè¡¨æ ¼ä¸­çš„å†…å®¹è¿›è¡Œæ›¿æ¢
      */
     public void printWord(ChartInfo chartInfo) throws IOException;
 

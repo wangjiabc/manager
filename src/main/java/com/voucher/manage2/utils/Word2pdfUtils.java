@@ -6,33 +6,33 @@ import com.jacob.com.Dispatch;
 import java.io.File;
 
 public class Word2pdfUtils {
-    public static void wToPdfChange(String wordFile,String pdfFile){//wordFile word µÄÂ·¾¶  //pdfFile pdf µÄÂ·¾¶
+    public static void wToPdfChange(String wordFile,String pdfFile){//wordFile word çš„è·¯å¾„  //pdfFile pdf çš„è·¯å¾„
 
         ActiveXComponent app = null;
-        System.out.println("¿ªÊ¼×ª»»...");
-        // ¿ªÊ¼Ê±¼ä
+        System.out.println("å¼€å§‹è½¬æ¢...");
+        // å¼€å§‹æ—¶é—´
         // long start = System.currentTimeMillis();
         try {
-            // ´ò¿ªword
+            // æ‰“å¼€word
             app = new ActiveXComponent("Word.Application");
-            // »ñµÃwordÖĞËùÓĞ´ò¿ªµÄÎÄµµ
+            // è·å¾—wordä¸­æ‰€æœ‰æ‰“å¼€çš„æ–‡æ¡£
             Dispatch documents = app.getProperty("Documents").toDispatch();
-            System.out.println("´ò¿ªÎÄ¼ş: " + wordFile);
-            // ´ò¿ªÎÄµµ
+            System.out.println("æ‰“å¼€æ–‡ä»¶: " + wordFile);
+            // æ‰“å¼€æ–‡æ¡£
             Dispatch document = Dispatch.call(documents, "Open", wordFile, false, true).toDispatch();
-            // Èç¹ûÎÄ¼ş´æÔÚµÄ»°£¬²»»á¸²¸Ç£¬»áÖ±½Ó±¨´í£¬ËùÒÔÎÒÃÇĞèÒªÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ
+            // å¦‚æœæ–‡ä»¶å­˜åœ¨çš„è¯ï¼Œä¸ä¼šè¦†ç›–ï¼Œä¼šç›´æ¥æŠ¥é”™ï¼Œæ‰€ä»¥æˆ‘ä»¬éœ€è¦åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨
             File target = new File(pdfFile);
             if (target.exists()) {
                 target.delete();
             }
-            System.out.println("Áí´æÎª: " + pdfFile);
+            System.out.println("å¦å­˜ä¸º: " + pdfFile);
             Dispatch.call(document, "SaveAs", pdfFile, 17);
-            // ¹Ø±ÕÎÄµµ
+            // å…³é—­æ–‡æ¡£
             Dispatch.call(document, "Close", false);
         }catch(Exception e) {
-            System.out.println("×ª»»Ê§°Ü"+e.getMessage());
+            System.out.println("è½¬æ¢å¤±è´¥"+e.getMessage());
         }finally {
-            // ¹Ø±Õoffice
+            // å…³é—­office
             app.invoke("Quit", 0);
         }
     }
@@ -40,6 +40,6 @@ public class Word2pdfUtils {
         String word = "src\\main\\java\\com\\voucher\\docx\\01.docx";
         String name = "02".concat(".pdf");
         String pdf = "src\\main\\java\\com\\voucher\\docx\\"+name;
-    wToPdfChange(word, pdf);
-}
+        wToPdfChange(word, pdf);
+    }
 }
