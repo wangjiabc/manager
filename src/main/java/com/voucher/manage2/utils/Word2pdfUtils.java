@@ -36,10 +36,10 @@ public class Word2pdfUtils {
             app.invoke("Quit", 0);
         }
     }
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         String word = "src\\main\\java\\com\\voucher\\docx\\01.docx";
         String name = "02".concat(".pdf");
-        String pdf = "src\\main\\java\\com\\voucher\\docx\\"+name;
+        String pdf = FileUtils.getFileUrlPath(name);
         wToPdfChange(word, pdf);
-    }
+    }*/
 }
