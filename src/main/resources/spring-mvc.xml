@@ -25,7 +25,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springfr
     </mvc:interceptors>
     <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
     <bean id="mappingJackson2HttpMessageConverter"
-          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+          class="com.voucher.manage2.springconfig.FastJsonHttpMessageConverterImpl">
         <property name="supportedMediaTypes">
             <list>
                 <value>text/html;charset=UTF-8</value>
