@@ -20,7 +20,6 @@ import com.voucher.manage.daoModelJoin.ChartInfo_ChartRoom;
 import com.voucher.manage.daoSQL.InsertExe;
 import com.voucher.manage.daoSQL.SelectExe;
 import com.voucher.manage.daoSQL.SelectJoinExe;
-import com.voucher.manage.daoSQL.SelectSqlJoinExe;
 import com.voucher.manage.daoSQL.UpdateExe;
 import com.voucher.manage.tools.MyTestUtil;
 
@@ -408,6 +407,16 @@ public class HireDAOImpl extends JdbcDaoSupport implements HireDAO{
 		return i;
 	}
 
+	@Override
+	public void refundHirePay(List<HirePay> hirePays, List<HireList> hireLists) {
+		for (int i = 0; i < hirePays.size(); i++) {
+			UpdateExe.get(this.getJdbcTemplate(), hirePays.get(i));
+			UpdateExe.get(this.getJdbcTemplate(), hireLists.get(i));
+			if (i < 1) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			}
+		}
+	}
 
 
 }

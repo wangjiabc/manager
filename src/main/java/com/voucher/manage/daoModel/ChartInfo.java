@@ -9,61 +9,64 @@ import com.voucher.manage.daoSQL.annotations.*;
 @DBTable(name="[ChartInfo]")
 public class ChartInfo implements Serializable{
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @SQLInteger(name="id")
+	@SQLInteger(name="id")
 	private Integer id;
 
-    @SQLString(name="ChartGUID")
+	@SQLString(name="ChartGUID")
 	private String ChartGUID;
 
-    @SQLString(name="ContractNo")
+	@SQLString(name="ContractNo")
 	private String ContractNo;
 
-    @SQLDateTime(name="ConcludeDate")
+	@SQLDateTime(name="ConcludeDate")
 	private Date ConcludeDate;
 
-    @SQLDateTime(name="ChartBeginDate")
+	@SQLDateTime(name="ChartBeginDate")
 	private Date ChartBeginDate;
 
-    @SQLDateTime(name="ChartEndDate")
+	@SQLDateTime(name="ChartEndDate")
 	private Date ChartEndDate;
 
-    @SQLFloat(name="AllChartArea")
+	@SQLFloat(name="AllChartArea")
 	private Float AllChartArea;
 
-    @SQLInteger(name="ChartMothon")
+	@SQLInteger(name="ChartMothon")
 	private Integer ChartMothon;
 
-    @SQLFloat(name="AllHire")
+	@SQLFloat(name="AllHire")
 	private Float AllHire;
 
-    @SQLFloat(name="AllTotalHire")
+	@SQLFloat(name="AllTotalHire")
 	private Float AllTotalHire;
 
-    @SQLInteger(name="Augment")
+	@SQLInteger(name="Augment")
 	private Integer Augment;
 
-    @SQLInteger(name="AugmentGenre")
+	@SQLInteger(name="AugmentGenre")
 	private Integer AugmentGenre;
 
-    @SQLFloat(name="Increment")
+	@SQLFloat(name="Increment")
 	private Float Increment;
 
-    @SQLDateTime(name="AugmentDate")
+	@SQLDateTime(name="AugmentDate")
 	private Date AugmentDate;
 
-    @SQLInteger(name="IsHistory")
+	@SQLInteger(name="IsHistory")
 	private Integer IsHistory;
 
-    @SQLInteger(name="IsRelet")
-	private Integer IsRelet;
+	@SQLFloat(name="margin")
+	private Float margin;
 
-    @SQLString(name="ReletGUID")
-	private String ReletGUID;
+	@SQLInteger(name="Relet")
+	private Integer Relet;
 
-    @SQLInteger(name="del")
+	@SQLInteger(name="del")
 	private Integer del;
+
+	@SQLString(name="OldChartGUID")
+	private String OldChartGUID;
 
 	public void setId(Integer id){
 		this.id = id;
@@ -185,20 +188,20 @@ public class ChartInfo implements Serializable{
 		return IsHistory;
 	}
 
-	public void setIsRelet(Integer IsRelet){
-		this.IsRelet = IsRelet;
+	public void setMargin(Float margin){
+		this.margin = margin;
 	}
 
-	public Integer getIsRelet(){
-		return IsRelet;
+	public Float getMargin(){
+		return margin;
 	}
 
-	public void setReletGUID(String ReletGUID){
-		this.ReletGUID = ReletGUID;
+	public void setRelet(Integer Relet){
+		this.Relet = Relet;
 	}
 
-	public String getReletGUID(){
-		return ReletGUID;
+	public Integer getRelet(){
+		return Relet;
 	}
 
 	public void setDel(Integer del){
@@ -209,26 +212,34 @@ public class ChartInfo implements Serializable{
 		return del;
 	}
 
+	public void setOldChartGUID(String OldChartGUID){
+		this.OldChartGUID = OldChartGUID;
+	}
+
+	public String getOldChartGUID(){
+		return OldChartGUID;
+	}
 
 
 
-/*
-*数据库查询参数
-*/
-    @QualifiLimit(name="limit")
-    private Integer limit;
-    @QualifiOffset(name="offset")
-    private Integer offset;
-    @QualifiNotIn(name="notIn")
-    private String notIn;
-    @QualifiSort(name="sort")
-    private String sort;
-    @QualifiOrder(name="order")
-    private String order;
-    @QualifiWhere(name="where")
-    private String[] where;
-    @QualifiWhereTerm(name="whereTerm")
-    private String whereTerm;
+
+	/*
+	 *数据库查询参数
+	 */
+	@QualifiLimit(name="limit")
+	private Integer limit;
+	@QualifiOffset(name="offset")
+	private Integer offset;
+	@QualifiNotIn(name="notIn")
+	private String notIn;
+	@QualifiSort(name="sort")
+	private String sort;
+	@QualifiOrder(name="order")
+	private String order;
+	@QualifiWhere(name="where")
+	private String[] where;
+	@QualifiWhereTerm(name="whereTerm")
+	private String whereTerm;
 
 
 	public void setLimit(Integer limit){

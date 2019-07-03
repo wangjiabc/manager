@@ -169,16 +169,20 @@ public class HireListController {
     @RequestMapping("getHirePay")
     public Object getHirePay(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
         Integer limit = MapUtils.getInteger("limit", jsonMap);
-        Integer offset = MapUtils.getInteger("offset", jsonMap);
+        Integer offset = (MapUtils.getInteger("offset", jsonMap)-1)*limit;
+        String chartGUID = MapUtils.getString("chartGUID", jsonMap);
         HirePay hirePay = new HirePay();
         hirePay.setLimit(limit);
         hirePay.setOffset(offset);
         hirePay.setNotIn("id");
 
         List<String> searchList = new ArrayList<>();
-
+        
+        searchList.add("chartGUID=");
+        searchList.add(chartGUID);
         searchList.add("del=");
         searchList.add("0");
+       
         
         String[] where = new String[searchList.size()];
         if (where.length > 0)
