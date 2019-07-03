@@ -18,14 +18,14 @@ public class TestPDFBinary {
     static BASE64Encoder encoder = new sun.misc.BASE64Encoder();
     static BASE64Decoder decoder = new sun.misc.BASE64Decoder();
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         //将PDF格式文件转成base64编码 
         String path = "D:" + File.separator + "manage-upload"+"\\02.pdf";
         String base64String = getPDFBinary(new File(path));
         System.out.println(base64String);
         //将base64的编码转成PDF格式文件
         //base64StringToPDF(base64String);
-    }
+    }*/
 
     /**
      *      *  将PDF转换成base64编码
@@ -34,7 +34,7 @@ public class TestPDFBinary {
      *      *  3.底层输出流转换成字节数组，然后由BASE64Encoder的对象对流进行编码
      *      *
      */
-    static String getPDFBinary(File file) {
+    public static String getPDFBinary(File file) {
         FileInputStream fin = null;
         BufferedInputStream bin = null;
         ByteArrayOutputStream baos = null;

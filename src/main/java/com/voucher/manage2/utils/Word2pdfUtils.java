@@ -1,13 +1,16 @@
 package com.voucher.manage2.utils;
 
+import cn.hutool.core.util.IdUtil;
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Dispatch;
+import com.voucher.manage2.constant.SystemConstant;
 
 import java.io.File;
 
 public class Word2pdfUtils {
-    public static void wToPdfChange(String wordFile,String pdfFile){//wordFile word 的路径  //pdfFile pdf 的路径
-
+    public static String wToPdfChange(String wordFile){//wordFile word 的路径  //pdfFile pdf 的路径
+        String pdfFileName = IdUtil.simpleUUID()+SystemConstant.PDF_SUFFIX;
+        String pdfFile = SystemConstant.START_WORD_PATH+pdfFileName ;
         ActiveXComponent app = null;
         System.out.println("开始转换...");
         // 开始时间
@@ -35,6 +38,7 @@ public class Word2pdfUtils {
             // 关闭office
             app.invoke("Quit", 0);
         }
+        return pdfFileName;
     }
 /*    public static void main(String[] args) {
         String word = "src\\main\\java\\com\\voucher\\docx\\01.docx";
