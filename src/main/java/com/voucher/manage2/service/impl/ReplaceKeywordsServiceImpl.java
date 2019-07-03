@@ -1,6 +1,8 @@
 package com.voucher.manage2.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.voucher.manage.daoModel.ChartInfo;
+import com.voucher.manage2.constant.SystemConstant;
 import com.voucher.manage2.utils.WordTemplateUtils;
 import org.springframework.stereotype.Service;
 
@@ -12,25 +14,12 @@ import java.util.Map;
 @Service
 public class ReplaceKeywordsServiceImpl implements com.voucher.manage2.service.ReplaceKeywordsService {
     @Override
-    public void printWord(ChartInfo chartInfo) throws IOException {
+    public String printWord(Map<String, Object> jsonMap) throws IOException {
         Map<String, Object> wordDataMap = new HashMap<String, Object>();// 存储全部数据
-        Map<String, Object> parametersMap = new HashMap<String, Object>();// 存储不循环的数据
 
-/*
-        parametersMap.put("ContractNo", "0000001");
-        parametersMap.put("ConcludeDate", "626");
-        parametersMap.put("Charter", "jack");
-        */
-        //获取数据
-        String contractNo = chartInfo.getContractNo();
-        Date concludeDate = chartInfo.getConcludeDate();
-        //封装到map
-        parametersMap.put("ContractNo", contractNo);
-        parametersMap.put("ConcludeDate", concludeDate);
-
-        wordDataMap.put("parametersMap", parametersMap);
-        File file = new File("src\\main\\java\\com\\voucher\\docx\\00.docx");//改成你本地文件所在目录
-
+        wordDataMap.put("parametersMap", jsonMap);
+        String startWord = SystemConstant.START_WORD_PATH+File.separator+SystemConstant.START_WORD_FILENAME;
+        File file = new File(startWord);//本地文件所在目录
 
         // 读取word模板
         FileInputStream fileInputStream = new FileInputStream(file);
@@ -39,12 +28,13 @@ public class ReplaceKeywordsServiceImpl implements com.voucher.manage2.service.R
         // 替换数据
         template.replaceDocument(wordDataMap);
 
-
-        //生成文件
-
-        File file1 = new File("src\\main\\java\\com\\voucher\\docx\\01.docx");//改成你本地文件所在目录
+        // 生成文件
+        String wordPath = SystemConstant.START_WORD_PATH+ IdUtil.simpleUUID();
+        wordPath = wordPath+SystemConstant.WORD_SUFFIX;
+        File file1 = new File(wordPath);
         //OutputStreamWriter outputFile = new OutputStreamWriter(new FileOutputStream(file1),"GB2312");
         FileOutputStream fos  = new FileOutputStream(file1);
         template.getDocument().write(fos);
+        return wordPath;
     }
 }

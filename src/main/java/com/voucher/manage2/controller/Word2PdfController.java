@@ -2,9 +2,12 @@ package com.voucher.manage2.controller;
 
 
 import com.voucher.manage.daoModel.ChartInfo;
+import com.voucher.manage.tools.MonthDiff;
 import com.voucher.manage2.constant.SystemConstant;
 import com.voucher.manage2.service.ReplaceKeywordsService;
 import com.voucher.manage2.service.Word2PdfService;
+import com.voucher.manage2.utils.MapUtils;
+import com.voucher.manage2.utils.TestPDFBinary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -34,17 +40,14 @@ public class Word2PdfController {
      * @throws IOException
      */
     @RequestMapping("/acquireData")
-    public void acquireData(@RequestBody ChartInfo chartInfo) throws IOException {
+    public String acquireData(@RequestBody Map<String, Object> jsonMap) throws IOException {
+
         //替换关键字
-        service.printWord(chartInfo);
+        String replaceWordPath = service.printWord(jsonMap);
 
         //word转PDF方法
-        //String word = "src\\main\\java\\com\\voucher\\docx\\01.docx";
-        String word = "D:" + File.separator + "manage-upload"+"\\01.docx";
-        //String name = "02".concat(".pdf");
-        //String pdf = "src\\main\\java\\com\\voucher\\docx\\02.pdf";
-        String pdf = "D:" + File.separator + "manage-upload"+"\\02.pdf";
-        word2PdfService.convert(word,pdf);
+
+        return word2PdfService.convert(replaceWordPath);
     }
 
     /**
@@ -62,8 +65,14 @@ public class Word2PdfController {
      * 返回PDF地址
      * @return
      */
-    @RequestMapping("/return")
-    public String returnAddress(){
-        return SystemConstant.PDF_ADDRESS;
-    }
+//    @RequestMapping("/return")
+//    public String returnAddress(){
+//        //返回地址
+//        return SystemConstant.PDF_ADDRESS;
+//        //将PDF格式文件转成base64编码 
+////        String path = "D:" + File.separator + "manage-upload"+"\\02.pdf";
+////        String base64String = TestPDFBinary.getPDFBinary(new File(path));
+////        System.out.println(base64String);
+////        return  base64String;
+//    }
 }
