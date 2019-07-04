@@ -1,22 +1,14 @@
 package com.voucher.manage2.controller;
 
 
-import com.voucher.manage.daoModel.ChartInfo;
-import com.voucher.manage.tools.MonthDiff;
-import com.voucher.manage2.constant.SystemConstant;
 import com.voucher.manage2.service.ReplaceKeywordsService;
 import com.voucher.manage2.service.Word2PdfService;
-import com.voucher.manage2.utils.MapUtils;
-import com.voucher.manage2.utils.TestPDFBinary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -33,7 +25,7 @@ public class Word2PdfController {
     private Word2PdfService word2PdfService;
 
     @Autowired
-    private ReplaceKeywordsService service;
+    private ReplaceKeywordsService replaceKeywordsService;
 
     /**
      * 替换关键字
@@ -43,7 +35,7 @@ public class Word2PdfController {
     public String acquireData(@RequestBody Map<String, Object> jsonMap) throws IOException {
 
         //替换关键字
-        String replaceWordPath = service.printWord(jsonMap);
+        String replaceWordPath = replaceKeywordsService.printWord(jsonMap);
 
         //word转PDF方法
 
