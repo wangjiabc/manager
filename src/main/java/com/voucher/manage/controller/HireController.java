@@ -91,13 +91,20 @@ public class HireController {
 
         String augmentDate = null;
 
+        Integer relet = null;
+
+        Float margin = null;
+
+        String oldChartGUID = null;
+
         try {
 
             augment = MapUtils.getInteger("augment", jsonMap);
             increment = Float.valueOf(MapUtils.getString("increment", jsonMap));
             augmentGenre = MapUtils.getInteger("augmentGenre", jsonMap);
-            augmentDate = MapUtils.getString("augmentDate", jsonMap);
-
+            margin = MapUtils.getFloat("augmentDate", jsonMap);
+            relet = MapUtils.getInteger("augmentGenre", jsonMap);
+            oldChartGUID = MapUtils.getString("augmentDate", jsonMap);
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -122,6 +129,16 @@ public class HireController {
             chartInfo.setChartEndDate(chartEndDate);
         }
 
+
+
+        if (margin != null) {
+            chartInfo.setMargin(margin);
+        }
+
+        if (oldChartGUID != null) {
+            chartInfo.setRelet(1);
+            chartInfo.setOldChartGUID(oldChartGUID);
+        }
         chartInfo.setChartMothon(month);
         chartInfo.setIsHistory(0);
 
@@ -137,6 +154,8 @@ public class HireController {
                 chartInfo.setAugmentGenre(0);
             }
         }
+
+
 
         float allChartAreas = 0;
 
