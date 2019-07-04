@@ -30,7 +30,7 @@ public class ReplaceKeywordsServiceImpl implements com.voucher.manage2.service.R
 
         // 生成文件
         String wordPath = SystemConstant.START_WORD_PATH+ IdUtil.simpleUUID();
-        wordPath = wordPath+SystemConstant.WORD_SUFFIX;
+        wordPath = wordPath+File.separator+SystemConstant.WORD_SUFFIX;
         File file1 = new File(wordPath);
         //OutputStreamWriter outputFile = new OutputStreamWriter(new FileOutputStream(file1),"GB2312");
         FileOutputStream fos  = new FileOutputStream(file1);
