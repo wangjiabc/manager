@@ -1,10 +1,15 @@
 package manage2;
 
 import com.voucher.manage2.redis.JedisUtil0;
+import com.voucher.manage2.service.impl.ReplaceKeywordsServiceImpl;
+import com.voucher.manage2.utils.Word2pdfUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * @author lz
@@ -13,8 +18,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 public class RedisTest {
-    
-    public void test1() {
-        //JedisUtil0.setString("1", "2");
+
+    @Test
+    public  void Test1() throws IOException {
+        String wordPath = new ReplaceKeywordsServiceImpl().printWord(new HashMap<>());
+        System.out.println(wordPath);
+//        String wordPath = "";
+        Word2pdfUtils.wToPdfChange(wordPath);
     }
 }
