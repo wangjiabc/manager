@@ -8,7 +8,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
  * @date 2019/7/3
  */
 public class FastJsonHttpMessageConverterImpl extends FastJsonHttpMessageConverter {
-
+    //org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
     @Override
     protected boolean supports(Class<?> clazz) {
         if (clazz.equals(byte[].class)) {
@@ -16,5 +16,4 @@ public class FastJsonHttpMessageConverterImpl extends FastJsonHttpMessageConvert
         }
         return true;
     }
-
 }

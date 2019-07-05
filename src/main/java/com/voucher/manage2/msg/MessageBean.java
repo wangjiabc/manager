@@ -1,12 +1,13 @@
 package com.voucher.manage2.msg;
 
+import java.io.Serializable;
+
 /**
  * @Author lz
  * @Description: 返回前台的实体
  * @Date: 2019/5/15 9:57
  **/
 public class MessageBean {
-
     /**
      * 响应代码，100为正常
      */

@@ -3,6 +3,7 @@ package manage2;
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.impl.ReplaceKeywordsServiceImpl;
 import com.voucher.manage2.utils.Word2pdfUtils;
+import com.voucher.manage2.utils.WrodToPDF;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,10 +21,12 @@ import java.util.HashMap;
 public class RedisTest {
 
     @Test
-    public  void Test1() throws IOException {
-        String wordPath = new ReplaceKeywordsServiceImpl().printWord(new HashMap<>());
+    public void test1() throws IOException {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("ContractNo", 6666);
+        String wordPath = new ReplaceKeywordsServiceImpl().printWord(map);
         System.out.println(wordPath);
 //        String wordPath = "";
-        Word2pdfUtils.wToPdfChange(wordPath);
+        WrodToPDF.doc2pdf(wordPath);
     }
 }

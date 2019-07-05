@@ -1,13 +1,11 @@
 package com.voucher.manage2.service.impl;
 
 import cn.hutool.core.util.IdUtil;
-import com.voucher.manage.daoModel.ChartInfo;
 import com.voucher.manage2.constant.SystemConstant;
 import com.voucher.manage2.utils.WordTemplateUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
