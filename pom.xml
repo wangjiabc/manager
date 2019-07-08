@@ -9,9 +9,13 @@
     <url>http://maven.apache.org</url>
     <repositories>
         <repository>
-            <id>jacob</id>
-            <url>https://mvnrepository.com/</url>
+            <id>com.aspose.words</id>
+            <url>https://maven.atlassian.com/3rdparty/</url>
         </repository>
+        <!--        <repository>-->
+        <!--            <id>jacob</id>-->
+        <!--            <url>https://mvnrepository.com/artifact/</url>-->
+        <!--        </repository>-->
     </repositories>
     <dependencies>
 
@@ -403,6 +407,12 @@
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk16</artifactId>
             <version>1.46</version>
+        </dependency>
+        <!-- 这个包自己打包在本地仓库 -->
+        <dependency>
+            <groupId>com.aspose.words</groupId>
+            <artifactId>aspose-words-jdk16</artifactId>
+            <version>14.6.0.0</version>
         </dependency>
 
     </dependencies>

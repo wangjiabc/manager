@@ -19,5 +19,6 @@ public interface HireDAO {
 	public Integer insertHirePay(List<HireList> hireLists);
 	
 	public Integer deleteHirePay(HirePay hirePay);
-	
+
+	void refundHirePay(List<HirePay> hirePays, List<HireList> hireLists);
 }

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="js/jquery.js"></script>
+<title>message</title>
+</head>
+<body>
+
+  <div><span>rows=</span><span id="commit" value="0"></span></div>
+<div><span>total=</span><span id="commit2" value="0"></span></div>
+</body>
+</html>
+  <script type="text/javascript">
+  
+  getHireList();
+  
+  function getlist(){ 
+		var data=JSON.stringify({"limit":10,"page":1});
+	  	$.ajax({ 
+	      	type:"POST", 
+	      	url:"/manager/room/getList.do",   
+	      	contentType:"application/json",               
+	      	data:data, 
+	      	success:function(data){ 
+	    	  console.log(data);
+	    	  var aaa="";
+	    	  for(var j = 0,len = data.body.rows.length; j < len; j++){
+	              var arr=data.body.rows[j];
+	              var a="";
+	    		  for (var index in arr){
+	    			    console.log(arr[index]);
+	    			    console.log(index);
+	    			    a=a+index+":"+arr[index]+",";
+	    			}
+	    		  aaa=aaa+j+": "+a+"____________";
+	    		}
+			  document.getElementById("commit").innerHTML=aaa;
+			  document.getElementById("commit2").innerHTML=data.body.total;                    
+	     	 } 
+	  	 }); 
+  }
+
+  
+  function bbb(){   //查合同
+		var data={"limit":10,"offset":0,"guid":"dc2e8301a27240aebdb85e212146fdbd","chartGUID":"f0c9a6c5-b37b-45b3-8f97-7922d93c3550"};
+	  	$.ajax({ 
+	      	type:"POST", 
+	      	url:"/manager/hireList/getChartInfoRoom.do", 
+	      	dataType:"json",      
+	      	contentType:"application/json",               
+	      	data:JSON.stringify(data), 
+	      	success:function(data){ 
+	    	  console.log(data);
+	    	  var aaa="";
+	    	  console.log(data.body.rows[0]);
+	    	  for(var j = 0,len = data.body.rows.length; j < len; j++){
+                  var arr=data.body.rows[j];
+                  var a="";
+	    		  for (var index in arr){
+	    			    console.log(arr[index]);
+	    			    console.log(index);
+	    			    a=a+index+":"+arr[index]+",";
+	    			}
+	    		  aaa=aaa+j+": "+a+"____________";
+	    		}
+			  document.getElementById("commit").innerHTML=aaa;
+			  document.getElementById("commit2").innerHTML=data.body.total;                    
+	     	 } 
+	  	 }); 
+	  
+	  }
+  
+  function getHireList(){   //查租金 
+		var data={"limit":10,"offset":0,"guid":"dc2e8301a27240aebdb85e212146fdbd","chartGUID":"f0c9a6c5-b37b-45b3-8f97-7922d93c3550"};
+	  	$.ajax({ 
+	      	type:"POST", 
+	      	url:"/manager/hireList/getHireList.do", 
+	      	dataType:"json",      
+	      	contentType:"application/json",               
+	      	data:JSON.stringify(data), 
+	      	success:function(data){ 
+	    	  console.log(data);
+	    	  var aaa="";
+	    	  console.log(data.body.rows[0]);
+	    	  for(var j = 0,len = data.body.rows.length; j < len; j++){
+                var arr=data.body.rows[j];
+                var a="";
+	    		  for (var index in arr){
+	    			    console.log(arr[index]);
+	    			    console.log(index);
+	    			    a=a+index+":"+arr[index]+",";
+	    			}
+	    		  aaa=aaa+j+": "+a+"____________";
+	    		}
+			  document.getElementById("commit").innerHTML=aaa;
+			  document.getElementById("commit2").innerHTML=data.body.total;                    
+	     	 } 
+	  	 }); 
+	  
+	  }
+
+  </script>
+
+  

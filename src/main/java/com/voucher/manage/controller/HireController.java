@@ -4,10 +4,14 @@ import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.dao.HireDAO;
 import com.voucher.manage.daoModel.ChartInfo;
 import com.voucher.manage.daoModel.ChartRoom;
+import com.voucher.manage.daoModel.HireList;
+import com.voucher.manage.daoModel.HirePay;
 import com.voucher.manage.tools.MonthDiff;
+import com.voucher.manage.tools.MyTestUtil;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/hire")
 public class HireController {
@@ -86,13 +91,20 @@ public class HireController {
 
         String augmentDate = null;
 
+        Integer relet = null;
+
+        Float margin = null;
+
+        String oldChartGUID = null;
+
         try {
 
             augment = MapUtils.getInteger("augment", jsonMap);
             increment = Float.valueOf(MapUtils.getString("increment", jsonMap));
             augmentGenre = MapUtils.getInteger("augmentGenre", jsonMap);
-            augmentDate = MapUtils.getString("augmentDate", jsonMap);
-
+            margin = MapUtils.getFloat("augmentDate", jsonMap);
+            relet = MapUtils.getInteger("augmentGenre", jsonMap);
+            oldChartGUID = MapUtils.getString("augmentDate", jsonMap);
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -117,6 +129,16 @@ public class HireController {
             chartInfo.setChartEndDate(chartEndDate);
         }
 
+
+
+        if (margin != null) {
+            chartInfo.setMargin(margin);
+        }
+
+        if (oldChartGUID != null) {
+            chartInfo.setRelet(1);
+            chartInfo.setOldChartGUID(oldChartGUID);
+        }
         chartInfo.setChartMothon(month);
         chartInfo.setIsHistory(0);
 
@@ -132,6 +154,8 @@ public class HireController {
                 chartInfo.setAugmentGenre(0);
             }
         }
+
+
 
         float allChartAreas = 0;
 
@@ -163,6 +187,43 @@ public class HireController {
 
         return hireDao.insertHire(chartInfo, chartRooms);
 
+    }
+
+    @RequestMapping("/insertHirePay")
+    public Integer insertHirePay(@RequestBody List<String> guid) {
+        List<HireList> hireLists = new ArrayList<>();
+        for (String hireGuid : guid) {
+            System.out.println("hireGuidhireGuid"+ hireGuid);
+            HireList hireList = new HireList();
+            hireList.setHireGUID(hireGuid);
+            hireLists.add(hireList);
+        }
+
+        MyTestUtil.print(hireLists);
+        return hireDao.insertHirePay(hireLists);
+    }
+
+
+
+    @RequestMapping("/refundHirePay")
+    public void refundHirePay(@RequestBody List<String> hirePayGUIDs){
+        List<HirePay> HirePays = new ArrayList<>();
+        List<HireList> HireLists = new ArrayList<>();
+        for (String hirePayGUID : hirePayGUIDs) {
+            HirePay hirePay = new HirePay();
+            HireList hireList = new HireList();
+            hireList.setState(0);
+            hireList.setHirePayGUID(hirePayGUID);
+            String[] where={"hirePayGUID=",hirePayGUID};
+            hireList.setWhere(where);
+            HireLists.add(hireList);
+
+            hirePay.setDel(1);
+            hirePay.setWhere(where);
+            HirePays.add(hirePay);
+        }
+        MyTestUtil.print(HirePays);
+        hireDao.refundHirePay(HirePays,HireLists);
     }
 
 }
