@@ -2,9 +2,7 @@ package com.voucher.manage2.utils;
 
 import org.apache.poi.xwpf.usermodel.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -66,9 +64,9 @@ public class WordTemplateUtils {
      * @param outputStream
      * @throws IOException
      */
-    public void write(OutputStream outputStream) throws IOException {
+     public void write(OutputStream outputStream) throws IOException {
         document.write(outputStream);
-    }
+     }
 
 
 
@@ -314,7 +312,7 @@ public class WordTemplateUtils {
 
 
     /**
-     * 根据map替换段落元素内的{**}标签
+     * {**根据map替换段落元素内的}标签
      * @author Juveniless
      * @param xWPFParagraph
      * @param parametersMap

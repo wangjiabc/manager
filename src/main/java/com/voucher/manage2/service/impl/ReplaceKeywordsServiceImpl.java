@@ -29,7 +29,25 @@ public class ReplaceKeywordsServiceImpl implements com.voucher.manage2.service.R
         // 生成文件
         String wordPath = SystemConstant.START_WORD_PATH + File.separator + IdUtil.simpleUUID();
         wordPath = wordPath + SystemConstant.WORD_SUFFIX;
-        File file1 = new File(wordPath);
+        File file1 = new File(wordPath);   //存入路径
+        InputStreamReader reader = new InputStreamReader(new FileInputStream(file1));
+        BufferedReader reader1 = new BufferedReader(reader);
+        StringBuffer buffer = new StringBuffer();
+        String text = null;
+        while((text = reader1.readLine()) != null){
+            buffer.append(text);
+        }
+        if(file1.exists()){
+            FileWriter fw = new FileWriter(file,false);
+            //BufferedWriter bw = new BufferedWriter(fw);
+            OutputStreamWriter bw = new OutputStreamWriter(new FileOutputStream(file1),"GB2312");
+            bw.write(text);
+            bw.close();
+            fw.close();
+        }
+
+
+
         //OutputStreamWriter outputFile = new OutputStreamWriter(new FileOutputStream(file1),"GB2312");
         FileOutputStream fos = new FileOutputStream(file1);
         template.getDocument().write(fos);

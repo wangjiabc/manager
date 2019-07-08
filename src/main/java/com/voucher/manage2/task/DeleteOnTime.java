@@ -1,4 +1,4 @@
-package com.voucher.manage2.utils;
+package com.voucher.manage2.task;
 
 import com.voucher.manage2.constant.SystemConstant;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,7 +10,7 @@ import java.io.File;
 public class DeleteOnTime {
 
 
-    @Scheduled(cron = "0 0 4 * * ?")  //每天4秒执行一次定时任务
+    @Scheduled(cron = "0 0 4 * * ?")  //每天4点执行一次定时任务
     public void consoleInfo(){
         System.out.println("定时任务");
         //File[] files = new File(SystemConstant.START_WORD_PATH).listFiles();
