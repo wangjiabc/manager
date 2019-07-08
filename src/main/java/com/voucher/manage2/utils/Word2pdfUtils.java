@@ -2,17 +2,13 @@ package com.voucher.manage2.utils;
 
 import cn.hutool.core.util.IdUtil;
 import com.jacob.activeX.ActiveXComponent;
-import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
-import com.jacob.com.Variant;
 import com.voucher.manage2.constant.SystemConstant;
 
 import java.io.File;
 
-
 public class Word2pdfUtils {
     public static String wToPdfChange(String wordFile){//wordFile word 的路径  //pdfFile pdf 的路径
-        ComThread.InitSTA();
         String pdfFileName = IdUtil.simpleUUID()+SystemConstant.PDF_SUFFIX;
         String pdfFile = SystemConstant.START_WORD_PATH+pdfFileName ;
         ActiveXComponent app = null;
@@ -40,11 +36,8 @@ public class Word2pdfUtils {
             System.out.println("转换失败"+e.getMessage());
         }finally {
             // 关闭office
-            app.invoke("Quit", new Variant());
-            ComThread.Release();
-
+            app.invoke("Quit", 0);
         }
-
         return pdfFileName;
     }
 /*    public static void main(String[] args) {

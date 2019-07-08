@@ -5,11 +5,9 @@ import com.voucher.manage2.service.ReplaceKeywordsService;
 import com.voucher.manage2.service.Word2PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -33,14 +31,13 @@ public class Word2PdfController {
      * 替换关键字
      * @throws IOException
      */
-    @PostMapping("/acquireData")
+    @RequestMapping("/acquireData")
     public String acquireData(@RequestBody Map<String, Object> jsonMap) throws IOException {
 
         //替换关键字
         String replaceWordPath = replaceKeywordsService.printWord(jsonMap);
 
         //word转PDF方法
-        String pdfPath = word2PdfService.convert(replaceWordPath);
 
         return word2PdfService.convert(replaceWordPath);
     }
