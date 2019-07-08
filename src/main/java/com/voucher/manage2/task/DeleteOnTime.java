@@ -9,16 +9,14 @@ import java.io.File;
 @Component
 public class DeleteOnTime {
 
-
-    @Scheduled(cron = "0 0 4 * * ?")  //每天4点执行一次定时任务
-    public void consoleInfo(){
-        System.out.println("定时任务");
-        //File[] files = new File(SystemConstant.START_WORD_PATH).listFiles();
-        File file = new File(SystemConstant.START_WORD_PATH);
-        String[] listFile = file.list();
-        for (String file1 : listFile) {
-            File file2 = new File(file + file1);
-            file2.delete();
+    @Scheduled(cron = "0 0 4 * * ?")
+    public void consoleInfo() {
+        //每天4点执行一次定时任务
+        File[] files = new File(SystemConstant.START_WORD_PATH).listFiles();
+        //File file = new File(SystemConstant.START_WORD_PATH);
+        //File[] files = file.listFiles();
+        for (File caheFile : files) {
+            caheFile.delete();
         }
     }
 
