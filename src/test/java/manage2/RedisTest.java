@@ -2,6 +2,7 @@ package manage2;
 
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.impl.ReplaceKeywordsServiceImpl;
+import com.voucher.manage2.service.impl.Word2PdfServiceImpl;
 import com.voucher.manage2.utils.WrodToPDF;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,6 @@ public class RedisTest {
         String wordPath = new ReplaceKeywordsServiceImpl().printWord(map);
         System.out.println(wordPath);
 //        String wordPath = "";
-        WrodToPDF.doc2pdf(wordPath);
+        System.out.println(new Word2PdfServiceImpl().convert(wordPath));
     }
 }

@@ -18,7 +18,7 @@ public class WrodToPDF {
     public static String doc2pdf(String inPath) {
 
         String pdfFileName = IdUtil.simpleUUID() + SystemConstant.PDF_SUFFIX;
-        String pdfFile = SystemConstant.START_WORD_PATH + File.separator + pdfFileName;
+        String pdfFile = SystemConstant.SAVE_PDF_PATH + File.separator + pdfFileName;
         log.debug("开始转换为pdf,保存地址{}", pdfFile);
 
         FileOutputStream os = null;
