@@ -25,12 +25,12 @@ import java.util.Set;
  */
 public class FileUtils {
     /* 所有文件绝对路径*/
-    private static final String FILE_PATH = "D:" + File.separator + "voucher-upload";
+    public static final String FILE_PATH = "D:" + File.separator + "manage-upload";
     /*url获取文件的虚拟路径*/
-    private static final String FILE_URL_PATH_PREFIX = "file";
+    public static final String FILE_URL_PATH_PREFIX = "file";
     private static final List<String> IMAGE_TYPE = Lists.newArrayList("jpg", "bmp", "png", "jpeg");
     //项目启动的ip及端口
-    private static final String SERVER_URL = "http://192.168.100.120:8080";
+    public static final String SERVER_URL = "http://192.168.100.120:8080";
 
 
     public static boolean isImage(String suffixName) {

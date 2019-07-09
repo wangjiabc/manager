@@ -1,11 +1,14 @@
 package manage2;
 
 import cn.hutool.core.util.ClassUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.voucher.manage.daoModel.Room;
 import com.voucher.manage2.dto.MenuDTO;
+import com.voucher.manage2.dto.SysRouterDTO;
 import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.UserService;
@@ -13,6 +16,7 @@ import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.tkmapper.entity.SysUser;
 import com.voucher.manage2.tkmapper.mapper.MenuMapper;
 import com.voucher.manage2.tkmapper.mapper.SelectMapper;
+import com.voucher.manage2.tkmapper.mapper.SysRouterMapper;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -29,28 +33,27 @@ import tk.mybatis.mapper.weekend.Weekend;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = {"classpath:/spring.xml", "classpath:/spring-mybatis.xml"})
+@SuppressWarnings("ALL")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:/spring.xml", "classpath:/spring-mybatis.xml"})
 public class SomeTest {
+    String REGEX = "item_";
+    Pattern pattern = Pattern.compile(REGEX);
     @Autowired
     private SelectMapper selectMapper;
+    @Autowired
+    private SysRouterMapper sysRouterMapper;
     @Autowired
     private UserService userService;
 
     @Test
     public void addField() {
-        //SysUserDTO sysUser = JedisUtil0.getObject("9141daddcd109c945119de3ac11fa0a6");
-        //sysUser.setAccountName("lxh");
-        //sysUser.setPassword("lxh");
-        //System.out.println(sysUser);
-        String[] strs = {"1", "2"};
-
-        System.out.println(StringUtils.join(strs));
-        //userService.regist(sysUser);
+        List<SysRouterDTO> sysRouterDTOS = sysRouterMapper.selectRouter("8091b0153fd846ac8a18ef8f5aae5903", "0f440c57-0615-489e-b456-96703cbdb7e6");
+        System.out.println(sysRouterDTOS);
     }
 
 

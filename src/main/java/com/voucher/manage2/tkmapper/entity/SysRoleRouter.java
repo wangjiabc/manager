@@ -3,16 +3,16 @@ package com.voucher.manage2.tkmapper.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
-@Table(name = "[sys_role_menu]")
-public class SysRoleMenu implements Serializable {
+@Table(name = "[sys_role_router]")
+public class SysRoleRouter implements Serializable {
     @Column(name = "[guid]")
     private String guid;
 
     @Column(name = "[role_guid]")
     private String roleGuid;
 
-    @Column(name = "[menu_guid]")
-    private String menuGuid;
+    @Column(name = "[router_guid]")
+    private String routerGuid;
 
     private static final long serialVersionUID = 1L;
 
@@ -45,16 +45,16 @@ public class SysRoleMenu implements Serializable {
     }
 
     /**
-     * @return menu_guid
+     * @return router_guid
      */
-    public String getMenuGuid() {
-        return menuGuid;
+    public String getRouterGuid() {
+        return routerGuid;
     }
 
     /**
-     * @param menuGuid
+     * @param routerGuid
      */
-    public void setMenuGuid(String menuGuid) {
-        this.menuGuid = menuGuid == null ? null : menuGuid.trim();
+    public void setRouterGuid(String routerGuid) {
+        this.routerGuid = routerGuid == null ? null : routerGuid.trim();
     }
 }

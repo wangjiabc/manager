@@ -7,7 +7,12 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>manager Maven Webapp</name>
     <url>http://maven.apache.org</url>
-
+    <repositories>
+        <repository>
+            <id>jacob</id>
+            <url>https://mvnrepository.com/artifact/</url>
+        </repository>
+    </repositories>
     <dependencies>
 
         <!-- Mybatis的分页助手 -->
@@ -369,12 +374,37 @@
             <artifactId>poi-ooxml</artifactId>
             <version>3.17</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/ooxml-schemas -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>ooxml-schemas</artifactId>
+            <version>1.3</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>1.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.jacob/jacob -->
+        <dependency>
+            <groupId>com.jacob</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>1.46</version>
+        </dependency>
+        <!-- 这个包自己打包在本地仓库 -->
+        <dependency>
+            <groupId>com.aspose.words</groupId>
+            <artifactId>aspose-words-jdk16</artifactId>
+            <version>14.6.0.0</version>
         </dependency>
 
     </dependencies>

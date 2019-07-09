@@ -13,7 +13,7 @@ import java.util.List;
  * @description
  * @date 2019/6/11
  */
-@ToString
+@ToString(callSuper = true)
 public class SysUserDTO extends SysUser implements Serializable {
     private static final long serialVersionUID = 1L;
 

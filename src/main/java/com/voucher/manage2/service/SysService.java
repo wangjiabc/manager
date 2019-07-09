@@ -1,5 +1,6 @@
 package com.voucher.manage2.service;
 
+import com.voucher.manage2.dto.SysRouterDTO;
 import com.voucher.manage2.dto.SysModelDTO;
 import com.voucher.manage2.dto.SysRoleDTO;
 import com.voucher.manage2.dto.SysUserDTO;
@@ -40,4 +41,12 @@ public interface SysService {
     List<SysUserCondition> getUserConditionsByUserGuid(String guid);
 
     Integer updateUserConditions(SysUserCondition sysUserCondition);
+
+    List<SysRouter> getRouterByUser(String userGuid);
+
+    SysRouterDTO getRoutersByRootGuid(String rootGuid, String roleGuid);
+
+    Integer addRoleRouters(List<SysRoleRouter> sysRouters);
+
+    SysRouterDTO getRoutersByUserGuid(String rootGuid);
 }

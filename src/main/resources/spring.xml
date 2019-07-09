@@ -5,7 +5,7 @@ http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-4.0.xsd
- http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
        xmlns:task="http://www.springframework.org/schema/task"
 >
 
@@ -20,6 +20,7 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
     <context:component-scan base-package="com.voucher.manage.serviceImpl"/>
     <context:component-scan base-package="com.voucher.manage2.service.impl"/>
     <context:component-scan base-package="com.voucher.manage2.cache"/>
+    <context:component-scan base-package="com.voucher.manage2.constant"/>
 
     <!--  
 	<context:component-scan base-package="com.voucher.inswept.topic.consumer"></context:component-scan>
@@ -39,8 +40,11 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd
         <task:scheduled ref="taskJob" method="job1" cron="0 0 12 * * ?"/>
     </task:scheduled-tasks>
 
+    <!-- 扫描 -->
+    <task:annotation-driven/>
+
     <import resource="sping-aop.xml"/>
     <import resource="spring-tkmybatis.xml"/>
     <import resource="spring-sqlservers.xml"/>
-    
+    <import resource="spring-redis.xml"/>
 </beans>

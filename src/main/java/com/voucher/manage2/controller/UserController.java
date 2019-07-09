@@ -1,6 +1,7 @@
 package com.voucher.manage2.controller;
 
 import cn.hutool.crypto.SecureUtil;
+import com.voucher.manage2.aop.interceptor.annotation.TimeConsume;
 import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.UserService;
@@ -41,7 +42,22 @@ public class UserController {
         userService.regist(sysUser);
     }
 
+    @PostMapping("update")
+    public void updateUser(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
+        SysUser sysUser = new SysUser();
+        BeanUtils.populate(sysUser, jsonMap);
+        userService.updateUser(sysUser);
+    }
+
+    @PostMapping("updatePassword")
+    public Integer updatePassword(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
+        SysUser sysUser = new SysUser();
+        BeanUtils.populate(sysUser, jsonMap);
+        return userService.updatePassWord(sysUser, MapUtils.getString("newPassword", jsonMap));
+    }
+
     @PostMapping("login")
+    @TimeConsume
     public Object login(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         //登录
         SysUserDTO sysUser = new SysUserDTO();
@@ -53,7 +69,7 @@ public class UserController {
         String token = SecureUtil.md5(sysUser.getGuid() + currentTimeMillis);
         sysUser.setLastFreshTime(currentTimeMillis);
         //将用户存入redis
-        JedisUtil0.setObject(token, sysUser);
+        JedisUtil0.setUserDTO(token, sysUser);
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("token", token);
         resultMap.put("roles", sysUser.roles);

@@ -2,6 +2,7 @@ package com.voucher.manage2.controller;
 
 import cn.hutool.core.util.IdUtil;
 import com.google.common.collect.Lists;
+import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.FileService;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,7 +32,8 @@ import java.util.*;
  * @date 2019/5/20
  */
 @Slf4j
-@RestController
+//@RestController
+@Controller
 @RequestMapping("file")
 public class FileController {
     @Autowired
@@ -42,7 +45,7 @@ public class FileController {
     public void springUpload(HttpServletRequest request, String[] roomGuids, String menuGuid) {
         //检查form中是否有enctype="multipart/form-data"
         if (ObjectUtils.isEmpty(menuGuid, roomGuids)) {
-            return;
+            throw BaseException.getDefault("请选择资产和菜单");
         }
         if (multipartResolver.isMultipart(request)) {
             //将request变成多部分request
@@ -61,15 +64,16 @@ public class FileController {
     }
 
     @GetMapping(value = "/download")
-    public ResponseEntity<byte[]> download(String fieldName) throws IOException {
+    public ResponseEntity<byte[]> download(String fileName) throws IOException {
         //从我们的上传文件夹中去取
         //String downloadFilePath = "D:\\userUploadFile\\Files";
         //新建一个文件
-        File file = com.voucher.manage2.utils.FileUtils.getFileByFileName(fieldName);
+        File file = com.voucher.manage2.utils.FileUtils.getFileByFileName(fileName);
         //http头信息
         HttpHeaders headers = new HttpHeaders();
         //设置编码,下载的时的文件名
-        String downloadFileName = new String(fieldName.substring(fieldName.lastIndexOf("_") + 1).getBytes("UTF-8"), "iso-8859-1");
+        //String downloadFileName = new String(fieldName.substring(fieldName.lastIndexOf("_") + 1).getBytes("UTF-8"), "iso-8859-1");
+        String downloadFileName = fileName.substring(fileName.lastIndexOf("_") + 1);
 
         headers.setContentDispositionFormData("attachment", downloadFileName);
 

@@ -1,18 +1,19 @@
 package com.voucher.manage2.service.impl;
 
-import com.voucher.manage2.dto.SysModelDTO;
-import com.voucher.manage2.dto.SysRoleDTO;
-import com.voucher.manage2.dto.SysUserDTO;
+import com.voucher.manage2.constant.ResultConstant;
+import com.voucher.manage2.dto.*;
 import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.*;
 import com.voucher.manage2.tkmapper.mapper.*;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.weekend.Weekend;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author lz
@@ -37,6 +38,10 @@ public class SysServiceImpl implements SysService {
     private SysUserRoleMapper sysUserRoleMapper;
     @Autowired
     private SysUserConditionMapper sysUserConditionMapper;
+    @Autowired
+    private SysRouterMapper sysRouterMapper;
+    @Autowired
+    private SysRoleRouterMapper sysRoleRouterMapper;
 
     @Override
     public Integer addUrls(List<SysUrl> urls) {
@@ -173,4 +178,96 @@ public class SysServiceImpl implements SysService {
         sysUserCondition.setUserGuid(null);
         return sysUserConditionMapper.updateByExampleSelective(sysUserCondition, sysUserConditionWeekend);
     }
+
+    @Override
+    public List<SysRouter> getRouterByUser(String userGuid) {
+        return null;
+    }
+
+
+    @Override
+    public Integer addRoleRouters(List<SysRoleRouter> sysRouters) {
+        if (ObjectUtils.isNotEmpty(sysRouters)) {
+            Weekend<SysRoleRouter> sysRoleRouterWeekend = new Weekend<>(SysRoleRouter.class);
+            sysRoleRouterWeekend.weekendCriteria().andEqualTo(SysRoleRouter::getRoleGuid, sysRouters.get(0).getRoleGuid());
+            sysRoleRouterMapper.deleteByExample(sysRoleRouterWeekend);
+            return sysRoleRouterMapper.insertList(sysRouters);
+        }
+        return ResultConstant.FAILED;
+    }
+
+    @Override
+    public SysRouterDTO getRoutersByRootGuid(String rootGuid, String roleGuid) {
+        SysRouterDTO sysRouterDTO = new SysRouterDTO();
+        sysRouterDTO.setGuid(rootGuid);
+        //按级别分组
+        Map<String, List<SysRouterDTO>> levelMap = getLevelMap(sysRouterDTO, roleGuid);
+        putRouter(sysRouterDTO, levelMap);
+        return sysRouterDTO;
+    }
+
+    @Override
+    public SysRouterDTO getRoutersByUserGuid(String rootGuid) {
+        SysRouterDTO sysRouterDTO = new SysRouterDTO();
+        sysRouterDTO.setGuid(rootGuid);
+        Map<String, List<SysRouterDTO>> levelMap = getLevelMap(rootGuid);
+        putRouter(sysRouterDTO, levelMap);
+        return sysRouterDTO;
+    }
+
+    private Map<String, List<SysRouterDTO>> getLevelMap(String rootGuid) {
+        String currentUserGuid = CommonUtils.getCurrentUserGuid();
+        Map<String, List<SysRouterDTO>> levelMap = new HashMap<>();
+        List<SysRouterDTO> sysRouterDTOS = sysRouterMapper.selectRouter(currentUserGuid, rootGuid);
+        for (SysRouterDTO router : sysRouterDTOS) {
+            List<SysRouterDTO> routerList = levelMap.get(router.getParentGuid());
+            if (routerList == null) {
+                routerList = new ArrayList<>();
+                levelMap.put(router.getParentGuid(), routerList);
+            }
+            routerList.add(router);
+        }
+        return levelMap;
+    }
+
+    private void putRouter(SysRouterDTO sysRouterDTO, Map<String, List<SysRouterDTO>> levelMap) {
+        List<SysRouterDTO> sysRouterDTOS = levelMap.get(sysRouterDTO.getGuid());
+        if (ObjectUtils.isNotEmpty(sysRouterDTOS)) {
+            sysRouterDTO.setChildren(sysRouterDTOS);
+            for (SysRouterDTO router : sysRouterDTOS) {
+                putRouter(router, levelMap);
+            }
+        }
+        sysRouterDTO.getMeta().put("title", sysRouterDTO.getTitle());
+        sysRouterDTO.getMeta().put("icon", sysRouterDTO.getIcon());
+    }
+
+    private Map<String, List<SysRouterDTO>> getLevelMap(SysRouterDTO sysRouterDTO, String roleGuid) {
+        List<SysRoleRouter> sysRoleRouters;
+        Set<String> routerGuidSet = new HashSet<>();
+        Map<String, List<SysRouterDTO>> levelMap = new HashMap(32);
+        Weekend<SysRouterDTO> routerWeekend = new Weekend<>(SysRouterDTO.class);
+        routerWeekend.weekendCriteria().andEqualTo(SysRouter::getRootGuid, sysRouterDTO.getGuid());
+        List<SysRouterDTO> routers = sysRouterMapper.selectByExample(routerWeekend);
+        if (ObjectUtils.isNotEmpty(roleGuid)) {
+            //获取角色可见的路由
+            Weekend<SysRoleRouter> sysRoleRouterWeekend = new Weekend<>(SysRoleRouter.class);
+            sysRoleRouterWeekend.weekendCriteria().andEqualTo(SysRoleRouter::getRoleGuid, roleGuid);
+            sysRoleRouters = sysRoleRouterMapper.selectByExample(sysRoleRouterWeekend);
+            routerGuidSet = sysRoleRouters.stream().map(e -> e.getRouterGuid()).collect(Collectors.toSet());
+        }
+        for (SysRouterDTO router : routers) {
+            List<SysRouterDTO> routerList = levelMap.get(router.getParentGuid());
+            if (routerList == null) {
+                routerList = new ArrayList<>();
+                levelMap.put(router.getParentGuid(), routerList);
+            }
+            if (routerGuidSet.contains(router.getGuid())) {
+                router.setSelected(true);
+            }
+            routerList.add(router);
+        }
+        return levelMap;
+    }
+
 }

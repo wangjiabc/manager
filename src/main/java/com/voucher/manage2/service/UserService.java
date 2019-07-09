@@ -20,4 +20,8 @@ public interface UserService {
     SysUserDTO login(SysUser sysUser);
 
     List<SysUser> getAllUser();
+
+    Integer updateUser(SysUser sysUser);
+
+    Integer updatePassWord(SysUser sysUser, String newPassword);
 }

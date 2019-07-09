@@ -32,24 +32,23 @@ import java.lang.reflect.UndeclaredThrowableException;
 public class LoginInterceptor {
     @Autowired
     private UserService userService;
-/*
+
     //验证controller
     @Pointcut("execution(public * com.voucher.manage2.controller..*.*(..))")
     public void controllerPointcut() {
         //|| execution(public * com.voucher.manage.controller..*.*(..))
     }
-*/
+
     // 登录登出功能不需要验证
     @Pointcut("execution(public * com.voucher.manage2.controller.UserController.login(..))||execution(public * com.voucher.manage2.controller.UserController.logout(..))")
     public void rootPointcut() {
     }
 
-    // 注册功能不需要验证
+    // 注册,获取权限功能不需要验证
     @Pointcut("execution(public * com.voucher.manage2.controller.UserController.insertUserInfo(..))")
     public void registerPointcut() {
     }
 
-    /*
     @Pointcut("controllerPointcut()&&(!rootPointcut())&&(!registerPointcut())")
     public void projectPointcut() {
     }
@@ -60,8 +59,8 @@ public class LoginInterceptor {
         SysUserDTO userDTO;
         Class<?> controller = pjp.getTarget().getClass();
         Method proxyMethod = ((MethodSignature) pjp.getSignature()).getMethod();
-        //log.debug("----------------执行方法-----------------");
-        //log.debug("类名：" + controller.getSimpleName() + " 方法名：" + proxyMethod.getName());
+        log.debug("----------------执行方法-----------------");
+        log.debug("类名：" + controller.getSimpleName() + " 方法名：" + proxyMethod.getName());
         //类上面controller的值 获取不到@Controller
         //String corName = controller.getAnnotation(Controller.class).value();
 
@@ -80,35 +79,33 @@ public class LoginInterceptor {
                 // 获取 user
                 userDTO = JedisUtil0.getObject(tokenId);
                 if (userDTO == null) {
-                    //log.warn("拦截会话超时请求,tokenId:{}, URL:{}", tokenId, url);
+                    log.warn("拦截会话超时请求,tokenId:{}, URL:{}", tokenId, url);
                     throw BaseException.getDefault("登录已过期,重新登录!");
                 }
                 CommonUtils.setUser(userDTO);
-                //TODO 判断是否有权限访问接口
+                //T 判断是否有权限访问接口
                 if (userService.hasPermission(userDTO, url)) {
                     result = pjp.proceed(obj);
                 } else {
-                    //log.warn("拦截没有权限的用户:{}", userDTO);
+                    log.warn("拦截没有权限的用户:{}访问URL:{}", userDTO, url);
                     throw BaseException.getDefault("没有权限");
                 }
 
             } else {
-                //log.warn("非法访问已被拦截URL:{}", url);
+                log.warn("非法访问已被拦截URL:{}", url);
                 throw BaseException.getDefault("非法访问");
             }
         } catch (UndeclaredThrowableException e) {
-            e.printStackTrace();
             throw BaseException.getDefault(e);
         }
         Long lastFreshTime = userDTO.getLastFreshTime();
         long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis - lastFreshTime > 1500000L) {
-            //距离上次刷新token超过25min(1000*60*25) 则刷新token时间
+        if (currentTimeMillis - lastFreshTime > 600000L) {
+            //距离上次刷新token超过10min(1000*60*10) 则刷新token时间
             userDTO.setLastFreshTime(currentTimeMillis);
-            JedisUtil0.setObject(tokenId, userDTO);
+            JedisUtil0.setUserDTO(tokenId, userDTO);
         }
 
         return result;
     }
-    */
 }
