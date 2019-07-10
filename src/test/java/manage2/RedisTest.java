@@ -1,13 +1,8 @@
 package manage2;
 
-import com.voucher.manage2.redis.JedisUtil0;
 import com.voucher.manage2.service.impl.ReplaceKeywordsServiceImpl;
 import com.voucher.manage2.service.impl.Word2PdfServiceImpl;
-import com.voucher.manage2.utils.WrodToPDF;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.HashMap;

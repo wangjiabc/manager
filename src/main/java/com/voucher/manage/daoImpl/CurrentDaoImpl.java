@@ -163,8 +163,8 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         table_alias.setOffset(0);
         table_alias.setNotIn("id");
         table_alias.setWhereTerm("or");
-        String[] where = {"table_name=",tableName.substring(1, tableName.length() - 1),
-        		"table_name=","item_" +tableName.substring(1, tableName.length() - 1)};
+        String[] where = {"table_name=", tableName.substring(1, tableName.length() - 1),
+                "table_name=", "item_" + tableName.substring(1, tableName.length() - 1)};
         table_alias.setWhere(where);
 
         tableName = tableName.substring(1, tableName.length() - 1);
@@ -320,8 +320,8 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             table_alias.setLimit(1000);
             table_alias.setOffset(0);
             table_alias.setNotIn("id");
-            String[] where = {"table_name=",tableName.substring(1, tableName.length() - 1),
-            		"table_name=","item_" +tableName.substring(1, tableName.length() - 1)};
+            String[] where = {"table_name=", tableName.substring(1, tableName.length() - 1),
+                    "table_name=", "item_" + tableName.substring(1, tableName.length() - 1)};
             table_alias.setWhere(where);
 
             tableName = tableName.substring(1, tableName.length() - 1);
@@ -662,10 +662,9 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
     @Transactional(rollbackFor = Exception.class)
     public Integer updateTextLength(String item_room, String line_uuid, Integer text_length) {
         //字段校验
-        Example example = new Example(TableAlias.class);
-        example.createCriteria().andEqualTo("table_name", item_room)
-                .andEqualTo("line_uuid", line_uuid);
-        List<TableAlias> tableAliases = tableAliasMapper.selectByExample(example);
+        Weekend<TableAlias> tableAliasWeekend = new Weekend<>(TableAlias.class);
+        tableAliasWeekend.weekendCriteria().andEqualTo(TableAlias::getTableName, item_room).andEqualTo(TableAlias::getLineUuid, line_uuid);
+        List<TableAlias> tableAliases = tableAliasMapper.selectByExample(tableAliasWeekend);
         if (ObjectUtils.isEmpty(tableAliases) && tableAliases.size() != 1) {
             return ResultConstant.FAILED;
         }

@@ -13,7 +13,7 @@ import java.util.Map;
 public class ReplaceKeywordsServiceImpl implements com.voucher.manage2.service.ReplaceKeywordsService {
     @Override
     public String printWord(Map<String, Object> jsonMap) throws IOException {
-        Map<String, Object> wordDataMap = new HashMap<String, Object>();// 存储全部数据
+        Map<String, Object> wordDataMap = new HashMap<>();// 存储全部数据
 
         wordDataMap.put("parametersMap", jsonMap);
         String startWord = SystemConstant.START_WORD_PATH + File.separator + SystemConstant.START_WORD_FILENAME;
@@ -27,7 +27,7 @@ public class ReplaceKeywordsServiceImpl implements com.voucher.manage2.service.R
         template.replaceDocument(wordDataMap);
 
         // 生成文件
-        String wordPath = SystemConstant.START_WORD_PATH + File.separator + IdUtil.simpleUUID();
+        String wordPath = SystemConstant.SAVE_CAHCE_FILE_PATH + File.separator + IdUtil.simpleUUID();
         wordPath = wordPath + SystemConstant.WORD_SUFFIX;
         File file1 = new File(wordPath);
         //OutputStreamWriter outputFile = new OutputStreamWriter(new FileOutputStream(file1),"GB2312");

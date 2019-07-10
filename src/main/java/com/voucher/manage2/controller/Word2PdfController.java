@@ -46,30 +46,4 @@ public class Word2PdfController {
         resultMap.put("pdfAdress", pdfAdress);
         return resultMap;
     }
-
-    /**
-     * word转PDF方法
-     */
-/*    @RequestMapping("/w2p")
-    public void word2Pdf(){
-        String word = "src\\main\\java\\com\\voucher\\docx\\01.docx";
-        //String name = "02".concat(".pdf");
-        String pdf = "src\\main\\java\\com\\voucher\\docx\\02.pdf";
-        word2PdfService.convert(word,pdf);
-    }*/
-
-    /**
-     * 返回PDF地址
-     * @return
-     */
-//    @RequestMapping("/return")
-//    public String returnAddress(){
-//        //返回地址
-//        return SystemConstant.PDF_ADDRESS;
-//        //将PDF格式文件转成base64编码 
-////        String path = "D:" + File.separator + "manage-upload"+"\\02.pdf";
-////        String base64String = TestPDFBinary.getPDFBinary(new File(path));
-////        System.out.println(base64String);
-////        return  base64String;
-//    }
 }

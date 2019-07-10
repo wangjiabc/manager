@@ -41,39 +41,31 @@ public class RoomController {
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
-    	System.out.println(jsonMap);
+
         Room room = new Room();
         Integer limit = MapUtils.getInteger("limit", jsonMap);
-        System.out.println(limit);
         room.setLimit(limit);
         room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
-        System.out.println(MapUtils.getInteger("page",jsonMap));
+        Map<String, Object> query = MapUtils.getStrMap("query", jsonMap);
+        Object searchContent = query.get("searchContent");
+        Object state = query.get("state");
+        Object neaten_flow = query.get("neaten_flow");
+
         List<String> searchList = new ArrayList<>();
-        
-		try {
-			Map<String, Object> query = MapUtils.getStrMap("query", jsonMap);
-			Object searchContent = query.get("searchContent");
-			Object state = query.get("state");
-			Object neaten_flow = query.get("neaten_flow");
-			
-			if (ObjectUtils.isNotEmpty(searchContent)) {
-				searchList.add("address like");
-				searchList.add("%" + searchContent + "%");
-			}
-			if (ObjectUtils.isNotEmpty(state)) {
-				searchList.add("state =");
-				searchList.add(state.toString());
-			}
-			if (ObjectUtils.isNotEmpty(neaten_flow)) {
-				searchList.add("neaten_flow =");
-				searchList.add(neaten_flow.toString());
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-        
-/*
+        if (ObjectUtils.isNotEmpty(searchContent)) {
+            searchList.add("address like");
+            searchList.add("%" + searchContent + "%");
+        }
+        if (ObjectUtils.isNotEmpty(state)) {
+            searchList.add("state =");
+            searchList.add(state.toString());
+        }
+        if (ObjectUtils.isNotEmpty(neaten_flow)) {
+            searchList.add("neaten_flow =");
+            searchList.add(neaten_flow.toString());
+        }
+
         List<String> userConditonList = new ArrayList<>();
         List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
         if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
@@ -82,7 +74,7 @@ public class RoomController {
                 userConditonList.add(sysUserCondition.getLineValue() + "");
             }
         }
-        searchList.addAll(userConditonList);*/
+        searchList.addAll(userConditonList);
         searchList.add("del=");
         searchList.add("0");
         String[] where = new String[searchList.size()];
@@ -179,7 +171,7 @@ public class RoomController {
     public Integer RoomIn(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
         if (ObjectUtils.isEmpty(roomGuids)) {
-            throw BaseException.getDefault();
+            throw BaseException.getDefault("roomGuids为空");
         }
         List<RoomIn> roomIns = new ArrayList<>();
         for (String roomGuid : roomGuids) {

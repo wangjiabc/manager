@@ -100,8 +100,8 @@ public class LoginInterceptor {
         }
         Long lastFreshTime = userDTO.getLastFreshTime();
         long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis - lastFreshTime > 600000L) {
-            //距离上次刷新token超过10min(1000*60*10) 则刷新token时间
+        if (currentTimeMillis - lastFreshTime > 3600000L) {
+            //距离上次刷新token超过60min(1000*60*60) 则刷新token时间
             userDTO.setLastFreshTime(currentTimeMillis);
             JedisUtil0.setUserDTO(tokenId, userDTO);
         }

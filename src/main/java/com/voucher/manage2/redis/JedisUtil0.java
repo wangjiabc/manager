@@ -327,8 +327,8 @@ public class JedisUtil0 {
         if (ObjectUtils.isNotEmpty(key, value)) {
             ShardedJedis shardedJedis = getShardedJedis();
             try {
-                //半小时过期
-                shardedJedis.setex(key.getBytes(), 60 * 30, ObjectUtils.serialize(value));
+                //6小时过期60 * 60 * 6
+                shardedJedis.setex(key.getBytes(), 21600, ObjectUtils.serialize(value));
             } catch (Exception e) {
                 log.error("setUserDTO to redis unsuccessfully!", e);
             } finally {
