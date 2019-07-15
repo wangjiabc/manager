@@ -43,6 +43,8 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
     <!-- 扫描 -->
     <task:annotation-driven/>
 
+    <bean id="springUtils" class="com.voucher.manage2.utils.SpringUtils"/>
+
     <import resource="sping-aop.xml"/>
     <import resource="spring-tkmybatis.xml"/>
     <import resource="spring-sqlservers.xml"/>

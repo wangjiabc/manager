@@ -49,9 +49,9 @@ public class CompanyServiceImpl implements CompanyService {
         company.setGuid(uuid);
         long time = System.currentTimeMillis();
         company.setCreateTime(time);
-
-        userService.regist(sysUser);
         companyMapper.insert(company);
+        sysUser.setCompanyGuid(company.getGuid());
+        userService.regist(sysUser);
     }
 
     @Override

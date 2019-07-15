@@ -509,9 +509,11 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
             }
         });
         try {
-            sqlBuf.deleteCharAt(sqlBuf.lastIndexOf(","));
-            sqlBuf.append("where guid='" + MapUtils.getString("guid", roomMap) + "'");
-            isnotempty = true;
+            if (sqlBuf.lastIndexOf(",") != -1) {
+                sqlBuf.deleteCharAt(sqlBuf.lastIndexOf(","));
+                isnotempty = true;
+                sqlBuf.append("where guid='" + MapUtils.getString("guid", roomMap) + "'");
+            }
         } catch (Exception e) {
             //e.printStackTrace();
             throw BaseException.getDefault(e);

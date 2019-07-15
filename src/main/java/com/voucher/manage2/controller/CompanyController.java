@@ -4,7 +4,9 @@ package com.voucher.manage2.controller;
 import com.voucher.manage2.service.CompanyService;
 import com.voucher.manage2.tkmapper.entity.Company;
 import com.voucher.manage2.tkmapper.entity.SysUser;
+import com.voucher.manage2.utils.SpringUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,7 @@ public class CompanyController {
 
     /**
      * 存储公司信息
+     *
      * @param jsonMap
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -37,22 +40,24 @@ public class CompanyController {
     public void saveCompany(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         Company company = new Company();
         SysUser sysUser = new SysUser();
-        BeanUtils.populate(company,jsonMap);
-        BeanUtils.populate(sysUser,jsonMap);
-        companyService.save(company,sysUser);
+        BeanUtils.populate(company, jsonMap);
+        BeanUtils.populate(sysUser, jsonMap);
+        companyService.save(company, sysUser);
     }
 
     /**
      * 返回所有信息
+     *
      * @return
      */
     @RequestMapping("/findAll")
-    public List<Company> findAll(){
+    public List<Company> findAll() {
         return companyService.findAll();
     }
 
     /**
      * 修改某个公司信息
+     *
      * @param jsonMap
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -60,7 +65,7 @@ public class CompanyController {
     @RequestMapping("/update")
     public void updateCompany(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         Company company = new Company();
-        BeanUtils.populate(company,jsonMap);
+        BeanUtils.populate(company, jsonMap);
         companyService.updateOne(company);
     }
 

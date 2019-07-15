@@ -26,7 +26,7 @@ public class SystemConstant implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        File file = new File(START_WORD_PATH);
+        File file = new File(SAVE_CAHCE_FILE_PATH);
         if (!file.exists()) {
             file.mkdirs();
         }
