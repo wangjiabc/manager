@@ -3,7 +3,6 @@ package com.voucher.manage2.utils;
 import cn.hutool.core.util.IdUtil;
 import com.aspose.words.Document;
 import com.aspose.words.SaveFormat;
-import com.jacob.activeX.ActiveXComponent;
 import com.voucher.manage2.constant.SystemConstant;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +17,7 @@ public class WrodToPDF {
     public static String doc2pdf(String inPath) {
 
         String pdfFileName = IdUtil.simpleUUID() + SystemConstant.PDF_SUFFIX;
-        String pdfFile = SystemConstant.SAVE_PDF_PATH + File.separator + pdfFileName;
+        String pdfFile = SystemConstant.SAVE_CAHCE_FILE_PATH + File.separator + pdfFileName;
         log.debug("开始转换为pdf,保存地址{}", pdfFile);
 
         FileOutputStream os = null;

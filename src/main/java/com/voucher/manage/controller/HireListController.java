@@ -170,7 +170,7 @@ public class HireListController {
     public Object getHirePay(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
         Integer limit = MapUtils.getInteger("limit", jsonMap);
         Integer offset = (MapUtils.getInteger("offset", jsonMap)-1)*limit;
-        String chartGUID = MapUtils.getString("chartGUID", jsonMap);
+        String chartGUID = MapUtils.getString("ChartGUID", jsonMap);
         HirePay hirePay = new HirePay();
         hirePay.setLimit(limit);
         hirePay.setOffset(offset);
@@ -178,7 +178,7 @@ public class HireListController {
 
         List<String> searchList = new ArrayList<>();
         
-        searchList.add("chartGUID=");
+        searchList.add("ChartGUID=");
         searchList.add(chartGUID);
         searchList.add("del=");
         searchList.add("0");

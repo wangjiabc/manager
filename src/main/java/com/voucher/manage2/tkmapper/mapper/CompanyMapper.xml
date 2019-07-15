@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.voucher.manage2.tkmapper.mapper.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.voucher.manage2.tkmapper.entity.Company">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="guid" jdbcType="VARCHAR" property="guid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="scale" jdbcType="INTEGER" property="scale" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+  </resultMap>
+</mapper>

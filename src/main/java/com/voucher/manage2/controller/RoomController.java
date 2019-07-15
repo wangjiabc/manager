@@ -3,6 +3,7 @@ package com.voucher.manage2.controller;
 import cn.hutool.core.util.IdUtil;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
+import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.service.RoomService;
 import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.RoomIn;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/room")
@@ -41,48 +43,51 @@ public class RoomController {
 
     @RequestMapping("getList")
     public Object getList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
-    	System.out.println(jsonMap);
+
         Room room = new Room();
         Integer limit = MapUtils.getInteger("limit", jsonMap);
-        System.out.println(limit);
         room.setLimit(limit);
         room.setOffset(((MapUtils.getInteger("page", jsonMap)) - 1) * limit);
         room.setNotIn("id");
-        System.out.println(MapUtils.getInteger("page",jsonMap));
+        Map<String, Object> query = MapUtils.getStrMap("query", jsonMap);
+        Object searchContent = query.get("searchContent");
+        Object state = query.get("state");
+        Object neaten_flow = query.get("neaten_flow");
+        String roomGuid = MapUtils.getString("roomGuid", jsonMap);
+
         List<String> searchList = new ArrayList<>();
-        
-		try {
-			Map<String, Object> query = MapUtils.getStrMap("query", jsonMap);
-			Object searchContent = query.get("searchContent");
-			Object state = query.get("state");
-			Object neaten_flow = query.get("neaten_flow");
-			
-			if (ObjectUtils.isNotEmpty(searchContent)) {
-				searchList.add("address like");
-				searchList.add("%" + searchContent + "%");
-			}
-			if (ObjectUtils.isNotEmpty(state)) {
-				searchList.add("state =");
-				searchList.add(state.toString());
-			}
-			if (ObjectUtils.isNotEmpty(neaten_flow)) {
-				searchList.add("neaten_flow =");
-				searchList.add(neaten_flow.toString());
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-        
-/*
+        if (ObjectUtils.isNotEmpty(searchContent)) {
+            searchList.add("address like");
+            searchList.add("%" + searchContent + "%");
+        }
+        if (ObjectUtils.isNotEmpty(state)) {
+            searchList.add("state =");
+            searchList.add(state.toString());
+        }
+        if (ObjectUtils.isNotEmpty(neaten_flow)) {
+            searchList.add("neaten_flow =");
+            searchList.add(neaten_flow.toString());
+        }
+        if (ObjectUtils.isNotEmpty(roomGuid)) {
+            searchList.add("room.guid =");
+            searchList.add(roomGuid);
+        }
+
+        SysUserDTO currentUser = CommonUtils.getCurrentUser();
+        if (!CommonUtils.isSuperAdmin()) {
+            searchList.add("company_guid =");
+            searchList.add(currentUser.getCompanyGuid());
+        }
+
         List<String> userConditonList = new ArrayList<>();
-        List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
+        List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(currentUser.getGuid());
         if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
             for (SysUserCondition sysUserCondition : sysUserConditionList) {
                 userConditonList.add(sysUserCondition.getLineUuid() + "=");
                 userConditonList.add(sysUserCondition.getLineValue() + "");
             }
         }
-        searchList.addAll(userConditonList);*/
+        searchList.addAll(userConditonList);
         searchList.add("del=");
         searchList.add("0");
         String[] where = new String[searchList.size()];
@@ -138,6 +143,7 @@ public class RoomController {
 
     @RequestMapping("recycleField")
     public Integer recycleField(String line_uuid) throws BaseException {
+        //王靖代码不支持逻辑删除,废弃
         return currentDao.recycleField(line_uuid);
     }
 
@@ -179,7 +185,7 @@ public class RoomController {
     public Integer RoomIn(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         List<String> roomGuids = MapUtils.getStrList("roomGuids", jsonMap);
         if (ObjectUtils.isEmpty(roomGuids)) {
-            throw BaseException.getDefault();
+            throw BaseException.getDefault("roomGuids为空");
         }
         List<RoomIn> roomIns = new ArrayList<>();
         for (String roomGuid : roomGuids) {

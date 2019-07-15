@@ -26,6 +26,9 @@ public class TableAlias implements Serializable {
     @Column(name = "[room_type]")
     private Integer roomType;
 
+    @Column(name = "[company_guid]")
+    private String companyGuid;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -124,5 +127,19 @@ public class TableAlias implements Serializable {
      */
     public void setRoomType(Integer roomType) {
         this.roomType = roomType;
+    }
+
+    /**
+     * @return company_guid
+     */
+    public String getCompanyGuid() {
+        return companyGuid;
+    }
+
+    /**
+     * @param companyGuid
+     */
+    public void setCompanyGuid(String companyGuid) {
+        this.companyGuid = companyGuid == null ? null : companyGuid.trim();
     }
 }

@@ -2,6 +2,8 @@ package com.voucher.manage2.service.impl;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.IdUtil;
+import com.voucher.manage2.constant.RoomLogConstant;
+import com.voucher.manage2.dto.RoomLogDTO;
 import com.voucher.manage2.service.RoomService;
 import com.voucher.manage2.tkmapper.entity.Room;
 import com.voucher.manage2.tkmapper.entity.RoomIn;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.weekend.Weekend;
 
 import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
@@ -40,15 +43,17 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer roomIn(List<RoomIn> roomIns) {
-        List<RoomLog> roomLogs = new ArrayList<>();
+        List<RoomLogDTO> roomLogs = new ArrayList<>();
         List<String> roomGuids = new ArrayList<>();
         for (RoomIn roomIn : roomIns) {
-            RoomLog roomLog = new RoomLog();
+            RoomLogDTO roomLog = new RoomLogDTO();
             roomLog.setDate(System.currentTimeMillis());
             roomLog.setGuid(IdUtil.simpleUUID());
             roomLog.setOperationGuid(roomIn.getGuid());
             roomLog.setIntroduction(RoomUtils.getRoomLogIntroduction(roomIn));
             roomLog.setOperationType(roomIn.getTypeGuid());
+            roomLog.setRoomGuid(roomIn.getRoomGuid());
+            roomLog.setLogType(RoomLogConstant.IN.type);
             roomLogs.add(roomLog);
             roomGuids.add(roomIn.getRoomGuid());
         }
@@ -67,15 +72,17 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer roomOut(List<RoomOut> roomOuts) {
-        List<RoomLog> roomLogs = new ArrayList<>();
+        List<RoomLogDTO> roomLogs = new ArrayList<>();
         List<String> roomGuids = new ArrayList<>();
         for (RoomOut roomOut : roomOuts) {
-            RoomLog roomLog = new RoomLog();
+            RoomLogDTO roomLog = new RoomLogDTO();
             roomLog.setGuid(IdUtil.simpleUUID());
             roomLog.setDate(System.currentTimeMillis());
             roomLog.setOperationGuid(roomOut.getGuid());
             roomLog.setIntroduction(RoomUtils.getRoomLogIntroduction(roomOut));
             roomLog.setOperationType(roomOut.getTypeGuid());
+            roomLog.setRoomGuid(roomOut.getRoomGuid());
+            roomLog.setLogType(RoomLogConstant.OUT.type);
             roomLogs.add(roomLog);
             roomGuids.add(roomOut.getRoomGuid());
         }
@@ -89,6 +96,17 @@ public class RoomServiceImpl implements RoomService {
 
         roomOutMapper.insertList(roomOuts);
         return roomLogMapper.insertList(roomLogs);
+    }
+
+    @Override
+    public List<RoomLogDTO> getLogByRoomGuid(String roomGuid) {
+        Weekend<RoomLogDTO> roomLogWeekend = new Weekend<>(RoomLogDTO.class);
+        roomLogWeekend.weekendCriteria().andEqualTo(RoomLog::getRoomGuid, roomGuid);
+        List<RoomLogDTO> roomLogDTOS = roomLogMapper.selectByExample(roomLogWeekend);
+        for (RoomLogDTO roomLogDTO : roomLogDTOS) {
+
+        }
+        return roomLogDTOS;
     }
 
 }

@@ -29,6 +29,9 @@ public class SysUser implements Serializable {
     @Column(name = "[del]")
     private Boolean del;
 
+    @Column(name = "[company_guid]")
+    private String companyGuid;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -141,5 +144,19 @@ public class SysUser implements Serializable {
      */
     public void setDel(Boolean del) {
         this.del = del;
+    }
+
+    /**
+     * @return company_guid
+     */
+    public String getCompanyGuid() {
+        return companyGuid;
+    }
+
+    /**
+     * @param companyGuid
+     */
+    public void setCompanyGuid(String companyGuid) {
+        this.companyGuid = companyGuid == null ? null : companyGuid.trim();
     }
 }

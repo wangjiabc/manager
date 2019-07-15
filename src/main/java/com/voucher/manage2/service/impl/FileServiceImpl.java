@@ -3,6 +3,7 @@ package com.voucher.manage2.service.impl;
 import cn.hutool.core.io.FileTypeUtil;
 import cn.hutool.core.util.IdUtil;
 import com.voucher.manage2.constant.MenuConstant;
+import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.exception.FileUploadException;
 import com.voucher.manage2.constant.FileConstant;
 import com.voucher.manage2.service.FileService;
@@ -48,16 +49,18 @@ public class FileServiceImpl implements FileService {
     @Transactional(rollbackFor = Exception.class)
     public String fileUpload(MultipartFile file, List<String> roomGuids, String menuGuid) {
 
-        File tarFile = null;
         String fileName = IdUtil.simpleUUID() + "_" + file.getOriginalFilename();
+        File tarFile = tarFile = FileUtils.getFileByFileName(fileName);
         try {
             //文件后缀名
             String suffixName = FileTypeUtil.getType(file.getInputStream());
+            if (suffixName == null) {
+                BaseException.getDefault("不支持此类型文件");
+            }
             //文件类型
             Integer fileType = FileUtils.getFileType(suffixName);
             //保存
             //将保存的文件对象
-            tarFile = FileUtils.getFileByFileName(fileName);
             //SystemConstant.out.println("+++++++++" + tarPath);
             file.transferTo(tarFile);
             //TODO 类型是图片就压缩

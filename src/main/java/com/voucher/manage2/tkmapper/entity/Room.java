@@ -1,9 +1,10 @@
 package com.voucher.manage2.tkmapper.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Table(name = "[room]")
-public class Room {
+public class Room implements Serializable {
     @Column(name = "[guid]")
     private String guid;
 
@@ -48,6 +49,11 @@ public class Room {
 
     @Column(name = "[in_type]")
     private String inType;
+
+    @Column(name = "[company_guid]")
+    private String companyGuid;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return guid
@@ -257,5 +263,19 @@ public class Room {
      */
     public void setInType(String inType) {
         this.inType = inType == null ? null : inType.trim();
+    }
+
+    /**
+     * @return company_guid
+     */
+    public String getCompanyGuid() {
+        return companyGuid;
+    }
+
+    /**
+     * @param companyGuid
+     */
+    public void setCompanyGuid(String companyGuid) {
+        this.companyGuid = companyGuid == null ? null : companyGuid.trim();
     }
 }
