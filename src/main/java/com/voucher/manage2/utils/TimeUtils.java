@@ -1,10 +1,14 @@
 package com.voucher.manage2.utils;
 
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author lz
@@ -18,5 +22,25 @@ public class TimeUtils extends DateUtil {
     public static String formatTime(long time, String pattern) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(time);
+    }
+
+    /**
+     * @Author lz
+     * @Description: 获取两个时间之间的月数, 格式是时间戳
+     * @param: [beginDate, endDate]
+     * @Date: 2019/7/10 15:52
+     **/
+    public static Integer getMonths(Long beginDate, Long endDate) {
+        if (endDate < beginDate) {
+            return -1;
+        }
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        c1.setTime(new Date(beginDate));
+        c2.setTime(new Date(endDate));
+        int year = c2.get(Calendar.YEAR) - c1.get(Calendar.YEAR);
+        //开始日期若小于结束日期
+        return year * 12 + c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH);
     }
 }

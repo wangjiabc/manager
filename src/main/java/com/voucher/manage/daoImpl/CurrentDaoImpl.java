@@ -14,6 +14,7 @@ import com.voucher.manage.tools.MyTestUtil;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.tkmapper.entity.SysUserCondition;
 import com.voucher.manage2.tkmapper.mapper.SysUserConditionMapper;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.ObjectUtils;
 import com.voucher.manage2.aop.interceptor.annotation.TimeConsume;
 import com.voucher.manage2.constant.ResultConstant;
@@ -560,7 +561,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         Room room = new Room();
         room.setGuid(IdUtil.simpleUUID());
         BeanUtils.populate(room, jsonMap);
-
+        room.setCompany_guid(CommonUtils.getCurrentUserCompanyGuid());
         JSONArray jsonArray = new JSONArray();
         jsonArray.add("guid");
         jsonArray.add(room.getGuid());
@@ -612,6 +613,7 @@ public class CurrentDaoImpl extends JdbcDaoSupport implements CurrentDao {
         tableAlias.setLineAlias(fieldName);
         tableAlias.setRowType(filedType);
         tableAlias.setRoomType(roomType);
+        tableAlias.setCompanyGuid(CommonUtils.getCurrentUserCompanyGuid());
         tableAlias.setLineUuid(line_uuid);
         tableAlias.setDate(System.currentTimeMillis());
         //int update = InsertExe.get(this.getJdbcTemplate(), tableAlias);

@@ -12,5 +12,6 @@
     <result column="del" jdbcType="BIT" property="del" />
     <result column="row_type" jdbcType="INTEGER" property="rowType" />
     <result column="room_type" jdbcType="INTEGER" property="roomType" />
+    <result column="company_guid" jdbcType="VARCHAR" property="companyGuid" />
   </resultMap>
 </mapper>

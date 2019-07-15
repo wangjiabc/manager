@@ -1,5 +1,6 @@
 package manage2;
 
+import cn.hutool.core.util.IdUtil;
 import com.voucher.manage2.service.impl.ReplaceKeywordsServiceImpl;
 import com.voucher.manage2.service.impl.Word2PdfServiceImpl;
 import org.junit.Test;
@@ -17,11 +18,6 @@ public class RedisTest {
 
     @Test
     public void test1() throws IOException {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("ContractNo", 6666);
-        String wordPath = new ReplaceKeywordsServiceImpl().printWord(map);
-        System.out.println(wordPath);
-//        String wordPath = "";
-        System.out.println(new Word2PdfServiceImpl().convert(wordPath));
+        System.out.println(IdUtil.simpleUUID());
     }
 }

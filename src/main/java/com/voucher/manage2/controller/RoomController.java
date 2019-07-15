@@ -3,6 +3,7 @@ package com.voucher.manage2.controller;
 import cn.hutool.core.util.IdUtil;
 import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage.daoModel.Room;
+import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.service.RoomService;
 import com.voucher.manage2.service.SysService;
 import com.voucher.manage2.tkmapper.entity.RoomIn;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/room")
@@ -51,6 +53,7 @@ public class RoomController {
         Object searchContent = query.get("searchContent");
         Object state = query.get("state");
         Object neaten_flow = query.get("neaten_flow");
+        String roomGuid = MapUtils.getString("roomGuid", jsonMap);
 
         List<String> searchList = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(searchContent)) {
@@ -65,9 +68,19 @@ public class RoomController {
             searchList.add("neaten_flow =");
             searchList.add(neaten_flow.toString());
         }
+        if (ObjectUtils.isNotEmpty(roomGuid)) {
+            searchList.add("room.guid =");
+            searchList.add(roomGuid);
+        }
+
+        SysUserDTO currentUser = CommonUtils.getCurrentUser();
+        if (!CommonUtils.isSuperAdmin()) {
+            searchList.add("company_guid =");
+            searchList.add(currentUser.getCompanyGuid());
+        }
 
         List<String> userConditonList = new ArrayList<>();
-        List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(CommonUtils.getCurrentUserGuid());
+        List<SysUserCondition> sysUserConditionList = sysService.getUserConditionsByUserGuid(currentUser.getGuid());
         if (ObjectUtils.isNotEmpty(sysUserConditionList)) {
             for (SysUserCondition sysUserCondition : sysUserConditionList) {
                 userConditonList.add(sysUserCondition.getLineUuid() + "=");
@@ -130,6 +143,7 @@ public class RoomController {
 
     @RequestMapping("recycleField")
     public Integer recycleField(String line_uuid) throws BaseException {
+        //王靖代码不支持逻辑删除,废弃
         return currentDao.recycleField(line_uuid);
     }
 

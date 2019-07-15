@@ -1,6 +1,8 @@
 package com.voucher.manage2.aop.interceptor;
 
+import cn.hutool.http.HttpUtil;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,16 +23,15 @@ public class ProcessInterceptor implements HandlerInterceptor {
         //允许任何跨域请求
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 
-        //httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With,X-Token");
         //
-        //httpServletResponse.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
 
+        httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
         //httpServletResponse.setHeader("X-Powered-By","Jetty");
 
         //请求类型
-        String method = httpServletRequest.getMethod();
-
-        if (method.equals("OPTIONS")) {
+        if (httpServletRequest.getMethod().equals("OPTIONS")) {
             httpServletResponse.setStatus(200);
             return false;
         }

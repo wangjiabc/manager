@@ -14,5 +14,6 @@
     <result column="parent_guid" jdbcType="VARCHAR" property="parentGuid" />
     <result column="root_guid" jdbcType="VARCHAR" property="rootGuid" />
     <result column="guid" jdbcType="VARCHAR" property="guid" />
+    <result column="hidden" jdbcType="BIT" property="hidden" />
   </resultMap>
 </mapper>

@@ -57,6 +57,9 @@ public class Room implements Serializable{
     @SQLString(name="in_type")
 	private String in_type;
 
+    @SQLString(name="company_guid")
+	private String company_guid;
+
 	public void setId(Integer id){
 		this.id = id;
 	}
@@ -183,6 +186,14 @@ public class Room implements Serializable{
 
 	public String getIn_type(){
 		return in_type;
+	}
+
+	public void setCompany_guid(String company_guid){
+		this.company_guid = company_guid;
+	}
+
+	public String getCompany_guid(){
+		return company_guid;
 	}
 
 

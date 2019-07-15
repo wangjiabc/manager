@@ -20,5 +20,6 @@
     <result column="del" jdbcType="BIT" property="del" />
     <result column="in_date" jdbcType="BIGINT" property="inDate" />
     <result column="in_type" jdbcType="VARCHAR" property="inType" />
+    <result column="company_guid" jdbcType="VARCHAR" property="companyGuid" />
   </resultMap>
 </mapper>

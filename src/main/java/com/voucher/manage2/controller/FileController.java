@@ -32,7 +32,6 @@ import java.util.*;
  * @date 2019/5/20
  */
 @Slf4j
-//@RestController
 @Controller
 @RequestMapping("file")
 public class FileController {
@@ -42,6 +41,7 @@ public class FileController {
     private CommonsMultipartResolver multipartResolver;
 
     @PostMapping("upload")
+    @ResponseBody
     public void springUpload(HttpServletRequest request, String[] roomGuids, String menuGuid) {
         //检查form中是否有enctype="multipart/form-data"
         if (ObjectUtils.isEmpty(menuGuid, roomGuids)) {
@@ -86,6 +86,7 @@ public class FileController {
     }
 
     @PostMapping("/delFile")
+    @ResponseBody
     public void delFile(@RequestBody Map<String, Object> jsonMap) {
         String url = MapUtils.getString("url", jsonMap);
         fileService.delFile(url.substring(url.lastIndexOf("\\") + 1));

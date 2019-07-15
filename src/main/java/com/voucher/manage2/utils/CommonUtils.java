@@ -5,6 +5,8 @@ import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.tkmapper.entity.SysRole;
 import lombok.extern.slf4j.Slf4j;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -32,8 +34,11 @@ public class CommonUtils {
         threadLocalUsers.set(user);
     }
 
-    public static boolean isSuperAdmin() {
+    public static String getCurrentUserCompanyGuid() {
+        return getCurrentUser().getCompanyGuid();
+    }
 
+    public static boolean isSuperAdmin() {
         List<SysRole> roles = getCurrentUser().roles;
         for (SysRole role : roles) {
             if (role.getGuid().equals(SystemConstant.SYSTEM_ROLE_GUID)) {
@@ -41,5 +46,19 @@ public class CommonUtils {
             }
         }
         return false;
+    }
+
+    public static double getDouble(Object str) {
+        double parseDouble;
+        try {
+            parseDouble = Double.parseDouble((str == null ? "0" : str.toString()));
+            DecimalFormat df = new DecimalFormat("#.00");
+            df.setRoundingMode(RoundingMode.FLOOR);
+            String format = df.format(parseDouble + 0.005d);
+            return Double.parseDouble(format);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0d;
+        }
     }
 }

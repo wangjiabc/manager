@@ -32,6 +32,9 @@ public class SysRouter implements Serializable {
     @Column(name = "[guid]")
     private String guid;
 
+    @Column(name = "[hidden]")
+    private Boolean hidden;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -158,5 +161,19 @@ public class SysRouter implements Serializable {
      */
     public void setGuid(String guid) {
         this.guid = guid == null ? null : guid.trim();
+    }
+
+    /**
+     * @return hidden
+     */
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    /**
+     * @param hidden
+     */
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
     }
 }

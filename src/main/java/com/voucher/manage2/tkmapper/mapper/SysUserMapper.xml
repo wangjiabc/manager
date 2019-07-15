@@ -11,5 +11,8 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="del" jdbcType="BIT" property="del" />
+    <result column="company_guid" jdbcType="VARCHAR" property="companyGuid" />
   </resultMap>
 </mapper>

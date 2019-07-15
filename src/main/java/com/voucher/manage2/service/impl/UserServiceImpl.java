@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,9 @@ public class UserServiceImpl implements UserService {
         if (ObjectUtils.isEmpty(sysUser.getPassword())) {
             sysUser.setPassword("123456");
         }
+        if (ObjectUtils.isEmpty(sysUser.getCompanyGuid())) {
+            sysUser.setCompanyGuid(CommonUtils.getCurrentUserCompanyGuid());
+        }
         sysUser.setPassword(SecureUtil.md5(sysUser.getPassword() + salt));
         sysUserMapper.insertSelective(sysUser);
         return sysUser;
@@ -93,9 +97,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SysUser> getAllUser() {
-        Weekend<SysUser> sysUserWeekend = new Weekend<SysUser>(SysUser.class);
-        sysUserWeekend.weekendCriteria().andEqualTo(SysUser::getDel, false);
-        List<SysUser> sysUsers = sysUserMapper.selectAll();
+        Weekend<SysUser> sysUserWeekend = new Weekend<>(SysUser.class);
+        WeekendCriteria<SysUser, Object> weekendCriteria = sysUserWeekend.weekendCriteria();
+        weekendCriteria.andEqualTo(SysUser::getDel, false);
+        if (!CommonUtils.isSuperAdmin()) {
+            weekendCriteria.andEqualTo(SysUser::getCompanyGuid, CommonUtils.getCurrentUserCompanyGuid());
+        }
+        List<SysUser> sysUsers = sysUserMapper.selectByExample(sysUserWeekend);
         if (ObjectUtils.isNotEmpty(sysUsers)) {
             sysUsers.forEach(sysUser -> {
                 sysUser.setSalt(null);
