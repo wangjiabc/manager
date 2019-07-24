@@ -16,4 +16,6 @@ public interface MenuService {
     List<MenuDTO> selectAllRootMenu();
 
     Integer delLeafMenu(List<String> leafGuids);
+
+    MenuDTO getMenuByGuid(String menuGuid);
 }

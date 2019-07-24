@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import com.voucher.manage2.constant.RoomConstant;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -131,7 +132,7 @@ public class HireDAOImpl extends JdbcDaoSupport implements HireDAO {
 
             if (room2.getBuild_area() - chartRoom.getChartArea() >= 0) {
 
-                room.setState(0);
+                room.setState(RoomConstant.RENTED);
 
                 i = UpdateExe.get(this.getJdbcTemplate(), room);
 
@@ -141,7 +142,7 @@ public class HireDAOImpl extends JdbcDaoSupport implements HireDAO {
 
             } else if (room2.getBuild_area() - chartRoom.getChartArea() <= 0) {
 
-                room.setState(1);
+                room.setState(RoomConstant.RENT_AVAILABLE);
 
                 i = UpdateExe.get(this.getJdbcTemplate(), room);
 

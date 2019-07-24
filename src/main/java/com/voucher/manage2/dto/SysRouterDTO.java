@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Table(name = "[sys_router]")
 public class SysRouterDTO extends SysRouter {
-    private Map<String, String> meta = new HashMap<>(4);
+    private Map<String, Object> meta = new HashMap<>(4);
     private List<SysRouterDTO> children;
 
     private boolean selected = false;
@@ -27,11 +27,11 @@ public class SysRouterDTO extends SysRouter {
         this.selected = selected;
     }
 
-    public Map<String, String> getMeta() {
+    public Map<String, Object> getMeta() {
         return meta;
     }
 
-    public void setMeta(Map<String, String> meta) {
+    public void setMeta(Map<String, Object> meta) {
         this.meta = meta;
     }
 

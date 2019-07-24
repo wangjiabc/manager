@@ -63,8 +63,8 @@ public class Word2PdfController {
         map.put("Address", Address);
         map.put("RealEstateNo", RealEstateNo);
         map.put("RentArea", RentArea);
-        map.put("BeginDate", BeginDate);
-        map.put("EndDate", EndDate);
+        map.put("BeginDate", TimeUtils.formatTime(BeginDate, TimeUtils.exp1));
+        map.put("EndDate", TimeUtils.formatTime(EndDate, TimeUtils.exp1));
         map.put("ChartYears", ChartYears);
         map.put("FareItem", FareItem);
         map.put("DXRMB", DXRMB);

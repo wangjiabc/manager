@@ -11,13 +11,4 @@ import javax.persistence.Table;
  */
 @Table(name = "[room_log]")
 public class RoomLogDTO extends RoomLog {
-    private MenuDTO menuDTO;
-
-    public MenuDTO getMenuDTO() {
-        return menuDTO;
-    }
-
-    public void setMenuDTO(MenuDTO menuDTO) {
-        this.menuDTO = menuDTO;
-    }
 }

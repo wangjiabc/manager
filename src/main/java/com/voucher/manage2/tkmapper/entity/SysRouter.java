@@ -35,6 +35,9 @@ public class SysRouter implements Serializable {
     @Column(name = "[hidden]")
     private Boolean hidden;
 
+    @Column(name = "[noCache]")
+    private Boolean nocache;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -175,5 +178,19 @@ public class SysRouter implements Serializable {
      */
     public void setHidden(Boolean hidden) {
         this.hidden = hidden;
+    }
+
+    /**
+     * @return noCache
+     */
+    public Boolean getNocache() {
+        return nocache;
+    }
+
+    /**
+     * @param nocache
+     */
+    public void setNocache(Boolean nocache) {
+        this.nocache = nocache;
     }
 }

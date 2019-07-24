@@ -1,5 +1,6 @@
 package com.voucher.manage2.service.impl;
 
+import com.voucher.manage2.cache.SystemCache;
 import com.voucher.manage2.dto.MenuDTO;
 import com.voucher.manage2.service.MenuService;
 import com.voucher.manage2.tkmapper.entity.RoomFile;
@@ -139,6 +140,20 @@ public class MenuServiceImpl implements MenuService {
         Example example = new Example(MenuDTO.class);
         example.createCriteria().andIn("guid", leafGuids);
         return menuMapper.updateByExampleSelective(menuDTO, example);
+    }
+
+    @Override
+    public MenuDTO getMenuByGuid(String menuGuid) {
+        //走缓存
+        //SystemCache.MENU_CACHE.get(menuGuid);
+        //走数据库
+        MenuDTO menuDTO = new MenuDTO();
+        menuDTO.setGuid(menuGuid);
+        List<MenuDTO> select = menuMapper.select(menuDTO);
+        if (ObjectUtils.isEmpty(select)) {
+            return null;
+        }
+        return select.get(0);
     }
 
 }

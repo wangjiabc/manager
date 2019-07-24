@@ -15,7 +15,7 @@ import java.util.Map;
  * @description 系统缓存
  * @date 2019/6/4
  */
-@Component
+//@Component
 public class SystemCache implements InitializingBean {
     /**
      * 菜单缓存guid->menu

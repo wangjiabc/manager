@@ -10,6 +10,7 @@ import com.voucher.manage.tools.MonthDiff;
 import com.voucher.manage.tools.MyTestUtil;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.manage2.utils.ObjectUtils;
+import com.voucher.manage2.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,7 @@ public class HireController {
 
         try {
             sex = MapUtils.getString("sex", jsonMap).equals("男") ? 1 : 0;
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         String CardType = MapUtils.getString("CardType", jsonMap);
@@ -67,12 +68,12 @@ public class HireController {
         }
 
         try {
-            List<String> chartDate = (List<String>) jsonMap.get("chartDate");
-            String sDate = chartDate.get(0);
-            String eDate = chartDate.get(1);
+            List<Long> chartDate = (List<Long>) jsonMap.get("chartDate");
+            String sDate = TimeUtils.formatTime(chartDate.get(0), TimeUtils.exp1);
+            String eDate = TimeUtils.formatTime(chartDate.get(1), TimeUtils.exp1);
 
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
+            //
             chartBeginDate = format.parse(sDate);
             chartEndDate = format.parse(eDate);
 
@@ -130,7 +131,6 @@ public class HireController {
         }
 
 
-
         if (margin != null) {
             chartInfo.setMargin(margin);
         }
@@ -154,7 +154,6 @@ public class HireController {
                 chartInfo.setAugmentGenre(0);
             }
         }
-
 
 
         float allChartAreas = 0;
@@ -193,7 +192,7 @@ public class HireController {
     public Integer insertHirePay(@RequestBody List<String> guid) {
         List<HireList> hireLists = new ArrayList<>();
         for (String hireGuid : guid) {
-            System.out.println("hireGuidhireGuid"+ hireGuid);
+            System.out.println("hireGuidhireGuid" + hireGuid);
             HireList hireList = new HireList();
             hireList.setHireGUID(hireGuid);
             hireLists.add(hireList);
@@ -204,9 +203,8 @@ public class HireController {
     }
 
 
-
     @RequestMapping("/refundHirePay")
-    public void refundHirePay(@RequestBody List<String> hirePayGUIDs){
+    public void refundHirePay(@RequestBody List<String> hirePayGUIDs) {
         List<HirePay> HirePays = new ArrayList<>();
         List<HireList> HireLists = new ArrayList<>();
         for (String hirePayGUID : hirePayGUIDs) {
@@ -214,7 +212,7 @@ public class HireController {
             HireList hireList = new HireList();
             hireList.setState(0);
             hireList.setHirePayGUID(hirePayGUID);
-            String[] where={"hirePayGUID=",hirePayGUID};
+            String[] where = {"hirePayGUID=", hirePayGUID};
             hireList.setWhere(where);
             HireLists.add(hireList);
 
@@ -223,7 +221,7 @@ public class HireController {
             HirePays.add(hirePay);
         }
         MyTestUtil.print(HirePays);
-        hireDao.refundHirePay(HirePays,HireLists);
+        hireDao.refundHirePay(HirePays, HireLists);
     }
 
 }

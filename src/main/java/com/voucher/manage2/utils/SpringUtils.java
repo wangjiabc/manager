@@ -16,6 +16,7 @@ import java.io.File;
  * @description 关于sping的一些工具
  * @date 2019/5/10
  */
+@Component
 public class SpringUtils implements BeanFactoryAware {
 
     private static BeanFactory beanFactory;

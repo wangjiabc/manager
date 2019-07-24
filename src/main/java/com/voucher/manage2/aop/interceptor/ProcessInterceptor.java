@@ -23,7 +23,8 @@ public class ProcessInterceptor implements HandlerInterceptor {
         //允许任何跨域请求
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 
-        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With,X-Token");
+        //httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type,content-type,Content-Length, Authorization, Accept,X-Requested-With,X-Token");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", "*");
         //
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
 

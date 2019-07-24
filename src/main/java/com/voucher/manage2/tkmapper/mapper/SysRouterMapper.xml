@@ -15,5 +15,6 @@
     <result column="root_guid" jdbcType="VARCHAR" property="rootGuid" />
     <result column="guid" jdbcType="VARCHAR" property="guid" />
     <result column="hidden" jdbcType="BIT" property="hidden" />
+    <result column="noCache" jdbcType="BIT" property="nocache" />
   </resultMap>
 </mapper>
