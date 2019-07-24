@@ -42,7 +42,7 @@ public class UserController {
         userService.regist(sysUser);
     }
 
-    @PostMapping("update")
+    @PostMapping("updateUser")
     public void updateUser(@RequestBody Map<String, Object> jsonMap) throws InvocationTargetException, IllegalAccessException {
         SysUser sysUser = new SysUser();
         BeanUtils.populate(sysUser, jsonMap);

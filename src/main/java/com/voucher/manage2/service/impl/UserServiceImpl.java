@@ -117,7 +117,6 @@ public class UserServiceImpl implements UserService {
     public Integer updateUser(SysUser sysUser) {
         String userGuid = sysUser.getGuid();
         sysUser.setPassword(null);
-        sysUser.setAccountName(null);
         sysUser.setSalt(null);
         sysUser.setGuid(null);
         Weekend<SysUser> sysUserWeekend = new Weekend<>(SysUser.class);

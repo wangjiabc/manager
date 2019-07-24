@@ -21,6 +21,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
     <context:component-scan base-package="com.voucher.manage2.service.impl"/>
     <context:component-scan base-package="com.voucher.manage2.cache"/>
     <context:component-scan base-package="com.voucher.manage2.constant"/>
+    <context:component-scan base-package="com.voucher.manage2.utils"/>
 
     <!--  
 	<context:component-scan base-package="com.voucher.inswept.topic.consumer"></context:component-scan>
@@ -43,7 +44,8 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
     <!-- 扫描 -->
     <task:annotation-driven/>
 
-    <bean id="springUtils" class="com.voucher.manage2.utils.SpringUtils"/>
+<!--    <bean id="springUtils" class="com.voucher.manage2.utils.SpringUtils"/>-->
+<!--    <bean id="roomUtils" class="com.voucher.manage2.utils.RoomUtils"/>-->
 
     <import resource="sping-aop.xml"/>
     <import resource="spring-tkmybatis.xml"/>

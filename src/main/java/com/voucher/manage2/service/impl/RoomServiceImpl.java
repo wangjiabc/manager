@@ -13,6 +13,7 @@ import com.voucher.manage2.tkmapper.mapper.RoomInMapper;
 import com.voucher.manage2.tkmapper.mapper.RoomLogMapper;
 import com.voucher.manage2.tkmapper.mapper.RoomMapper;
 import com.voucher.manage2.tkmapper.mapper.RoomOutMapper;
+import com.voucher.manage2.utils.CommonUtils;
 import com.voucher.manage2.utils.RoomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,7 @@ public class RoomServiceImpl implements RoomService {
             roomLog.setIntroduction(RoomUtils.getRoomLogIntroduction(roomIn));
             roomLog.setOperationType(roomIn.getTypeGuid());
             roomLog.setRoomGuid(roomIn.getRoomGuid());
+            roomLog.setUserGuid(CommonUtils.getCurrentUserGuid());
             roomLog.setLogType(RoomLogConstant.IN.type);
             roomLogs.add(roomLog);
             roomGuids.add(roomIn.getRoomGuid());
@@ -83,6 +85,7 @@ public class RoomServiceImpl implements RoomService {
             roomLog.setOperationType(roomOut.getTypeGuid());
             roomLog.setRoomGuid(roomOut.getRoomGuid());
             roomLog.setLogType(RoomLogConstant.OUT.type);
+            roomLog.setUserGuid(CommonUtils.getCurrentUserGuid());
             roomLogs.add(roomLog);
             roomGuids.add(roomOut.getRoomGuid());
         }
@@ -103,9 +106,6 @@ public class RoomServiceImpl implements RoomService {
         Weekend<RoomLogDTO> roomLogWeekend = new Weekend<>(RoomLogDTO.class);
         roomLogWeekend.weekendCriteria().andEqualTo(RoomLog::getRoomGuid, roomGuid);
         List<RoomLogDTO> roomLogDTOS = roomLogMapper.selectByExample(roomLogWeekend);
-        for (RoomLogDTO roomLogDTO : roomLogDTOS) {
-
-        }
         return roomLogDTOS;
     }
 

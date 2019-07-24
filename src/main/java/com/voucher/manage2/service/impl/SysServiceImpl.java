@@ -239,6 +239,7 @@ public class SysServiceImpl implements SysService {
             }
         }
         sysRouterDTO.getMeta().put("title", sysRouterDTO.getTitle());
+        sysRouterDTO.getMeta().put("noCache", sysRouterDTO.getNocache());
         sysRouterDTO.getMeta().put("icon", sysRouterDTO.getIcon());
     }
 

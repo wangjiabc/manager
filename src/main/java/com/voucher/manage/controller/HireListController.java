@@ -16,6 +16,7 @@ import com.voucher.manage.dao.CurrentDao;
 import com.voucher.manage2.exception.BaseException;
 import com.voucher.manage2.utils.MapUtils;
 import com.voucher.sqlserver.context.Connect;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/hireList")
@@ -41,14 +42,14 @@ public class HireListController {
 
         searchList.add("del=");
         searchList.add("0");
-        
+
         String chartGUID = MapUtils.getString("chartGUID", jsonMap);
 
         if (chartGUID != null) {
             searchList.add("[ChartInfo].ChartGUID=");
             searchList.add(chartGUID);
         }
-        
+
         String[] where = new String[searchList.size()];
         if (where.length > 0)
             chartInfo.setWhere(searchList.toArray(where));
@@ -66,8 +67,8 @@ public class HireListController {
     @RequestMapping("getChartInfoRoom")
     public Object getChartInfo(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
 
-        Integer limit = MapUtils.getInteger("limit", jsonMap);
-        Integer offset = MapUtils.getInteger("offset", jsonMap);
+        Integer limit = 200;
+        Integer offset = 0;
 
         ChartInfo chartInfo = new ChartInfo();
         chartInfo.setLimit(limit);
@@ -79,7 +80,7 @@ public class HireListController {
         chartRoom.setOffset(offset);
         chartRoom.setNotIn("id");
 
-        Room room=new Room();
+        Room room = new Room();
         room.setLimit(limit);
         room.setOffset(offset);
         room.setNotIn("id");
@@ -88,22 +89,48 @@ public class HireListController {
 
         searchList.add("[ChartInfo].del=");
         searchList.add("0");
-        
+
         String chartGUID = MapUtils.getString("chartGUID", jsonMap);
 
         if (chartGUID != null) {
             searchList.add("[ChartInfo].ChartGUID=");
             searchList.add(chartGUID);
         }
+        String ContractNo = MapUtils.getString("ContractNo", jsonMap);
 
-        String guid=MapUtils.getString("guid", jsonMap);
-        
+        if (ContractNo != null) {
+            searchList.add("[ChartInfo].ContractNo like");
+            searchList.add("%" + ContractNo + "%");
+        }
+
+        String guid = MapUtils.getString("guid", jsonMap);
+
         if (guid != null) {
             searchList.add("[ChartRoom].guid=");
             searchList.add(guid);
         }
 
-        
+        String Charter = MapUtils.getString("Charter", jsonMap);
+
+        if (Charter != null) {
+            searchList.add("[ChartRoom].Charter like");
+            searchList.add("%" + Charter + "%");
+        }
+
+        String Phone = MapUtils.getString("Phone", jsonMap);
+
+        if (Phone != null) {
+            searchList.add("[ChartRoom].Phone like");
+            searchList.add("%" + Phone + "%");
+        }
+        String IDNo = MapUtils.getString("IDNo", jsonMap);
+
+        if (IDNo != null) {
+            searchList.add("[ChartRoom].IDNo like");
+            searchList.add("%" + IDNo + "%");
+        }
+
+
         String[] where = new String[searchList.size()];
         if (where.length > 0) {
             chartInfo.setWhere(searchList.toArray(where));
@@ -111,11 +138,11 @@ public class HireListController {
             room.setWhere(searchList.toArray(where));
         }
 
-        Object[] objects = { chartRoom,chartInfo,room};
+        Object[] objects = {chartRoom, chartInfo, room};
 
-        String[][] joinParameters = {{"ChartGUID", "ChartGUID"},{"guid", "guid"},{"guid","guid"}};
+        String[][] joinParameters = {{"ChartGUID", "ChartGUID"}, {"guid", "guid"}, {"guid", "guid"}};
 
-        String[] itemjoinParameters = {"ChartGUID", "guid","guid"};
+        String[] itemjoinParameters = {"ChartGUID", "guid", "guid"};
 
         Map map = null;
         try {
@@ -130,7 +157,7 @@ public class HireListController {
     @RequestMapping("getHireList")
     public Object getHireList(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
         Integer limit = MapUtils.getInteger("limit", jsonMap);
-        Integer offset = (MapUtils.getInteger("offset", jsonMap) -1) * limit;
+        Integer offset = (MapUtils.getInteger("offset", jsonMap) - 1) * limit;
         String state = MapUtils.getString("state", jsonMap);
         HireList hireList = new HireList();
         hireList.setLimit(limit);
@@ -144,7 +171,7 @@ public class HireListController {
         searchList.add("del=");
         searchList.add("0");
 
-        String chartGUID = MapUtils.getString("chartGUID", jsonMap);
+        String chartGUID = MapUtils.getString("ChartGUID", jsonMap);
 
         if (chartGUID != null) {
             searchList.add("ChartGUID=");
@@ -169,7 +196,7 @@ public class HireListController {
     @RequestMapping("getHirePay")
     public Object getHirePay(@RequestBody Map<String, Object> jsonMap) throws ClassNotFoundException {
         Integer limit = MapUtils.getInteger("limit", jsonMap);
-        Integer offset = (MapUtils.getInteger("offset", jsonMap)-1)*limit;
+        Integer offset = (MapUtils.getInteger("offset", jsonMap) - 1) * limit;
         String chartGUID = MapUtils.getString("ChartGUID", jsonMap);
         HirePay hirePay = new HirePay();
         hirePay.setLimit(limit);
@@ -177,13 +204,13 @@ public class HireListController {
         hirePay.setNotIn("id");
 
         List<String> searchList = new ArrayList<>();
-        
+
         searchList.add("ChartGUID=");
         searchList.add(chartGUID);
         searchList.add("del=");
         searchList.add("0");
-       
-        
+
+
         String[] where = new String[searchList.size()];
         if (where.length > 0)
             hirePay.setWhere(searchList.toArray(where));
@@ -211,7 +238,7 @@ public class HireListController {
                 selects.put(i++, MapUtils.getString("value", domain));
             }
         }
-        return currentDao.addField(tableName, fieldName, type, selects,null);
+        return currentDao.addField(tableName, fieldName, type, selects, null);
     }
 
     @RequestMapping("delField")
