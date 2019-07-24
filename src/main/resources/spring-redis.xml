@@ -24,12 +24,23 @@
         <property name="testWhileIdle" value="${redis.testWhileIdle}"/>
     </bean>
 
-    <bean id="shardedJedisPool40" class="redis.clients.jedis.ShardedJedisPool" scope="singleton">
+    <bean id="shardedJedisPool0" class="redis.clients.jedis.ShardedJedisPool" scope="singleton">
         <constructor-arg index="0" ref="jedisPoolConfig"/>
         <constructor-arg index="1">
             <list>
                 <bean class="redis.clients.jedis.JedisShardInfo">
                     <constructor-arg index="0" value="${redis.uri.0}"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="shardedJedisPool1" class="redis.clients.jedis.ShardedJedisPool" scope="singleton">
+        <constructor-arg index="0" ref="jedisPoolConfig"/>
+        <constructor-arg index="1">
+            <list>
+                <bean class="redis.clients.jedis.JedisShardInfo">
+                    <constructor-arg index="0" value="${redis.uri.1}"/>
                 </bean>
             </list>
         </constructor-arg>

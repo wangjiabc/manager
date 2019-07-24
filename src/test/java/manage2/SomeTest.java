@@ -11,6 +11,7 @@ import com.voucher.manage2.dto.MenuDTO;
 import com.voucher.manage2.dto.SysRouterDTO;
 import com.voucher.manage2.dto.SysUserDTO;
 import com.voucher.manage2.redis.JedisUtil0;
+import com.voucher.manage2.redis.JedisUtil1;
 import com.voucher.manage2.service.UserService;
 import com.voucher.manage2.tkmapper.entity.Select;
 import com.voucher.manage2.tkmapper.entity.SysUser;
@@ -52,8 +53,7 @@ public class SomeTest {
 
     @Test
     public void addField() {
-        List<SysRouterDTO> sysRouterDTOS = sysRouterMapper.selectRouter("8091b0153fd846ac8a18ef8f5aae5903", "0f440c57-0615-489e-b456-96703cbdb7e6");
-        System.out.println(sysRouterDTOS);
+        JedisUtil1.setString("1", "1");
     }
 
 

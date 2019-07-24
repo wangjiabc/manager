@@ -11,12 +11,11 @@ import redis.clients.jedis.ShardedJedisPool;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 @Component
 @Slf4j
-public class JedisUtil0 {
+public class JedisUtil1 {
 
     private static ShardedJedisPool shardedJedisPool;
 
@@ -25,9 +24,9 @@ public class JedisUtil0 {
     //}
 
     @Autowired
-    public void setShardedJedisPool(@Qualifier("shardedJedisPool0") ShardedJedisPool shardedJedisPool) {
+    public void setShardedJedisPool(@Qualifier("shardedJedisPool1")ShardedJedisPool shardedJedisPool) {
         //方法前不能加static,加了无法注入
-        JedisUtil0.shardedJedisPool = shardedJedisPool;
+        JedisUtil1.shardedJedisPool = shardedJedisPool;
         log.info("shardedJedisPool is set successfully！");
     }
 
@@ -323,34 +322,5 @@ public class JedisUtil0 {
         } finally {
             releaseResource(shardedJedis);
         }
-    }
-
-    public static <T> void setUserDTO(String key, T value) {
-        if (ObjectUtils.isNotEmpty(key, value)) {
-            ShardedJedis shardedJedis = getShardedJedis();
-            try {
-                //6小时过期60 * 60 * 6
-                shardedJedis.setex(key.getBytes(), 21600, ObjectUtils.serialize(value));
-            } catch (Exception e) {
-                log.error("setUserDTO to redis unsuccessfully!", e);
-                throw BaseException.getDefault("登录失败!");
-            } finally {
-                releaseResource(shardedJedis);
-            }
-        }
-    }
-
-    public static <T> T getObject(String key) {
-        if (ObjectUtils.isNotEmpty(key)) {
-            ShardedJedis shardedJedis = getShardedJedis();
-            try {
-                return ObjectUtils.unserialize(shardedJedis.get(key.getBytes()));
-            } catch (Exception e) {
-                log.error("setUserDTO to redis unsuccessfully!", e);
-            } finally {
-                releaseResource(shardedJedis);
-            }
-        }
-        return null;
     }
 }
